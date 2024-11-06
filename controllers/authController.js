@@ -13,7 +13,7 @@ const createUser = async(req,res) =>{
             .json({errors: {email:"Email already exists"}});
         }
 
-        // create a user in db 22222222
+        // create a user in db
         const user = await User.create(req.body);
         
         // generate a token
