@@ -1,20 +1,35 @@
-// src/components/Signup.js
 import React, { useState } from 'react';
+import axios from 'axios';
 import './Signup.css';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const username = 'sa'; // Adding username as a constant
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }
-    // Add signup logic here (API call)
-    console.log('Signup submitted:', { email, password });
+
+    try {
+      // API call to signup endpoint
+      const response = await axios.post('http://localhost:5000/signup', {
+        username,
+        email,
+        password,
+    });
+
+      console.log('Signup successful:', response.data);
+      alert('Signup successful! You can now log in.');
+      window.location.href = "/login";
+    } catch (error) {
+      console.error('Error signing up:', error.response?.data || error.message);
+      alert(error.response?.data?.message || 'An error occurred while signing up.');
+    }
   };
 
   return (
