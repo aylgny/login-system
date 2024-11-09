@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './components/Login'; // Import your Login component
 import Signup from './components/Signup'; // Import your Signup component
 import MainPage from './components/MainPage';
+import ProductPage from "./components/ProductPage";
+
 
 function App() {
   return (
@@ -16,7 +18,7 @@ function App() {
           <Route path="/mainpage" element={<MainPage />} />
           <Route path="*" element={<Navigate to="/login" />} />
           <Route path="/" element={<Navigate to="/login" />} />
-
+          <Route path="/product/:productId" component={ProductPage} />
         </Routes>
       </div>
     </Router>
