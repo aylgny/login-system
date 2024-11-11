@@ -18,7 +18,7 @@ function App() {
           <Route path="/mainpage" element={<MainPage />} />
           <Route path="*" element={<Navigate to="/login" />} />
           <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/product/:productId" component={ProductPage} />
+          <Route path="/product/:productId" element={<ProductPage />} />
         </Routes>
       </div>
     </Router>
