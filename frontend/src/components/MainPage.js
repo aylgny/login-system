@@ -82,9 +82,9 @@ const MainPage = () => {
       filtered.sort((a, b) => a.price - b.price);
     } else if (sortCriteria === "price-desc") {
       filtered.sort((a, b) => b.price - a.price);
-    } else if (sortCriteria === "popularity-high") {
+    } else if (sortCriteria === "popularity-desc") {
       filtered.sort((a, b) => a.quantity - b.quantity); // High popularity: least stock first
-    } else if (sortCriteria === "popularity-low") {
+    } else if (sortCriteria === "popularity-asc") {
       filtered.sort((a, b) => b.quantity - a.quantity); // Low popularity: most stock first
     }
   
