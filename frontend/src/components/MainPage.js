@@ -1,38 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Import React Router
+import { Link } from "react-router-dom";
 import "./MainPage.css";
-import axios from 'axios'; // Import axios for making HTTP requests
+import axios from "axios";
 
 const MainPage = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [categories, setCategories] = useState([]); // State for categories
-  const [selectedCategory, setSelectedCategory] = useState("All Products"); // Default value for selected category
+  const [selectedCategory, setSelectedCategory] = useState("All Products"); // Default to "All Products"
 
-  const apiUrl = "https://f3837756-d355-4b7f-a67e-4ec8cdf214c7.mock.pstmn.io/getCertainProducts";
+  const productsApiUrl = "http://localhost:5000/api/products";
   const categoriesApiUrl = "http://localhost:5000/api/categories"; // URL for fetching categories
 
-  // Fetching product data
+  // Fetching products from the backend
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({}),
-        });
-
-        const data = await response.json();
-        if (!data || !data.product) {
-          console.error("Malformed API response", data);
-          return;
-        }
-
-        setProducts(data.product);
-        setFilteredProducts(data.product);
+        const response = await axios.get(productsApiUrl);
+        setProducts(response.data); // Store products
+        setFilteredProducts(response.data); // Initially show all products
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -75,11 +62,13 @@ const MainPage = () => {
   };
 
   // Filter products based on search term and selected category
+  // Filter products based on search term and selected category
   useEffect(() => {
     let filtered = products.filter((product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    // If "All Products" is selected, skip category filtering
     if (selectedCategory !== "All Products") {
       filtered = filtered.filter((product) => product.category === selectedCategory);
     }
@@ -87,8 +76,10 @@ const MainPage = () => {
     setFilteredProducts(filtered);
   }, [searchTerm, selectedCategory, products]);
 
+
   return (
     <div className="main-page">
+      {/* Sidebar for categories */}
       <div className="sidebar">
         <h3>Categories</h3>
         <ul>
@@ -100,7 +91,9 @@ const MainPage = () => {
         </ul>
       </div>
 
+      {/* Main content area */}
       <div className="product-container">
+        {/* Search bar */}
         <div className="search-bar">
           <input
             type="text"
@@ -110,23 +103,19 @@ const MainPage = () => {
           />
         </div>
 
+        {/* Product list */}
         <div className="product-list">
           {filteredProducts.length === 0 ? (
             <p>No products found.</p>
           ) : (
             filteredProducts.map((product) => (
-              <Link to={`/product/${product.id}`} key={product.id} className="product-item-link">
+              <Link to={`/product/${product._id}`} key={product._id} className="product-item-link">
                 <div className="product-item">
-                  {/* Display product image */}
-                  <img 
-                    src={product.photo} // Updated to use product.photo
-                    alt={product.name} 
-                    className="product-image" // Optional CSS class for styling
-                  />
+                  <img src={product.photo} alt={product.name} className="product-image" />
                   <div className="product-details">
                     <h4>{product.name}</h4>
                     <p>{product.category}</p>
-                    <p>{product.price}</p>
+                    <p>${product.price.toFixed(2)}</p>
                   </div>
                 </div>
               </Link>
