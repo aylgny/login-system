@@ -9,6 +9,7 @@ const MainPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categories, setCategories] = useState([]); // State for categories
   const [selectedCategory, setSelectedCategory] = useState("All Products"); // Default to "All Products"
+  const [sortCriteria, setSortCriteria] = useState("price-asc"); // Default sorting criteria
 
   const productsApiUrl = "http://localhost:5000/api/products";
   const categoriesApiUrl = "http://localhost:5000/api/categories"; // URL for fetching categories
@@ -61,20 +62,35 @@ const MainPage = () => {
     setSelectedCategory(category);
   };
 
-  // Filter products based on search term and selected category
+  // Handle sorting criteria
+  const handleSortChange = (event) => {
+    setSortCriteria(event.target.value);
+  };
+
   // Filter products based on search term and selected category
   useEffect(() => {
     let filtered = products.filter((product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-    // If "All Products" is selected, skip category filtering
+  
     if (selectedCategory !== "All Products") {
       filtered = filtered.filter((product) => product.category === selectedCategory);
     }
-
+  
+    // Apply sorting based on the criteria
+    if (sortCriteria === "price-asc") {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sortCriteria === "price-desc") {
+      filtered.sort((a, b) => b.price - a.price);
+    } else if (sortCriteria === "popularity-high") {
+      filtered.sort((a, b) => a.quantity - b.quantity); // High popularity: least stock first
+    } else if (sortCriteria === "popularity-low") {
+      filtered.sort((a, b) => b.quantity - a.quantity); // Low popularity: most stock first
+    }
+  
     setFilteredProducts(filtered);
-  }, [searchTerm, selectedCategory, products]);
+  }, [searchTerm, selectedCategory, sortCriteria, products]);
+  
 
 
   return (
@@ -101,6 +117,17 @@ const MainPage = () => {
             value={searchTerm}
             onChange={handleSearchChange}
           />
+        </div>
+
+        {/* Sorting dropdown */}
+        <div className="sort-container">
+          <label htmlFor="sort">Sort by:</label>
+          <select id="sort" value={sortCriteria} onChange={handleSortChange}>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="popularity-desc">Popularity: Low to High</option>
+            <option value="popularity-asc">Popularity: High to Low</option>
+          </select>
         </div>
 
         {/* Product list */}
