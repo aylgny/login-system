@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
+  category: {
+    type: String,
+    required: true,
+    trim: true, // Gereksiz boşlukları kaldırmak için
+  },
   name: {
     type: String,
     required: true,
@@ -67,10 +72,6 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
 });
 
 module.exports = mongoose.model('Product', productSchema);
