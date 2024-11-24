@@ -1,135 +1,173 @@
 .main-page {
-    display: flex;
-    padding: 20px;
-    background-color: #f4f4f4;
-    height: 100vh; 
-    box-sizing: border-box;
-    margin-left: 250px; 
-  }
-  
+  display: flex;
+  padding: 20px;
+  background-color: #f4f4f4;
+  height: 100vh;
+  box-sizing: border-box;
+  margin-left: 250px;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #333; /* Dark background for sidebar */
+  color: white;
+  padding: 20px;
+  border-radius: 0; /* Remove rounded edges for a modern look */
+  box-sizing: border-box;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for sidebar */
+}
+
+/* Sidebar Title */
+.sidebar h3 {
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Category List */
+.category-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Category Items */
+.category-item {
+  font-size: 16px;
+  color: #bbb; /* Neutral color for text */
+  margin-bottom: 15px; /* Spacing between categories */
+  padding: 10px 15px; /* Padding for clickable area */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-item:hover {
+  background-color: #ff6a00; /* Highlight background */
+  color: white; /* Highlight text */
+}
+
+.active-category {
+  background-color: #ff6a00; /* Active category background */
+  color: white; /* Active category text */
+  font-weight: bold;
+}
+
+/* Product Container */
+.product-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+/* Search Bar */
+.search-bar {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.search-bar input {
+  padding: 10px;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Product List */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 columns per row */
+  gap: 20px;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+/* Product Item */
+.product-item {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+  width: 220px;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-item img {
+  width: 100%;
+  max-height: 160px;
+  object-fit: contain;
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+
+.product-details h4 {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.product-details p {
+  font-size: 14px;
+  color: #777;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.product-details p:first-of-type {
+  font-weight: bold;
+}
+
+/* Hover Effect for Products */
+.product-item:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  transition: all 0.3s ease;
+}
+
+/* Empty State for No Products Found */
+.product-list p {
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+}
+
+/* Responsiveness for Sidebar on Smaller Screens */
+@media (max-width: 768px) {
   .sidebar {
-    position: fixed; 
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100vh; 
-    background-color: #333;
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-sizing: border-box;
-  }
-  
-  .sidebar h3 {
-    color: #fff;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .sidebar li {
-    margin: 10px 0;
-    cursor: pointer;
-    font-size: 18px;
-    color: #bbb;
-  }
-  
-  .sidebar li:hover {
-    color: #fff;
-  }
-  
-  .product-container {
-    display: flex;
-    flex-direction: column; 
-    flex-grow: 1;
-    margin-left: 20px; 
-  }
-  
-  .search-bar {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    padding: 10px 0;
-  }
-  
-  .search-bar input {
-    padding: 10px;
     width: 100%;
-    max-width: 500px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 16px;
+    height: auto;
+    position: static;
+    margin-bottom: 20px;
   }
-  
-  .search-bar input:focus {
-    outline: none;
-    border-color: #007bff;
+
+  .category-item {
+    text-align: center;
   }
-  
+
   .product-list {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* Her satırda 5 kolon olacak şekilde ayarlandı */
-    gap: 20px;
-    flex-grow: 1;
-    overflow-y: auto;
-    padding-bottom: 20px;
+    grid-template-columns: repeat(2, 1fr); /* Adjust grid layout */
   }
-  
-    
-  .product-item {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px; 
-    text-align: center;
-    width: 220px;
-    height: 280px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .product-item img {
-    width: 100%;
-    max-height: 160px; 
-    object-fit: contain;
-    margin-bottom: 8px; 
-    border-radius: 8px;
-  }
-  
-  .product-details h4 {
-    font-size: 16px; 
-    color: #333;
-    margin-bottom: 4px; 
-    line-height: 1.2; 
-  }
-  
-  .product-details p {
-    font-size: 14px; 
-    color: #777;
-    margin: 0; 
-    line-height: 1.4; 
-  }
-  
-  .product-details p:first-of-type {
-    font-weight: bold;
-  }
-  
-  
-  .product-item:hover {
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-    transform: translateY(-4px);
-    transition: all 0.3s ease;
-  }
-  
-  /* Empty state for no products found */
-  .product-list p {
-    text-align: center;
-    font-size: 18px;
-    color: #777;
-  }
-  
+}
+

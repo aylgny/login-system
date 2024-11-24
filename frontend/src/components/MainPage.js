@@ -95,21 +95,33 @@ const MainPage = () => {
 
   return (
     <div className="main-page">
-      {/* Sidebar for categories */}
+      {
+      // Sidebar for categories
+      }
       <div className="sidebar">
-        <h3>Categories</h3>
-        <ul>
+        <h3 className="sidebar-title">Categories</h3>
+        <ul className="category-list">
           {categories.map((category) => (
-            <li key={category._id} onClick={() => handleCategoryChange(category.name)}>
+            <li
+              key={category._id}
+              className={`category-item ${
+                selectedCategory === category.name ? "active-category" : ""
+              }`}
+              onClick={() => handleCategoryChange(category.name)}
+            >
               {category.name}
             </li>
           ))}
         </ul>
       </div>
 
-      {/* Main content area */}
+      {
+        // Main content area
+      }
       <div className="product-container">
-        {/* Search bar */}
+        {
+        // Search bar
+        }
         <div className="search-bar">
           <input
             type="text"
@@ -119,7 +131,9 @@ const MainPage = () => {
           />
         </div>
 
-        {/* Sorting dropdown */}
+        {
+        // Sorting dropdown
+        }
         <div className="sort-container">
           <label htmlFor="sort">Sort by:</label>
           <select id="sort" value={sortCriteria} onChange={handleSortChange}>
@@ -130,7 +144,9 @@ const MainPage = () => {
           </select>
         </div>
 
-        {/* Product list */}
+        {
+        // Product list 
+        }
         <div className="product-list">
           {filteredProducts.length === 0 ? (
             <p>No products found.</p>
