@@ -523,26 +523,24 @@ const MainPage = () => {
         </select>
       </div>
 
-      <div className="product-container">
-        <div className="product-list">
-          {filteredProducts.length === 0 ? (
-            <p>No products found.</p>
-          ) : (
-            filteredProducts.map((product) => (
-              <Link to={`/product/${product._id}`} key={product._id} className="product-item-link">
-                <div className="product-item">
-                  <img src={product.photo} alt={product.name} className="product-image" />
-                  <div className="product-details">
-                    <h4>{product.name}</h4>
-                    <p>{product.category}</p>
-                    <p>${product.price.toFixed(2)}</p>
-                  </div>
+      <div className="product-list">
+        {filteredProducts.length === 0 ? (
+          <p>No products found.</p>
+        ) : (
+          filteredProducts.map((product) => (
+            <Link to={`/product/${product._id}`} key={product._id} className="product-item-link">
+              <div className="product-item">
+                <img src={product.photo} alt={product.name} className="product-image" />
+                <div className="product-details">
+                  <h4>{product.name}</h4>
+                  <p>{product.category}</p>
+                  <p>${product.price.toFixed(2)}</p>
                 </div>
-              </Link>
-            ))
-          )}
+              </div>
+            </Link>
+          ))
+        )}
         </div>
-      </div>
     </div>
   );
 };

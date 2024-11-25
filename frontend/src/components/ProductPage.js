@@ -361,7 +361,7 @@ const ProductPage = () => {
 };
 
 export default ProductPage; */
-
+/*
 // src/components/ProductPage.js
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
@@ -436,7 +436,7 @@ const ProductPage = () => {
           <h1 className="product-name">{product.name}</h1>
           <p className="product-price">{product.price}</p>
 
-          {/* Ratings and Comments */}
+          {}
           <div className="product-rating" onClick={scrollToReviews}>
             ★★★★☆ <span>({product.reviews || 122} reviews)</span>
           </div>
@@ -453,10 +453,10 @@ const ProductPage = () => {
         </div>
       </div>
 
-      {/* Reviews Section */}
+      {}
       <div className="reviews-section" ref={reviewsRef}>
         <h2>Customer Reviews</h2>
-        {/* Mock reviews for demonstration */}
+        {}
         <div className="review">
           <p><strong>User1</strong> ★★★★★</p>
           <p>Great product! Highly recommend.</p>
@@ -465,6 +465,198 @@ const ProductPage = () => {
           <p><strong>User2</strong> ★★★★☆</p>
           <p>Good value for the price.</p>
         </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductPage;
+*/
+/*
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import "./ProductPage.css";
+
+const ProductPage = () => {
+  const { id } = useParams(); // Get the product ID from the URL
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    // Fetch the product details
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        setProduct(response.data);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  if (!product) {
+    return <p>Loading product details...</p>;
+  }
+
+  return (
+    <div className="product-page">
+      <div className="product-image-container">
+        <img src={product.photo} alt={product.name} className="product-image" />
+      </div>
+      <div className="product-details-container">
+        <h1>{product.name}</h1>
+        <p className="product-category">Category: {product.category}</p>
+        <p className="product-price">${product.price.toFixed(2)}</p>
+        <p className="product-description">{product.description}</p>
+        <button className="add-to-cart-button">Add to Cart</button>
+      </div>
+    </div>
+  );
+};
+
+export default ProductPage;
+*/
+/*
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import "./ProductPage.css";
+
+const ProductPage = () => {
+  const { productId } = useParams(); // Extract productId from the URL
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Fetch product details from the backend
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/products/${productId}`);
+        setProduct(response.data); // Set the product data
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching product details:", err);
+        setError("Failed to fetch product details.");
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]); // Run the effect when productId changes
+
+  if (loading) {
+    return <p>Loading product details...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  return (
+    <div className="product-page">
+      <div className="product-details">
+        <img src={product.photo} alt={product.name} className="product-image" />
+        <div className="product-info">
+          <h1>{product.name}</h1>
+          <p className="product-category">{product.category}</p>
+          <p className="product-description">{product.description}</p>
+          <h2>${product.price.toFixed(2)}</h2>
+          <button className="add-to-cart-button">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductPage;
+*/
+
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import "./ProductPage.css";
+
+const ProductPage = () => {
+  const { productId } = useParams(); // Extract productId from the URL
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Fetch product details from the backend
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/products/${productId}`);
+        setProduct(response.data); // Set the product data
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching product details:", err);
+        setError("Failed to fetch product details.");
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]); // Run the effect when productId changes
+
+  if (loading) {
+    return <p>Loading product details...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  return (
+    <div className="product-page">
+      <div className="product-details">
+        <img src={product.photo} alt={product.name} className="product-image" />
+        <div className="product-info">
+          <h1>{product.name}</h1>
+          <p className="product-category">{product.category}</p>
+          <p className="product-description">{product.description}</p>
+          <h2>${product.price.toFixed(2)}</h2>
+
+          {/* Stock Information */}
+          <p className="product-stock">
+            {product.quantity > 0 ? (
+              <span className="in-stock">In Stock ({product.quantity} available)</span>
+            ) : (
+              <span className="out-of-stock">Out of Stock</span>
+            )}
+          </p>
+
+          {/* Warranty and Distributor */}
+          {product.warrantyStatus && <p className="product-warranty">Warranty Available</p>}
+          <p className="product-distributor">Distributor: {product.distributor}</p>
+
+          {/* Add to Cart Button */}
+          <button
+            className={`add-to-cart-button ${product.quantity === 0 ? "disabled" : ""}`}
+            disabled={product.quantity === 0}
+          >
+            {product.quantity > 0 ? "Add to Cart" : "Out of Stock"}
+          </button>
+        </div>
+      </div>
+
+      {/* Ratings and Reviews Section */}
+      <div className="reviews-section">
+        <h2>Customer Reviews</h2>
+        {product.ratings.length > 0 ? (
+          product.ratings.map((rating, index) => (
+            <div key={index} className="review-item">
+              <p className="review-rating">⭐ {rating.rating}/5</p>
+              <p className="review-comment">"{rating.comment}"</p>
+              <p className="review-user">- User {rating.user}</p>
+            </div>
+          ))
+        ) : (
+          <p>No reviews yet.</p>
+        )}
       </div>
     </div>
   );

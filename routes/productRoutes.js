@@ -30,4 +30,26 @@ router.get('/products', async (req, res) => {
   }
 });
 
+// GET endpoint to fetch a single product by ID
+router.get('/products/:id', async (req, res) => {
+  console.log('ID received in request:', req.params.id); // Log the ID
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ message: 'ID not provided' });
+    }
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    console.error('Error fetching product by ID:', error.message);
+    res.status(400).json({ message: 'Error fetching product', error: error.message });
+  }
+});
+
+
+
+
 module.exports = router;
