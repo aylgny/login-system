@@ -1,70 +1,62 @@
 .main-page {
   display: flex;
+  flex-direction: column;
   padding: 20px;
   background-color: #f4f4f4;
   height: 100vh;
   box-sizing: border-box;
-  margin-left: 250px;
 }
 
-/* Sidebar Styling */
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px;
-  height: 100vh;
-  background-color: #333; /* Dark background for sidebar */
-  color: white;
-  padding: 20px;
-  border-radius: 0; /* Remove rounded edges for a modern look */
-  box-sizing: border-box;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for sidebar */
+/* Header Section */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Adds space below header */
 }
 
-/* Sidebar Title */
-.sidebar h3 {
-  color: #fff;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-/* Category List */
-.category-list {
-  list-style-type: none;
-  padding: 0;
+.main-header h1 {
+  font-size: 24px;
+  color: #333;
   margin: 0;
 }
 
-/* Category Items */
-.category-item {
-  font-size: 16px;
-  color: #bbb; /* Neutral color for text */
-  margin-bottom: 15px; /* Spacing between categories */
-  padding: 10px 15px; /* Padding for clickable area */
+/* Authentication Buttons */
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.login-button,
+.signup-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.category-item:hover {
-  background-color: #ff6a00; /* Highlight background */
-  color: white; /* Highlight text */
+.login-button {
+  background-color: #007bff;
+  color: white;
 }
 
-.active-category {
-  background-color: #ff6a00; /* Active category background */
-  color: white; /* Active category text */
-  font-weight: bold;
+.signup-button {
+  background-color: #28a745;
+  color: white;
 }
 
-/* Product Container */
-.product-container {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  margin-left: 20px;
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+.signup-button:hover {
+  background-color: #218838;
 }
 
 /* Search Bar */
@@ -87,6 +79,53 @@
 .search-bar input:focus {
   outline: none;
   border-color: #007bff;
+}
+
+/* Category List (Horizontal) */
+.category-list {
+  display: flex; /* Horizontal alignment */
+  justify-content: center; /* Centered under search bar */
+  gap: 20px; /* Spacing between items */
+  list-style: none;
+  margin: 0;
+  padding: 10px 0;
+  background-color: #fff; /* Optional: Background for category row */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.category-item {
+  font-size: 16px;
+  color: #555; /* Neutral color for text */
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+}
+
+.category-item:hover {
+  color: #ff6a00;
+  border-bottom: 2px solid #ff6a00; /* Highlight underline effect */
+}
+
+.category-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  vertical-align: middle; /* Align icons with text */
+}
+
+.active-category {
+  color: #ff6a00;
+  border-bottom: 2px solid #ff6a00; /* Active category underline */
+  font-weight: bold;
+}
+
+/* Product Container */
+.product-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 20px 0;
 }
 
 /* Product List */
@@ -153,21 +192,14 @@
   color: #777;
 }
 
-/* Responsiveness for Sidebar on Smaller Screens */
+/* Responsiveness for Smaller Screens */
 @media (max-width: 768px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: static;
-    margin-bottom: 20px;
-  }
-
-  .category-item {
-    text-align: center;
+  .category-list {
+    flex-wrap: wrap; /* Allow categories to wrap on smaller screens */
+    justify-content: space-around; /* Distribute items evenly */
   }
 
   .product-list {
     grid-template-columns: repeat(2, 1fr); /* Adjust grid layout */
   }
 }
-
