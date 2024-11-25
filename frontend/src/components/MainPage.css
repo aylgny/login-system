@@ -13,16 +13,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
+  background-color: #ff6a00; /* Set background to orange */
+  color: white; /* Text color for better contrast */
+  border-bottom: none; /* Remove the border */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px; /* Adds space below header */
 }
 
+/* Logo Text Styling */
 .main-header h1 {
   font-size: 24px;
-  color: #333;
+  color: white; /* Logo color updated to white */
   margin: 0;
+  font-weight: bold;
 }
 
 /* Authentication Buttons */
@@ -30,56 +32,46 @@
   display: flex;
   gap: 10px;
 }
-
 .login-button,
 .signup-button {
   padding: 8px 16px;
   font-size: 14px;
-  border: none;
+  border: 2px solid white; /* White border */
   border-radius: 4px;
+  background-color: transparent; /* Transparent background */
+  color: white; /* White text */
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.login-button {
-  background-color: #007bff;
-  color: white;
-}
-
-.signup-button {
-  background-color: #28a745;
-  color: white;
-}
-
-.login-button:hover {
-  background-color: #0056b3;
-}
-
+.login-button:hover,
 .signup-button:hover {
-  background-color: #218838;
+  background-color: rgba(255, 255, 255, 0.2); /* Subtle white overlay on hover */
 }
 
-/* Search Bar */
-.search-bar {
-  margin-bottom: 20px;
+/* Search Bar in Header */
+.search-container {
+  flex-grow: 1; /* Allows the search bar to take up available space */
   display: flex;
-  justify-content: center;
-  padding: 10px 0;
+  justify-content: center; /* Centers the search bar */
+  margin: 0 20px; /* Adds spacing between logo and authentication buttons */
 }
 
 .search-bar input {
   padding: 10px;
   width: 100%;
   max-width: 500px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  border-radius: 50px; /* Curved edges for the search bar */
+  border: none;
   font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
 .search-bar input:focus {
-  outline: none;
-  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(255, 165, 0, 0.8); /* Focus shadow effect */
 }
+
 
 /* Category List (Horizontal) */
 .category-list {
@@ -120,6 +112,37 @@
   font-weight: bold;
 }
 
+/* Sort Container */
+.sort-container {
+  display: flex;
+  justify-content: flex-end; /* Align to the right */
+  padding: 0 20px; /* Match padding with product container */
+  margin-bottom: 10px; /* Space below the sort container */
+  margin-right: 0; /* Align to the right edge of the product grid */
+}
+
+
+.sort-container label {
+  margin-right: 8px; /* Space between label and dropdown */
+  font-size: 14px;
+  color: #555;
+}
+
+.sort-container select {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sort-container select:hover {
+  border-color: #007bff;
+}
+
+
 /* Product Container */
 .product-container {
   display: flex;
@@ -134,15 +157,16 @@
   grid-template-columns: repeat(5, 1fr); /* 5 columns per row */
   gap: 20px;
   flex-grow: 1;
-  overflow-y: auto;
+  overflow: visible; /* Allow shadows to show fully */
   padding-bottom: 20px;
+  margin: 0 20px; /* Add margin to give space for shadows on sides */
 }
 
-/* Product Item */
+/* Updated product-item style for orange border */
 .product-item {
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent; /* Default transparent border */
   padding: 15px;
   text-align: center;
   width: 220px;
@@ -150,7 +174,17 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: border-color 0.3s ease; /* Smooth transition for border */
 }
+
+/* Highlighted orange border on hover */
+.product-item:hover {
+  border-color: #ff6a00; /* Orange border on hover */
+  transform: translateY(-4px); /* Slight lift effect on hover */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+
 
 .product-item img {
   width: 100%;

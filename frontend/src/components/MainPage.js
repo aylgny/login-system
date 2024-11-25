@@ -468,10 +468,18 @@ const MainPage = () => {
 
   return (
     <div className="main-page">
-      {// Header with Login and Signup Buttons
-      }
+      {/* Header Section */}
       <header className="main-header">
-        <h1>LOGO</h1>
+        <h1 className="logo">LOGO</h1>
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="search-input"
+          />
+        </div>
         <div className="auth-buttons">
           <Link to="/login">
             <button className="login-button">Login</button>
@@ -481,6 +489,7 @@ const MainPage = () => {
           </Link>
         </div>
       </header>
+
       {/* Horizontal Category Bar */}
       <div className="category-bar">
         <ul className="category-list">
@@ -493,7 +502,7 @@ const MainPage = () => {
               onClick={() => handleCategoryChange(category.name)}
             >
               <img
-                src={categoryIcons[category.name] || "https://via.placeholder.com/24/333/FFFFFF?text=X"}
+                src={categoryIcons[category.name]}
                 alt={category.name}
                 className="category-icon"
               />
@@ -503,30 +512,18 @@ const MainPage = () => {
         </ul>
       </div>
 
-      {/* Main content area */}
+      {/* Sort and Products Section */}
+      <div className="sort-container">
+        <label htmlFor="sort"></label>
+        <select id="sort" value={sortCriteria} onChange={handleSortChange}>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="popularity-desc">Popularity: Low to High</option>
+          <option value="popularity-asc">Popularity: High to Low</option>
+        </select>
+      </div>
+
       <div className="product-container">
-        {/* Search bar */}
-        <div className="search-bar">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-        </div>
-
-        {/* Sorting dropdown */}
-        <div className="sort-container">
-          <label htmlFor="sort">Sort by:</label>
-          <select id="sort" value={sortCriteria} onChange={handleSortChange}>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="popularity-desc">Popularity: Low to High</option>
-            <option value="popularity-asc">Popularity: High to Low</option>
-          </select>
-        </div>
-
-        {/* Product list */}
         <div className="product-list">
           {filteredProducts.length === 0 ? (
             <p>No products found.</p>
