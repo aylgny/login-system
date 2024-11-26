@@ -353,7 +353,7 @@ const MainPage = () => {
 export default MainPage;
 */
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./MainPage.css";
 import axios from "axios";
 
@@ -387,6 +387,7 @@ const MainPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Products"); // Default to "All Products"
   const [sortCriteria, setSortCriteria] = useState("price-asc"); // Default sorting criteria
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
   
   const productsApiUrl = "http://localhost:5000/api/products";
   const categoriesApiUrl = "http://localhost:5000/api/categories"; // URL for fetching categories
@@ -444,23 +445,39 @@ const MainPage = () => {
     setSortCriteria(event.target.value);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove the token from localStorage
+    alert("Logged out successfully!"); // Show a feedback message
+    setDropdownOpen(false); // Close the dropdown
+    navigate("/"); // Redirect to login page
+    };
 
-  //login signup dissappear
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+  // Handle account icon click
+  const handleAccountClick = () => {
+    const token = localStorage.getItem("token");
+    //alert(`Token: ${token}`); // Show the token in an alert
+
+    if (token) {
+      // If token exists, redirect to account page
+      navigate("/account");
+    } else {
+      // If no token, toggle the dropdown
+      setDropdownOpen((prevState) => !prevState);
+    }
   };
 
-  //login signup dissappear
+  // Handle click outside dropdown
   const handleClickOutside = (event) => {
-    if (!event.target.closest('.user-icon-container')) {
+    if (!event.target.closest(".user-icon-container")) {
       setDropdownOpen(false);
     }
   };
-  // login signup dissappear
+
+  // Add event listener to close dropdown when clicking outside
   useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
@@ -495,9 +512,6 @@ const MainPage = () => {
       <header className="main-header">
         <h1 className="logo">LOGO</h1>
 
-        
-        
-
         <div className="search-container">
           <input
             type="text"
@@ -514,8 +528,15 @@ const MainPage = () => {
           </Link>
         </div>
 
-        {/* User Icon with Dropdown */}
-        <div className="user-icon-container" onClick={toggleDropdown}>
+        {/* Logout Button (visible only if token exists) */}
+        {localStorage.getItem("token") && (
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+        )}
+        
+        {/* User Icon */}
+        <div className="user-icon-container" onClick={handleAccountClick}>
           <img src={userIcon} alt="User Icon" className="user-icon" />
           {dropdownOpen && (
             <div className="dropdown-menu">
@@ -528,11 +549,7 @@ const MainPage = () => {
             </div>
           )}
         </div>
-        
-
       </header>
-
-
 
       {/* Horizontal Category Bar */}
       <div className="category-bar">

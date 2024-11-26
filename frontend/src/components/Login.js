@@ -15,10 +15,16 @@ const Login = () => {
         const response = await axios.post('http://localhost:5000/login', { email, password });
         
         if (response && response.data) { // Check if response and response.data exist
-            console.log(response.data); // You can handle the token or user data here
-            alert('Login successful');
-            window.location.href = "/mainpage";
-            // Save token or handle successful login logic here
+          //console.log(response.data); // Optional: Debug the response
+          const { token } = response.data; // Extract the token from the response
+          
+          // Save the token in localStorage
+          localStorage.setItem('token', token);
+
+          alert('Login successful');
+          
+          // Redirect the user to the main page
+          window.location.href = "/mainpage";
         } else {
             throw new Error("Unexpected response structure"); // Handle unexpected response
         }
