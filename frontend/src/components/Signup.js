@@ -6,7 +6,9 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const username = 'sa'; // Adding username as a constant
+  const [phone, setPhone] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,9 +20,11 @@ const Signup = () => {
     try {
       // API call to signup endpoint
       const response = await axios.post('http://localhost:5000/signup', {
-        username,
         email,
         password,
+        phone,
+        firstName,
+        lastName,
     });
 
       console.log('Signup successful:', response.data);
@@ -45,6 +49,36 @@ const Signup = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="phone">Phone Number</label>
+            <input
+              type="text"
+              id="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="firstName">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="lastName">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               required
             />
           </div>
