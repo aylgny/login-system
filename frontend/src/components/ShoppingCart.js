@@ -71,7 +71,6 @@ const ShoppingCart = () => {
           <div key={item.id} className="cart-item">
             <img src={item.image} alt={item.name} className="item-image" />
             <div className="item-details">
-              <p>{item.category}</p>
               <h3>{item.name}</h3>
             </div>
             <div className="item-quantity">
@@ -88,19 +87,19 @@ const ShoppingCart = () => {
       <div className="summary">
         <h2>Summary</h2>
         <div className="summary-item">
-          <span>{cartItems.length} Items</span>
+          <span>{cartItems.length} Items: </span>
           <span>€ {totalItemsPrice.toFixed(2)}</span>
 
         </div>
         <div className="summary-item">
-          <label htmlFor="shipping">Shipping</label>
+          <label htmlFor="shipping">Shipping  </label>
           <select id="shipping" onChange={handleShippingChange}>
             <option value="5.00">Standard-Delivery - €5.00</option>
             <option value="10.00">Express-Delivery - €10.00</option>
           </select>
         </div>
         <div className="summary-item">
-          <label htmlFor="code">Coupon Code</label>
+          <label htmlFor="code">Coupon </label>
           <input type="text" id="code" placeholder="Enter your code" />
         </div>
         <div className="summary-total">
