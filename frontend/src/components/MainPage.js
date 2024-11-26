@@ -359,6 +359,7 @@ import axios from "axios";
 
 // Define icons for each category
 // Import local icons
+import userIcon from "../assets/icons/account.png";
 import allProductsIcon from "../assets/icons/all.png";
 import accessoriesIcon from "../assets/icons/accessory.png";
 import camerasIcon from "../assets/icons/camera.png";
@@ -385,7 +386,8 @@ const MainPage = () => {
   const [categories, setCategories] = useState([]); // State for categories
   const [selectedCategory, setSelectedCategory] = useState("All Products"); // Default to "All Products"
   const [sortCriteria, setSortCriteria] = useState("price-asc"); // Default sorting criteria
-
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  
   const productsApiUrl = "http://localhost:5000/api/products";
   const categoriesApiUrl = "http://localhost:5000/api/categories"; // URL for fetching categories
 
@@ -442,6 +444,27 @@ const MainPage = () => {
     setSortCriteria(event.target.value);
   };
 
+
+  //login signup dissappear
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  //login signup dissappear
+  const handleClickOutside = (event) => {
+    if (!event.target.closest('.user-icon-container')) {
+      setDropdownOpen(false);
+    }
+  };
+  // login signup dissappear
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+
   // Filter products based on search term and selected category
   useEffect(() => {
     let filtered = products.filter((product) =>
@@ -471,6 +494,10 @@ const MainPage = () => {
       {/* Header Section */}
       <header className="main-header">
         <h1 className="logo">LOGO</h1>
+
+        
+        
+
         <div className="search-container">
           <input
             type="text"
@@ -480,21 +507,28 @@ const MainPage = () => {
             className="search-input"
           />
         </div>
-        <div className="auth-buttons">
-          <Link to="/login">
-            <button className="login-button">Login</button>
-          </Link>
-          <Link to="/signup">
-            <button className="signup-button">Sign Up</button>
-          </Link>
-        </div>
 
         <div className="cart-icon">
           <Link to="/cart">
-            <img src={require('../assets/icons/cart_icon.jpeg')} alt="Cart" />
+            <img src={require('../assets/icons/shopping.png')} alt="Cart" />
           </Link>
         </div>
 
+        {/* User Icon with Dropdown */}
+        <div className="user-icon-container" onClick={toggleDropdown}>
+          <img src={userIcon} alt="User Icon" className="user-icon" />
+          {dropdownOpen && (
+            <div className="dropdown-menu">
+              <Link to="/login">
+                <button className="dropdown-button">Login</button>
+              </Link>
+              <Link to="/signup">
+                <button className="dropdown-button">Sign Up</button>
+              </Link>
+            </div>
+          )}
+        </div>
+        
 
       </header>
 

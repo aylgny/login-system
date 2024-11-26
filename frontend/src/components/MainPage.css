@@ -72,22 +72,62 @@
   box-shadow: 0 0 5px rgba(255, 165, 0, 0.8); /* Focus shadow effect */
 }
 
+/* User icon container */
+.user-icon-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.user-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+/* Dropdown menu styling */
+.dropdown-menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 150px; /* Increase width for more space */
+  padding: 10px 0; /* Add padding for better spacing inside */
+}
+
+.dropdown-button {
+  width: 100%; /* Ensure buttons take the full width */
+  padding: 12px 15px; /* Add padding for better usability */
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.dropdown-button:hover {
+  background-color: #f5f5f5;
+  color: #ff6a00;
+}
+
 
 .cart-icon {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px; /* Add spacing between cart and search bar */
 }
 
 .cart-icon img {
-  width: 100%;
-  height: 100%;
+  width: 32px; /* Smaller icon size */
+  height: 32px;
   object-fit: contain;
   cursor: pointer;
 }
+
 
 /* Category List (Horizontal) */
 .category-list {
