@@ -36,6 +36,8 @@ import Login from './components/Login'; // Import your Login component
 import Signup from './components/Signup'; // Import your Signup component
 import MainPage from './components/MainPage';
 import ProductPage from "./components/ProductPage";
+import ShoppingCart from "./components/ShoppingCart";
+
 
 function App() {
   return (
@@ -55,6 +57,8 @@ function App() {
 
           {/* Fallback route */}
           <Route path="*" element={<Navigate to="/" />} />
+
+          <Route path="/cart" element={<ShoppingCart />} />
         </Routes>
       </div>
     </Router>

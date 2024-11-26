@@ -488,7 +488,17 @@ const MainPage = () => {
             <button className="signup-button">Sign Up</button>
           </Link>
         </div>
+
+        <div className="cart-icon">
+          <Link to="/cart">
+            <img src={require('../assets/icons/cart_icon.jpeg')} alt="Cart" />
+          </Link>
+        </div>
+
+
       </header>
+
+
 
       {/* Horizontal Category Bar */}
       <div className="category-bar">
@@ -533,7 +543,7 @@ const MainPage = () => {
                 <img src={product.photo} alt={product.name} className="product-image" />
                 <div className="product-details">
                   <h4>{product.name}</h4>
-                  <p>{product.category}</p>
+                  
                   <p>${product.price.toFixed(2)}</p>
                 </div>
               </div>

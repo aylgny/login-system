@@ -1,0 +1,167 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+  }
+  
+  .shopping-cart-container {
+    width: 90%; /* Sayfanın %90'ını kapsayacak şekilde genişletildi */
+    max-width: 1300px; /* Maksimum genişlik belirlendi */
+    margin: 40px auto; 
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .shopping-cart {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 10px; /* İçerik arasında biraz boşluk ekledim */
+  }
+  
+  .cart-items {
+    flex: 5; /* Daha fazla alan sağlamak için flex değerini artırdım */
+    max-height: 75vh;
+    overflow-y: auto;
+    padding-right: 30px; /* Sağ boşluğu da artırdım */
+  }
+  
+  .cart-items h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px; /* Aralarındaki mesafeyi artırdım */
+    padding: 25px; /* Daha geniş içerik alanı için padding değerini artırdım */
+    border-bottom: 1px solid #ddd;
+    border-radius: 10px; /* Köşeleri daha yuvarlak hale getirdim */
+    background-color: #e4e4e1c4;
+  }
+  
+  
+  
+  
+  
+  .cart-item:last-child {
+    border-bottom: none;
+  }
+  
+  .item-image {
+    width: 60px;
+    height: auto;
+  }
+  
+  .item-details {
+    flex: 2;
+    margin-left: 1rem;
+  }
+  
+  .item-details p {
+    color: #888;
+    font-size: 0.9rem;
+  }
+  
+  .item-details h3 {
+    margin: 0;
+  }
+  
+  .item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .item-quantity button {
+    background: #f0f0f0;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .item-quantity span {
+    font-size: 1rem;
+  }
+  
+  .item-price {
+    flex: 1;
+    text-align: right;
+    font-weight: bold;
+  }
+  
+  .remove-item {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+  
+  .back-to-shop {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .back-to-shop:hover {
+    text-decoration: underline;
+  }
+  
+  .summary {
+    flex: 1;
+    padding: 20px;
+    background-color: #d0d1ce;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .summary h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+  }
+  
+  .summary button {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .summary button:hover {
+    background-color: #0056b3;
+  }
+  
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .summary-total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 1rem;
+  }
+  
+  .checkout-btn {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background: black;
+    color: white;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+  }

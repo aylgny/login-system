@@ -73,6 +73,22 @@
 }
 
 
+.cart-icon {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  z-index: 1000;
+}
+
+.cart-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: pointer;
+}
+
 /* Category List (Horizontal) */
 .category-list {
   display: flex; /* Horizontal alignment */
@@ -193,6 +209,12 @@
   margin-bottom: 8px;
   border-radius: 8px;
 }
+
+.product-item-link {
+  text-decoration: none; /* Alt çizgiyi kaldırır */
+  color: inherit; /* Varsayılan metin rengini korur */
+}
+
 
 .product-details h4 {
   font-size: 16px;
