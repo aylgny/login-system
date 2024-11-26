@@ -72,18 +72,7 @@
   box-shadow: 0 0 5px rgba(255, 165, 0, 0.8); /* Focus shadow effect */
 }
 
-/* User icon container */
-.user-icon-container {
-  position: relative;
-  cursor: pointer;
-}
 
-.user-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-}
 /* Dropdown menu styling */
 .dropdown-menu {
   position: absolute;
@@ -112,22 +101,6 @@
   background-color: #f5f5f5;
   color: #ff6a00;
 }
-
-
-.cart-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 20px; /* Add spacing between cart and search bar */
-}
-
-.cart-icon img {
-  width: 32px; /* Smaller icon size */
-  height: 32px;
-  object-fit: contain;
-  cursor: pointer;
-}
-
 
 /* Category List (Horizontal) */
 .category-list {
@@ -298,4 +271,72 @@
   .product-list {
     grid-template-columns: repeat(2, 1fr); /* Adjust grid layout */
   }
+}
+
+
+/* Icon Group Styling */
+.icon-group {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between each icon */
+}
+
+/* Cart Icon */
+.cart-icon {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cart-icon img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* Account Icon */
+/* Icon Group Styling */
+.icon-group {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Space between icons */
+}
+
+/* Cart Icon */
+.cart-icon img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+/* Account Icon */
+.user-icon-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.user-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
+
+/* Logout Icon */
+.logout-icon-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logout-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.logout-icon:hover {
+  transform: scale(1.1); /* Slight zoom effect on hover */
 }
