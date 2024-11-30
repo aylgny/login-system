@@ -1,0 +1,78 @@
+/* src/components/Header.css */
+
+/* Main Header Styles */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  position: sticky; /* Keeps the header at the top when scrolling */
+  top: 0;
+  z-index: 1000; /* Ensures the header stays above other elements */
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ff6a00; /* Primary color used for logo */
+}
+
+.search-container {
+  flex: 1;
+  margin: 0 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #ff6a00; /* Primary color used on focus */
+  outline: none;
+}
+
+.icon-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+}
+
+.cart-icon img,
+.user-icon-container img,
+.logout-icon-container img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.user-icon-container {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.logout-icon-container img {
+  /* Additional styling if needed */
+}

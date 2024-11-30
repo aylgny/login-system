@@ -1,0 +1,289 @@
+/* src/components/Order.css */
+
+/* Reset some default styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Base styles */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+  }
+  
+  .orders-page {
+    max-width: 1400px; /* Increased from 1200px to 1400px */
+    margin: 40px auto;
+    padding: 0 40px; /* Increased padding for more space */
+  }
+  
+  .header {
+    display: flex;
+    flex-direction: row; /* Changed from column to row */
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .header h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+  }
+  
+  .search-bar {
+    width: 100%;
+    max-width: 500px; /* Increased from 400px to 500px */
+    padding: 12px 20px; /* Increased padding */
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .search-bar:focus {
+    border-color: #3498db;
+    outline: none;
+  }
+  
+  .orders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Increased gap between order cards */
+  }
+  
+  .no-orders {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+  }
+  
+  /* Order Card Styles */
+  .order-card {
+    background-color: #ffffff;
+    border-radius: 15px; /* Increased border-radius for a more modern look */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .order-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px; /* Increased padding */
+    cursor: pointer;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    transition: background 0.3s ease;
+  }
+  
+  .order-summary:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+  }
+  
+  .order-info {
+    display: flex;
+    flex-direction: row; /* Changed from column to row */
+    gap: 30px; /* Increased gap between info items */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  }
+  
+  .order-info div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .status {
+    padding: 6px 12px; /* Increased padding */
+    border-radius: 20px;
+    color: #fff;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+  }
+  
+  /* Status Colors */
+  .status.processing {
+    background-color: #ff6a00; /* Primary color applied here */
+  }
+  .status.in-transit {
+    background-color: #f700ff; /* Primary color applied here */
+  }
+  .status.delivered {
+    background-color: #2ecc71;
+  }
+  
+  .status.pending {
+    background-color: #f1c40f;
+  }
+  
+  /* Toggle Icon Styles */
+  .toggle-icon {
+    transition: transform 0.3s ease;
+  }
+  
+  .icon {
+    transition: transform 0.3s ease;
+    color: #ff6a00; /* Primary color applied to toggle icons */
+  }
+  
+  .icon-down {
+    transform: rotate(180deg);
+  }
+  
+  .icon-up {
+    transform: rotate(0deg);
+  }
+  
+  /* Products List Styles */
+  .products-list {
+    padding: 25px; /* Increased padding */
+    background-color: #f8f9fa;
+    animation: fadeIn 0.3s ease;
+    display: grid; /* Utilize CSS Grid */
+    grid-template-columns: repeat(3, 1fr); /* Three columns */
+    gap: 20px; /* Space between products */
+  }
+  
+  .product-item {
+    display: flex;
+    flex-direction: column; /* Changed to column for better stacking */
+    align-items: center;
+    gap: 15px;
+    background-color: #ffffff;
+    padding: 20px; /* Increased padding */
+    border-radius: 10px; /* Increased border-radius */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.05); /* Enhanced shadow */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .product-item:hover {
+    background-color: #f1f3f5;
+    transform: translateY(-5px);
+  }
+  
+  .product-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 15px; /* Increased border-radius */
+  }
+  
+  .product-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align for consistency */
+    gap: 8px; /* Increased gap between details */
+  }
+  
+  .product-name {
+    font-size: 1.3rem; /* Increased font size */
+    color: #2c3e50;
+    text-align: center;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1400px) {
+    .products-list {
+      grid-template-columns: repeat(3, 1fr); /* Maintain 3 per row */
+    }
+  }
+  
+  @media (max-width: 1024px) {
+    .orders-page {
+      max-width: 1000px; /* Adjusted for medium screens */
+      padding: 0 30px;
+    }
+  
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+  
+    .search-bar {
+      max-width: 100%;
+      width: 100%;
+    }
+  
+    .order-info {
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    .products-list {
+      grid-template-columns: repeat(2, 1fr); /* Two per row on medium screens */
+      gap: 15px;
+    }
+  
+    .product-item {
+      padding: 15px;
+    }
+  
+    .product-name {
+      font-size: 1.1rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .orders-page {
+      max-width: 90%;
+      padding: 0 20px;
+    }
+  
+    .order-summary {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+  
+    .order-info {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .products-list {
+      grid-template-columns: 1fr; /* One per row on small screens */
+      gap: 15px;
+    }
+  
+    .product-item {
+      padding: 15px;
+    }
+  
+    .product-image {
+      border-radius: 10px;
+    }
+  
+    .product-name {
+      font-size: 1rem;
+    }
+  
+    .search-bar {
+      max-width: 100%;
+    }
+  }
+  

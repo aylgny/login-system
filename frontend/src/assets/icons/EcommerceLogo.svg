@@ -1,0 +1,27 @@
+<!-- Save this as EcommerceLogo.svg in your project or embed directly -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="50"
+  height="50"
+  viewBox="0 0 64 64"
+>
+  <circle cx="28" cy="54" r="2" fill="#333" />
+  <circle cx="50" cy="54" r="2" fill="#333" />
+  <path
+    d="M2 2h12l5 20h35a2 2 0 0 1 1.98 1.75l3 24A2 2 0 0 1 52 50H16a2 2 0 0 1-1.98-1.75L12 20H6"
+    fill="#ff6a00"
+    stroke="#333"
+    strokeWidth="2"
+  />
+  <text
+    x="28"
+    y="18"
+    fontFamily="Arial, Helvetica, sans-serif"
+    fontSize="16"
+    fill="#fff"
+    fontWeight="bold"
+    textAnchor="middle"
+  >
+    E
+  </text>
+</svg>

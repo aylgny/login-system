@@ -155,8 +155,7 @@ const MainPage = () => {
   return (
     <div className="main-page">
       {/* Header Section */}
-      <header className="main-header">
-        <h1 className="logo">LOGO</h1>
+      <div className="main-page-header">
 
         <div className="search-container">
           <input
@@ -168,40 +167,8 @@ const MainPage = () => {
           />
         </div>
 {/* Icon Group */}
-<div className="icon-group">
-          {/* Cart Icon */}
-          <div className="cart-icon">
-            <Link to="/cart">
-              <img
-                src={require("../assets/icons/shopping.png")}
-                alt="Cart"
-              />
-            </Link>
-          </div>
 
-          {/* Account Icon */}
-          <div className="user-icon-container" onClick={handleAccountClick}>
-            <img src={userIcon} alt="User Icon" className="user-icon" />
-            {dropdownOpen && (
-              <div className="dropdown-menu">
-                <Link to="/login">
-                  <button className="dropdown-button">Login</button>
-                </Link>
-                <Link to="/signup">
-                  <button className="dropdown-button">Sign Up</button>
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {/* Logout Icon */}
-          {localStorage.getItem("token") && (
-            <div className="logout-icon-container" onClick={handleLogout}>
-              <img src={logoutIcon} alt="Logout Icon" className="logout-icon" />
-            </div>
-          )}
-        </div>
-      </header>
+      </div>
 
       {/* Horizontal Category Bar */}
       <div className="category-bar">

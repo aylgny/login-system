@@ -1,0 +1,7 @@
+/* src/components/Layout/MainLayout.css */
+
+/* Example: Add padding to the main content to avoid overlapping with the sticky header */
+main {
+    padding-top: 80px; /* Adjust based on your header's height */
+  }
+  
