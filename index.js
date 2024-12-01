@@ -11,6 +11,7 @@ const app = express();
 const PORT = 5000;
 const db = process.env.DBURI;
 
+
 // Middleware
 app.use(express.json());
 app.use(cors({ origin: 'http://localhost:3000' }));
