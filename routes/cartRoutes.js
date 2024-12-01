@@ -126,45 +126,7 @@ router.get('/user/:id', async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
   }
 });
-/*
-// Helper function to validate ObjectId
-const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
-// Remove an Item from the Cart Instantly
-router.delete("/cart/remove", async (req, res) => {
-  const { userId, productId } = req.body;
-
-  // Validate userId and productId
-  if (!userId || !productId || !isValidObjectId(userId) || !isValidObjectId(productId)) {
-    return res.status(400).json({ message: "Invalid userId or productId" });
-  }
-
-  try {
-    // Convert userId and productId to ObjectId
-    const userObjectId = new mongoose.Types.ObjectId(userId);
-    const productObjectId = new mongoose.Types.ObjectId(productId);
-
-    const user = await User.findById(userObjectId);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Remove the product from the cart
-    user.cart = user.cart.filter((item) => item.product.toString() !== productObjectId.toString());
-
-    await user.save();
-
-    res.status(200).json({
-      message: "Product removed from cart successfully",
-      cart: user.cart, // Return the updated cart
-    });
-  } catch (error) {
-    console.error("Error removing item from cart:", error);
-    res.status(500).json({ message: "Failed to remove item from cart" });
-  }
-});
-  */
  // Remove an Item from the Cart Instantly
 router.delete("/cart/remove", async (req, res) => {
   const { userId, productId } = req.body;
@@ -194,5 +156,57 @@ router.delete("/cart/remove", async (req, res) => {
     res.status(500).json({ message: "Failed to remove item from cart" });
   }
 });
+
+// Merge Two Users' Carts
+router.post("/cart/merge", async (req, res) => {
+  const { localUserId } = req.body; // Get logged-in user's ID from the request body
+  const constantUserId = "674cdb83a58ccb372bf49485"; // Constant user ID
+
+  if (!localUserId) {
+    return res.status(400).json({ message: "Local userId is required" });
+  }
+
+  try {
+    // Fetch both users
+    const localUser = await User.findById(localUserId).populate("cart.product");
+    const constantUser = await User.findById(constantUserId).populate("cart.product");
+
+    if (!localUser || !constantUser) {
+      return res.status(404).json({ message: "One or both users not found" });
+    }
+
+    // Merge carts
+    const mergedCart = [...localUser.cart]; // Start with the local user's cart
+    constantUser.cart.forEach((constantCartItem) => {
+      const existingItemIndex = mergedCart.findIndex(
+        (item) => item.product._id.toString() === constantCartItem.product._id.toString()
+      );
+
+      if (existingItemIndex >= 0) {
+        // Update quantity if the product exists
+        mergedCart[existingItemIndex].quantity += constantCartItem.quantity;
+      } else {
+        // Add the item if it doesn't exist in the local user's cart
+        mergedCart.push({
+          product: constantCartItem.product._id,
+          quantity: constantCartItem.quantity,
+        });
+      }
+    });
+
+    // Update the local user's cart
+    localUser.cart = mergedCart;
+    await localUser.save();
+
+    res.status(200).json({
+      message: "Carts merged successfully",
+      cart: localUser.cart, // Return the updated cart
+    });
+  } catch (error) {
+    console.error("Error merging carts:", error);
+    res.status(500).json({ message: "Failed to merge carts" });
+  }
+});
+
 
 module.exports = router;
