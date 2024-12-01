@@ -1,22 +1,36 @@
-// src/components/AccountInfo.js
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AccountInfo.css';
 import Layout from './Layout';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const AccountInfo = () => {
-  // Initial mock user data; in a real application, fetch this from an API or context
-  const initialUser = {
-    firstName: 'Jane',
-    lastName: 'Smith',
-    phone: '+1 (555) 987-6543',
-    email: 'jane.smith@example.com',
-  };
-
-  const [user, setUser] = useState(initialUser);
+  const userId = localStorage.getItem("userId"); // Assuming userId is stored in localStorage
+  const [user, setUser] = useState(null); // State for user data
   const [isEditing, setIsEditing] = useState(false);
   const [saveStatus, setSaveStatus] = useState(null); // null, 'success', 'error'
+
+  // Fetch user data from API
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/user/${userId}`);
+        setUser(response.data); // Initialize user state with fetched data
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setUser({
+          firstName: '',
+          lastName: '',
+          phone: '',
+          email: '',
+        }); // Initialize with empty fields if there's an error
+      }
+    };
+
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId]);
 
   // Handle input changes
   const handleChange = (e) => {
@@ -28,29 +42,26 @@ const AccountInfo = () => {
   };
 
   // Handle form submission
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
+    setSaveStatus(null); // Reset save status
 
-    // Here, you would typically send the updated user data to your backend API
-    // For demonstration, we'll mock the save operation with a timeout
-
-    // Reset save status
-    setSaveStatus(null);
-
-    // Simulate API call
-    setTimeout(() => {
-      // Mock success response
-      const isSuccess = true;
-
-      if (isSuccess) {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/user/${userId}`, user);
+      if (response.status === 200) {
         setSaveStatus('success');
         setIsEditing(false);
-        // In a real app, you might update the global state or refetch user data
-      } else {
-        setSaveStatus('error');
       }
-    }, 1000);
+    } catch (error) {
+      console.error('Error saving user data:', error);
+      setSaveStatus('error');
+    }
   };
+
+  // Show a loading state while data is being fetched
+  if (!user) {
+    return <p>Loading user data...</p>;
+  }
 
   return (
     <Layout>
@@ -58,8 +69,8 @@ const AccountInfo = () => {
         <div className="sidebar">
           <h3>Menu</h3>
           <ul>
-          <li><Link to="/account" className="sidebar-link">Account Info</Link></li>
-        <li><Link to="/order" className="sidebar-link">Order History</Link></li>
+            <li><Link to="/account" className="sidebar-link">Account Info</Link></li>
+            <li><Link to="/order" className="sidebar-link">Order History</Link></li>
           </ul>
         </div>
         <div className="main-content">
