@@ -1,3 +1,5 @@
+// src/components/OrdersPage.js
+
 import React, { useState, useEffect } from 'react';
 import './Order.css';
 import Layout from './Layout';
@@ -6,11 +8,22 @@ import axios from 'axios';
 
 // Component to display individual product details
 const ProductItem = ({ product }) => {
+  debugger;
+  const backendURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000'; // Default to localhost if not set
+  const imageUrl = `${product.photo}`;
+  console.log(imageUrl);
+  // Fallback image URL
+  const fallbackImage = 'https://via.placeholder.com/150'; // Replace with your fallback image URL
+
   return (
     <Link to={`/product/${product._id}`} key={product._id} className="product-item-link">
       <div className="product-item">
-        {/* Display the product image */}
-        <img src={product.photo} alt={product.name}className="product-image"/>
+        {/* Display the product image with fallback */}
+        <img
+          src={imageUrl}
+          alt={product.name}
+          className="product-image"
+        />
         <div className="product-details">
           <h4 className="product-name">{product.name}</h4>
           <p>Quantity: {product.quantity}</p>
@@ -34,6 +47,24 @@ const OrderCard = ({ order }) => {
 
   // Determine status color
   const statusClass = order.status.toLowerCase().replace(' ', '-');
+
+  // Function to group products into rows of 3 and 4 alternately
+  const groupProducts = (products) => {
+    const rows = [];
+    let index = 0;
+    let toggle = true; // true for 3, false for 4
+
+    while (index < products.length) {
+      const count = toggle ? 3 : 4;
+      rows.push(products.slice(index, index + count));
+      index += count;
+      toggle = !toggle;
+    }
+
+    return rows;
+  };
+
+  const productRows = groupProducts(order.products);
 
   return (
     <div className="order-card">
@@ -88,8 +119,15 @@ const OrderCard = ({ order }) => {
       </div>
       {showProducts && (
         <div className="products-list">
-          {order.products.map((item) => (
-            <ProductItem key={item.product._id} product={{ ...item.product, quantity: item.quantity }} />
+          {productRows.map((row, rowIndex) => (
+            <div className="products-row" key={rowIndex}>
+              {row.map((item) => (
+                <ProductItem
+                  key={item.product._id}
+                  product={{ ...item.product, quantity: item.quantity}}
+                />
+              ))}
+            </div>
           ))}
         </div>
       )}

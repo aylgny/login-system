@@ -175,10 +175,52 @@
 }
 
 /* Products List Styling */
+.products-list {
+  padding: 15px 25px;
+  background-color: #ffffff;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Products Row */
+.products-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+/* Product Item Link */
+.product-item-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Product Item */
+.product-item {
+  flex: 1;
+  min-width: 0; /* Prevent overflow */
+  background-color: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s;
+}
+
+.product-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+}
 
 .product-details {
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
 }
 
 .product-name {
@@ -191,6 +233,15 @@
   margin: 2px 0;
   color: #666666;
   font-size: 0.95em;
+}
+
+/* Adjust width based on row count */
+.products-row:nth-child(odd) .product-item {
+  flex: 1 1 calc((100% - 40px) / 3); /* 3 items per row with 20px gap */
+}
+
+.products-row:nth-child(even) .product-item {
+  flex: 1 1 calc((100% - 60px) / 4); /* 4 items per row with 20px gap */
 }
 
 /* No Orders Message Styling */
@@ -222,12 +273,17 @@
     gap: 15px;
   }
 
-  .product-item {
+  .products-row {
     flex-direction: column;
-    align-items: flex-start;
   }
 
-  .product-image {
-    margin-bottom: 10px;
+  .products-row .product-item {
+    flex: 1 1 100%;
+  }
+
+  /* Override specific row styles for mobile */
+  .products-row:nth-child(odd) .product-item,
+  .products-row:nth-child(even) .product-item {
+    flex: 1 1 100%;
   }
 }

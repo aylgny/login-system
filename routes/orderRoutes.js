@@ -10,7 +10,7 @@ router.get("/orders/:userId", async (req, res) => {
 
     // Find orders for the user, populate products and user details
     const orders = await Order.find({ user: userId })
-      .populate("products.product", "name price") // Populate product details
+      .populate("products.product") // Populate product details
       .populate("user", "firstName lastName email"); // Optionally populate user details
 
     if (!orders || orders.length === 0) {
