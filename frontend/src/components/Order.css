@@ -152,7 +152,7 @@
   background-color: #28A745; /* Green */
 }
 
-.status['in-transit'] {
+.status.in-transit {
   background-color: #17A2B8; /* Teal */
 }
 

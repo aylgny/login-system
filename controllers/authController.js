@@ -1,6 +1,7 @@
 const User = require("../model/userSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const sendEmailWithInvoice = require("../routes/sendEmail"); // Adjust the path as necessary
 
 
 const createUser = async (req, res) => {
@@ -70,7 +71,17 @@ const loginUser = async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "1d" }
       );
-  
+      const invoiceProducts = [
+        { description: "Premium Subscription", quantity: 2, price: 50 },
+        { description: "Extra Storage", quantity: 5, price: 100 }
+      ]; 
+      const userDetails = {
+        name: `${user.firstName} ${user.lastName}`,
+        email: user.email,
+        address: "User Address (You can add dynamically if available)"
+      };
+      await sendEmailWithInvoice(userDetails, invoiceProducts);
+
       // Respond with user details (excluding password) and token
       res.status(200).json({
         user: {
