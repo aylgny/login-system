@@ -39,6 +39,7 @@ import ProductPage from "./components/ProductPage";
 import ShoppingCart from "./components/ShoppingCart";
 import PaymentPage from "./components/PaymentPage";
 import OrdersPage from "./components/Order";
+import AccountPage from "./components/AccountInfo";
 
 
 
@@ -66,6 +67,8 @@ function App() {
           <Route path="/payment" element={<PaymentPage />} />
 
           <Route path="/order" element={<OrdersPage />} />
+          <Route path="/account" element={<AccountPage />} />
+
 
 
         </Routes>
