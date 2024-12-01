@@ -3,7 +3,9 @@
 import React, { useState } from 'react';
 import './Order.css';
 import Layout from './Layout';
+import { Link } from 'react-router-dom';
 
+// Mock orders data
 const orders = [
   {
     id: 'ORD123456',
@@ -25,20 +27,7 @@ const orders = [
         price: 50.0,
         image: 'https://via.placeholder.com/300x300',
       },
-      {
-        id: 'PROD4',
-        name: 'Gaming Mouse',
-        quantity: 1,
-        price: 30.0,
-        image: 'https://via.placeholder.com/300x300',
-      },
-      {
-        id: 'PROD5',
-        name: 'Mechanical Keyboard',
-        quantity: 1,
-        price: 70.0,
-        image: 'https://via.placeholder.com/300x300',
-      },
+      // Add more products as needed
     ],
   },
   {
@@ -59,7 +48,7 @@ const orders = [
   {
     id: 'ORD12345512327',
     date: '2024-04-20',
-    status: 'in-transit',
+    status: 'In-Transit',
     total: 80.0,
     products: [
       {
@@ -99,39 +88,38 @@ const OrderCard = ({ order }) => {
   // Format date
   const formattedDate = new Date(order.date).toLocaleDateString();
 
-  return (
+  // Determine status color
+  const statusColors = {
+    processing: '#FFC107', // Yellow
+    delivered: '#28A745',  // Green
+    'in-transit': '#17A2B8', // Teal
+  };
 
+  const statusClass = order.status.toLowerCase().replace(' ', '-');
+
+  return (
     <div className="order-card">
       <div className="order-summary" onClick={toggleProducts}>
-        <div className="order-info">
-          <div>
-            <span className="label">Order ID:</span> {order.id}
+        <div className="order-info-grid">
+          <div className="order-info-item">
+            <span className="info-label">Order ID</span>
+            <span className="info-data">{order.id}</span>
           </div>
-          <div>
-            <span className="label">Date:</span> {formattedDate}
+          <div className="order-info-item">
+            <span className="info-label">Date</span>
+            <span className="info-data">{formattedDate}</span>
           </div>
-          <div>
-            <span className="label">Status:</span>{' '}
-            <span className={`status ${order.status.toLowerCase()}`}>{order.status}</span>
+          <div className="order-info-item">
+            <span className="info-label">Status</span>
+            <span className={`status ${statusClass}`}>{order.status}</span>
           </div>
-          <div>
-            <span className="label">Total:</span> ${order.total.toFixed(2)}
+          <div className="order-info-item">
+            <span className="info-label">Total</span>
+            <span className="info-data">${order.total.toFixed(2)}</span>
           </div>
         </div>
         <div className="toggle-icon">
           {showProducts ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-down"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              width="24"
-              height="24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          ) : (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="icon icon-up"
@@ -143,21 +131,33 @@ const OrderCard = ({ order }) => {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
             </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="icon icon-down"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              width="24"
+              height="24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
           )}
         </div>
       </div>
-      {showProducts && (
-        <div className="products-list">
-          {order.products.map((product) => (
-            <ProductItem key={product.id} product={product} />
-          ))}
-        </div>
-      )}
+      
     </div>
   );
 };
 
-// Main OrdersPage component
+// Main OrdersPage component {showProducts && (
+    //     <div className="products-list">
+    //     {order.products.map((product) => (
+    //       <ProductItem key={product.id} product={product} />
+    //     ))}
+    //   </div>
+    // )}
 const OrdersPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -169,10 +169,38 @@ const OrdersPage = () => {
   );
 
   return (
-    <Layout> 
+    <Layout>
       <div className="orders-page">
+        {/* Sidebar */}
+        <div className="sidebar">
+          <h3>Menu</h3>
+          <ul>
+            <li>
+              <Link to="/account" className="sidebar-link">
+                Account Info
+              </Link>
+            </li>
+            <li>
+              <Link to="/order" className="sidebar-link">
+                Order History
+              </Link>
+            </li>
+            {/* Add more sidebar links as needed */}
+          </ul>
+        </div>
+
         {/* Orders Container */}
         <div className="orders-container">
+          <h2>Order History</h2>
+          {/* Search Bar */}
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search orders by ID or status..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
           {filteredOrders.length === 0 ? (
             <p className="no-orders">No orders found.</p>
           ) : (
@@ -180,9 +208,7 @@ const OrdersPage = () => {
           )}
         </div>
       </div>
-      
     </Layout>
-    
   );
 };
 
