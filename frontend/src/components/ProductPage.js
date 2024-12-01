@@ -4,12 +4,17 @@ import axios from "axios";
 import "./ProductPage.css";
 import Layout from './Layout';
 
-
 const ProductPage = () => {
   const { productId } = useParams(); // Extract productId from the URL
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // New states for review
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(null);
+  const [comment, setComment] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     // Fetch product details from the backend
@@ -60,7 +65,68 @@ const ProductPage = () => {
       );
     }
   };
-  
+
+  // New handler for submitting a review
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+
+    if (!token) {
+      alert("Please log in to submit a review.");
+      return;
+    }
+
+    if (rating === 0) {
+      alert("Please select a star rating.");
+      return;
+    }
+
+    if (comment.trim() === "") {
+      alert("Please enter a comment.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/products/${productId}/reviews`,
+        {
+          userId: userId,
+          rating: rating,
+          comment: comment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Update the product's ratings
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        ratings: [...prevProduct.ratings, response.data.review],
+      }));
+
+      // Reset form fields
+      setRating(0);
+      setHoverRating(null);
+      setComment("");
+
+      alert("Thank you for your review!");
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      alert(
+        error.response?.data?.message ||
+          "An error occurred while submitting your review."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   if (loading) {
     return <p>Loading product details...</p>;
@@ -120,9 +186,40 @@ const ProductPage = () => {
             <p>No reviews yet.</p>
           )}
         </div>
+
+        {/* Add Review Section */}
+        <div className="reviews-section">
+          <h2>Add a Review</h2>
+          <form onSubmit={handleSubmitReview} className="review-form">
+            <div className="star-rating">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={`star ${star <= (hoverRating || rating) ? "filled" : ""}`}
+                  onClick={() => setRating(star)}
+                  onMouseEnter={() => setHoverRating(star)}
+                  onMouseLeave={() => setHoverRating(null)}
+                >
+                  &#9733;
+                </span>
+              ))}
+            </div>
+            <textarea
+  value={comment}
+  onChange={(e) => setComment(e.target.value)}
+  placeholder="Write your review here..."
+  
+  className="review-textarea"
+  rows="6" // Increased from default
+  cols="60" // Adjust as needed
+></textarea>
+            <button type="submit" className="submit-review-button" disabled={submitting}>
+              {submitting ? "Submitting..." : "Submit Review"}
+            </button>
+          </form>
+        </div>
       </div>
     </Layout>
-
   );
 };
 

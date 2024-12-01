@@ -17,7 +17,57 @@
   padding: 20px;
   margin-bottom: 20px;
 }
+.star-rating {
+  display: flex;
+  flex-direction: row;
+}
 
+.star {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 200ms;
+}
+
+.star.filled {
+  color: #ffbf00;
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.submit-review-button {
+  padding: 0.75rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.submit-review-button:hover {
+  background-color: #218838;
+}
+.review-textarea {
+  width: 100%; /* Makes the textarea take full width of its container */
+  min-height: 150px; /* Sets a minimum height */
+  padding: 0.75rem; /* Increased padding for better readability */
+  resize: vertical; /* Allows users to resize vertically */
+  border: 1px solid #ccc; /* Adds a subtle border */
+  border-radius: 4px; /* Rounds the corners */
+  font-size: 1rem; /* Increases font size for better readability */
+  box-sizing: border-box; /* Ensures padding and border are included in the total width and height */
+  transition: border-color 0.3s; /* Adds a smooth transition for border color on focus */
+}
+
+/* Optional: Change border color on focus for better UX */
+.review-textarea:focus {
+  border-color: #66afe9;
+  outline: none; /* Removes the default outline */
+  box-shadow: 0 0 5px rgba(102, 175, 233, 0.6); /* Adds a subtle shadow */
+}
 .product-page .product-image {
   width: 300px;
   height: auto;
@@ -93,6 +143,9 @@
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  margin-bottom: 2rem; /* Adds spacing below the reviews section */
+  padding-bottom: 1rem; /* Adds internal spacing for clarity */
+  border-bottom: 1px solid #ddd; /* Optional: Adds a s-*/
 }
 
 .product-page .reviews-section h2 {
