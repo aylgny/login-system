@@ -39,24 +39,47 @@
   outline: none;
 }
 
+/* Icon Group */
 .icon-group {
   display: flex;
   align-items: center;
-  gap: 20px;
-  position: relative;
+  gap: 30px; /* Add spacing between icons */
 }
 
+/* General Icon Styles (Cart, User, Logout) */
 .cart-icon img,
 .user-icon-container img,
 .logout-icon-container img {
-  width: 24px;
-  height: 24px;
+  width: 36px; /* Set a consistent width */
+  height: 36px; /* Set a consistent height */
   cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease; /* Smooth transition for hover effects */
 }
 
+/* Hover Effect for Cart Icon */
+.cart-icon img:hover {
+  transform: scale(1.1); /* Slight zoom effect */
+  filter: brightness(1.2); /* Slight brightness increase */
+}
+
+/* Hover Effect for Account Icon */
+.user-icon-container img:hover {
+  transform: scale(1.1); /* Slight zoom effect */
+  filter: brightness(1.2); /* Slight brightness increase */
+}
+
+/* User Icon Container */
 .user-icon-container {
   position: relative;
 }
+
+/* Hover Effect for Logout Icon (Optional) */
+.logout-icon-container img:hover {
+  transform: scale(1.1); /* Slight zoom effect */
+  filter: brightness(1.2); /* Slight brightness increase */
+}
+
+
 
 .dropdown-menu {
   position: absolute;
@@ -69,10 +92,4 @@
   z-index: 100;
   display: flex;
   flex-direction: column;
-}
-
-
-
-.logout-icon-container img {
-  /* Additional styling if needed */
 }

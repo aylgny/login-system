@@ -6,7 +6,7 @@ import './Header.css'; // Import the corresponding CSS
 
 // Import Icons (ensure these paths are correct based on your project structure)
 import shoppingIcon from '../assets/icons/shopping.png';
-import userIcon from '../assets/icons/all.png';
+import userIcon from '../assets/icons/account.png';
 import logoutIcon from '../assets/icons/logout.png';
 import { ReactComponent as EcommerceLogo } from '../assets/icons/EcommerceLogo.svg';
 
@@ -24,7 +24,7 @@ const Header = () => {
     localStorage.removeItem('token');
     // Optionally, clear other user-related data here
     // Redirect to login page
-    navigate('/login');
+    navigate('/');
   };
 
   // Close dropdown when clicking outside
