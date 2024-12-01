@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../model/userSchema"); // Path to the User model
+const mongoose = require("mongoose");
 
 // Add to Cart
 router.post("/cart", async (req, res) => {
@@ -127,5 +128,73 @@ router.get('/user/:id', async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
   }
 });
-  
+/*
+// Helper function to validate ObjectId
+const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
+
+// Remove an Item from the Cart Instantly
+router.delete("/cart/remove", async (req, res) => {
+  const { userId, productId } = req.body;
+
+  // Validate userId and productId
+  if (!userId || !productId || !isValidObjectId(userId) || !isValidObjectId(productId)) {
+    return res.status(400).json({ message: "Invalid userId or productId" });
+  }
+
+  try {
+    // Convert userId and productId to ObjectId
+    const userObjectId = new mongoose.Types.ObjectId(userId);
+    const productObjectId = new mongoose.Types.ObjectId(productId);
+
+    const user = await User.findById(userObjectId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Remove the product from the cart
+    user.cart = user.cart.filter((item) => item.product.toString() !== productObjectId.toString());
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Product removed from cart successfully",
+      cart: user.cart, // Return the updated cart
+    });
+  } catch (error) {
+    console.error("Error removing item from cart:", error);
+    res.status(500).json({ message: "Failed to remove item from cart" });
+  }
+});
+  */
+ // Remove an Item from the Cart Instantly
+router.delete("/cart/remove", async (req, res) => {
+  const { userId, productId } = req.body;
+
+  if (!userId || !productId) {
+    return res.status(400).json({ message: "Invalid request data" });
+  }
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Remove the product from the cart
+    user.cart = user.cart.filter((item) => item.product.toString() !== productId);
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Product removed from cart successfully",
+      cart: user.cart, // Return the updated cart
+    });
+  } catch (error) {
+    console.error("Error removing item from cart:", error);
+    res.status(500).json({ message: "Failed to remove item from cart" });
+  }
+});
+
 module.exports = router;
