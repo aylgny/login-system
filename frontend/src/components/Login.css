@@ -11,7 +11,15 @@ body {
   height: 100vh;
   margin: 0;
 }
-
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  text-align: center;
+}
 .login-container {
   display: flex;
   justify-content: center;

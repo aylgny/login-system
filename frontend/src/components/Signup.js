@@ -28,11 +28,9 @@ const Signup = () => {
     });
 
       console.log('Signup successful:', response.data);
-      alert('Signup successful! You can now log in.');
       window.location.href = "/login";
     } catch (error) {
       console.error('Error signing up:', error.response?.data || error.message);
-      alert(error.response?.data?.message || 'An error occurred while signing up.');
     }
   };
 

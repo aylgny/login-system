@@ -107,7 +107,6 @@ const MainPage = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token"); // Remove the token from localStorage
-    alert("Logged out successfully!"); // Show a feedback message
     setDropdownOpen(false); // Close the dropdown
     navigate("/"); // Redirect to login page
     };
