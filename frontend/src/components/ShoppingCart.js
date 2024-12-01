@@ -23,7 +23,7 @@ const ShoppingCart = () => {
           console.log("No userId found in localStorage. Using default userId.");
           userId = "674cdb83a58ccb372bf49485"; // Default userId
         }
-        
+
         const response = await axios.get(
           `http://localhost:5000/api/cart/${userId}`
         );
@@ -77,8 +77,13 @@ const ShoppingCart = () => {
   };
 
   const handleDecrement = async (productId) => {
-    const userId = localStorage.getItem("userId"); // Get the logged-in user's ID
-
+    let userId = localStorage.getItem("userId"); // Check if userId exists in localStorage
+        
+    // If userId is not found, use the default userId
+    if (!userId) {
+      console.log("No userId found in localStorage. Using default userId.");
+      userId = "674cdb83a58ccb372bf49485"; // Default userId
+    }
     try {
       await axios.post(`http://localhost:5000/api/cart/decrement`, {
         userId,
@@ -102,8 +107,13 @@ const ShoppingCart = () => {
   };
 
   const handleRemoveRequest = async (productId) => {
-    const userId = localStorage.getItem("userId"); // Get the logged-in user's ID
-
+    let userId = localStorage.getItem("userId"); // Check if userId exists in localStorage
+        
+    // If userId is not found, use the default userId
+    if (!userId) {
+      console.log("No userId found in localStorage. Using default userId.");
+      userId = "674cdb83a58ccb372bf49485"; // Default userId
+    }
     try {
       await axios.delete(`http://localhost:5000/api/cart/remove`, {
         data: { userId, productId },
