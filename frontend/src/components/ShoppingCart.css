@@ -21,6 +21,12 @@ body {
   gap: 40px;
 }
 
+.checkout-btn:disabled {
+  background: #ccc; /* Gray background for disabled state */
+  color: #888; /* Dimmed text color for disabled button */
+  cursor: not-allowed; /* Change cursor to not-allowed */
+}
+
 .cart-items {
   flex: 1; /* Allow cart-items to take up remaining space */
   max-height: 75vh;
@@ -195,4 +201,20 @@ body {
   border: none;
   cursor: pointer;
   margin-top: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+
+.checkout-btn:disabled {
+  background: #ccc; /* Gray background for disabled state */
+  color: #888; /* Dimmed text color for disabled button */
+  cursor: not-allowed; /* Change cursor to not-allowed */
+}
+
+.empty-cart-message {
+  margin-top: 10px;
+  color: #ff6a00; /* Highlight the message with orange color */
+  font-size: 0.9rem;
+  text-align: center;
 }

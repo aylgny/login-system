@@ -340,3 +340,14 @@
 .logout-icon:hover {
   transform: scale(1.1); /* Slight zoom effect on hover */
 }
+
+.geartech-logo {
+  height: 100px; /* Increase height to make it larger */
+  width: auto; /* Maintain aspect ratio */
+  padding: 5px; /* Keep padding consistent */
+}
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+

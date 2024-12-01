@@ -1,7 +1,5 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-
 import { Link, useNavigate } from "react-router-dom";
 import "./Layout.css";
 
@@ -15,6 +13,7 @@ import headphonesIcon from "../assets/icons/headphone.png";
 import laptopsIcon from "../assets/icons/laptop.png";
 import speakersIcon from "../assets/icons/speaker.png";
 import tvsIcon from "../assets/icons/tv.png";
+import GearTechLogo from '../assets/icons/geartech.png';
 
 // Map categories to icons
 const categoryIcons = {
@@ -31,50 +30,48 @@ const Layout = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [categories, setCategories] = useState([]); // State for categories
-  const [selectedCategory, setSelectedCategory] = useState("All Products"); // Default to "All Products"
-  const [sortCriteria, setSortCriteria] = useState("price-asc"); // Default sorting criteria
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All Products");
+  const [sortCriteria, setSortCriteria] = useState("price-asc");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  
+
   const productsApiUrl = "http://localhost:5000/api/products";
-  const categoriesApiUrl = "http://localhost:5000/api/categories"; // URL for fetching categories
+  const categoriesApiUrl = "http://localhost:5000/api/categories";
 
   // Fetching products from the backend
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(productsApiUrl);
-        setProducts(response.data); // Store products
-        setFilteredProducts(response.data); // Initially show all products
+        setProducts(response.data);
+        setFilteredProducts(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
-
     fetchProducts();
   }, []);
 
-  // Fetching categories from backend
+  // Fetching categories from the backend
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(categoriesApiUrl); // GET request for categories
+        const response = await axios.get(categoriesApiUrl);
         let fetchedCategories = response.data;
 
         // Sort categories, ensuring "All Products" is at the top if present
         fetchedCategories.sort((a, b) => {
           if (a.name === "All Products") return -1;
           if (b.name === "All Products") return 1;
-          return a.name.localeCompare(b.name); // Alphabetical order for other categories
+          return a.name.localeCompare(b.name);
         });
 
-        setCategories(fetchedCategories); // Update categories state
+        setCategories(fetchedCategories);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
     };
-
     fetchCategories();
   }, []);
 
@@ -105,13 +102,9 @@ const Layout = ({ children }) => {
   // Handle account icon click
   const handleAccountClick = () => {
     const token = localStorage.getItem("token");
-    //alert(Token: ${token}); // Show the token in an alert
-
     if (token) {
-      // If token exists, redirect to account page
       navigate("/account");
     } else {
-      // If no token, toggle the dropdown
       setDropdownOpen((prevState) => !prevState);
     }
   };
@@ -123,14 +116,12 @@ const Layout = ({ children }) => {
     }
   };
 
-  // Add event listener to close dropdown when clicking outside
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
-
 
   // Filter products based on search term and selected category
   useEffect(() => {
@@ -148,9 +139,9 @@ const Layout = ({ children }) => {
     } else if (sortCriteria === "price-desc") {
       filtered.sort((a, b) => b.price - a.price);
     } else if (sortCriteria === "popularity-desc") {
-      filtered.sort((a, b) => a.quantity - b.quantity); // High popularity: least stock first
+      filtered.sort((a, b) => a.quantity - b.quantity);
     } else if (sortCriteria === "popularity-asc") {
-      filtered.sort((a, b) => b.quantity - a.quantity); // Low popularity: most stock first
+      filtered.sort((a, b) => b.quantity - a.quantity);
     }
 
     setFilteredProducts(filtered);
@@ -160,22 +151,23 @@ const Layout = ({ children }) => {
     <div className="layout-container">
       {/* Header Section */}
       <header className="main-header">
-        <h1 className="logo">LOGO</h1>
+        <Link to="/mainpage" className="logo-link">
+          <img src={GearTechLogo} alt="GearTech Logo" className="geartech-logo" />
+        </Link>
         <div className="search-container">
           <input
             type="text"
             placeholder="Search products..."
             className="search-input"
+            value={searchTerm}
+            onChange={handleSearchChange}
           />
         </div>
         {/* Icon Group */}
         <div className="icon-group">
           <div className="cart-icon">
             <Link to="/cart">
-              <img
-                src={require("../assets/icons/shopping.png")}
-                alt="Cart"
-              />
+              <img src={require("../assets/icons/shopping.png")} alt="Cart" />
             </Link>
           </div>
 
@@ -193,7 +185,6 @@ const Layout = ({ children }) => {
             )}
           </div>
 
-          {/* Logout Icon */}
           {localStorage.getItem("token") && (
             <div className="logout-icon-container" onClick={handleLogout}>
               <img src={logoutIcon} alt="Logout Icon" className="logout-icon" />
@@ -228,11 +219,9 @@ const Layout = ({ children }) => {
       </div>
 
       {/* Main Content */}
-      <div className="main-content">
-        {children}
-      </div>
+      <div className="main-content">{children}</div>
     </div>
   );
 };
 
-export default Layout;
+export default Layout;

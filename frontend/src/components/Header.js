@@ -8,6 +8,7 @@ import shoppingIcon from "../assets/icons/shopping.png";
 import userIcon from "../assets/icons/account.png";
 import logoutIcon from "../assets/icons/logout.png";
 import { ReactComponent as EcommerceLogo } from "../assets/icons/EcommerceLogo.svg";
+import GearTechLogo from '../assets/icons/geartech.png';
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -44,7 +45,8 @@ const Header = () => {
     <header className="main-header">
       {/* Clickable Logo */}
       <Link to="/mainpage" className="logo-link">
-        <EcommerceLogo className="logo-svg" />
+        
+        <img src ={GearTechLogo} alt="GearTech Logo" className="geartech-logo" />
       </Link>
 
       {/* Search Bar */}
