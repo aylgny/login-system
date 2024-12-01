@@ -1,13 +1,14 @@
 // src/components/Header/Header.js
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Header.css";
+import "./Header.css"; // Import the corresponding CSS
 
-// Import Icons
+// Import Icons (ensure these paths are correct based on your project structure)
 import shoppingIcon from "../assets/icons/shopping.png";
 import userIcon from "../assets/icons/account.png";
 import logoutIcon from "../assets/icons/logout.png";
-import GearTechLogo from "../assets/icons/geartech.png";
+import { ReactComponent as EcommerceLogo } from "../assets/icons/EcommerceLogo.svg";
+import GearTechLogo from '../assets/icons/geartech.png';
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -19,8 +20,10 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove token from localStorage
-    navigate("/"); // Redirect to login page
+    // Remove token from localStorage
+    localStorage.removeItem("token");
+    // Redirect to login page
+    navigate("/");
   };
 
   // Close dropdown when clicking outside
@@ -40,7 +43,8 @@ const Header = () => {
     <header className="main-header">
       {/* Clickable Logo */}
       <Link to="/mainpage" className="logo-link">
-        <img src={GearTechLogo} alt="GearTech Logo" className="geartech-logo" />
+        
+        <img src ={GearTechLogo} alt="GearTech Logo" className="geartech-logo" />
       </Link>
 
       {/* Search Bar */}
