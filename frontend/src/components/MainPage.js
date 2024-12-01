@@ -14,6 +14,7 @@ import headphonesIcon from "../assets/icons/headphone.png";
 import laptopsIcon from "../assets/icons/laptop.png";
 import speakersIcon from "../assets/icons/speaker.png";
 import tvsIcon from "../assets/icons/tv.png";
+import GearTechLogo from "../assets/icons/geartech.png";
 
 
 // Map categories to icons
@@ -190,8 +191,10 @@ const MainPage = () => {
 
       {/* Header Section */}
       <header className="main-header">
-        <h1 className="logo">LOGO</h1>
-
+        
+        <Link to="/mainpage" className="logo-link">
+          <img src={GearTechLogo} alt="GearTech Logo" className="geartech-logo" />
+        </Link>
 
 
 

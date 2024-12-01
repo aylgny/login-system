@@ -4,11 +4,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: sticky; /* Keeps the header at the top when scrolling */
+  background-color: #ff6a00;
+  position: sticky;
   top: 0;
-  z-index: 1000; /* Ensures the header stays above other elements */
+  z-index: 1000;
 }
 
 /* Logo Link */
@@ -17,9 +16,10 @@
   align-items: center;
 }
 
-.logo-svg {
-  width: 120px;
-  height: auto;
+.geartech-logo {
+  height: 60px; /* Adjust the size of the logo */
+  width: auto;
+  object-fit: contain; /* Maintain aspect ratio */
 }
 
 /* Search Container */
@@ -27,7 +27,7 @@
   flex: 1;
   display: flex;
   align-items: center;
-  background-color: #ff6a00;
+  background-color: white;
   border-radius: 50px;
   padding: 8px 20px;
   margin: 0 20px;
@@ -37,7 +37,7 @@
 .search-input {
   flex: 1;
   border: none;
-  background-color: white;
+  background-color: transparent;
   border-radius: 50px;
   padding: 12px 20px;
   font-size: 16px;
@@ -50,8 +50,8 @@
 }
 
 .search-button {
-  background-color: #ffffff;
-  color: #ff6a00;
+  background-color: #ff6a00;
+  color: white;
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -64,7 +64,7 @@
 }
 
 .search-button:hover {
-  background-color: #ffe5c3;
+  background-color: #ffa500;
   transform: scale(1.1);
 }
 
@@ -72,10 +72,9 @@
 .icon-group {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
 }
 
-/* General Icon Styles */
 .cart-icon img,
 .user-icon-container img,
 .logout-icon-container img {
@@ -90,11 +89,6 @@
 .logout-icon-container img:hover {
   transform: scale(1.1);
   filter: brightness(1.2);
-}
-
-/* User Icon Container */
-.user-icon-container {
-  position: relative;
 }
 
 /* Dropdown Menu */

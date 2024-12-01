@@ -1,213 +1,86 @@
 .layout-container {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    background-color: #f4f4f4;
-    height: 100vh;
-    box-sizing: border-box;
-  }
-  
-  /* Header Section */
-  
-  .main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #ff6a00; /* Set background to orange */
-    color: white; /* Text color for better contrast */
-    border-bottom: none; /* Remove the border */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Logo Text Styling */
-  .main-header h1 {
-    font-size: 24px;
-    color: white; /* Logo color updated to white */
-    margin: 0;
-    font-weight: bold;
-  }
-  
-  /* Authentication Buttons */
-  .auth-buttons {
-    display: flex;
-    gap: 10px;
-  }
-  .login-button,
-  .signup-button {
-    padding: 8px 16px;
-    font-size: 14px;
-    border: 2px solid white; /* White border */
-    border-radius: 4px;
-    background-color: transparent; /* Transparent background */
-    color: white; /* White text */
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .login-button:hover,
-  .signup-button:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Subtle white overlay on hover */
-  }
-  
-  /* Search Bar in Header */
-  .search-container {
-    flex-grow: 1; /* Allows the search bar to take up available space */
-    display: flex;
-    justify-content: center; /* Centers the search bar */
-    margin: 0 20px; /* Adds spacing between logo and authentication buttons */
-  }
-  
-  .search-bar input {
-    padding: 10px;
-    width: 100%;
-    max-width: 500px;
-    border-radius: 50px; /* Curved edges for the search bar */
-    border: none;
-    font-size: 16px;
-    outline: none;
-    transition: all 0.3s ease;
-  }
-  
-  .search-bar input:focus {
-    box-shadow: 0 0 5px rgba(255, 165, 0, 0.8); /* Focus shadow effect */
-  }
-  
-  
-  /* Dropdown menu styling */
-  .dropdown-menu {
-    position: absolute;
-    top: 40px;
-    right: 0;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    width: 150px; /* Increase width for more space */
-    padding: 10px 0; /* Add padding for better spacing inside */
-  }
-  
-  .dropdown-button {
-    width: 100%; /* Ensure buttons take the full width */
-    padding: 12px 15px; /* Add padding for better usability */
-    border: none;
-    background-color: transparent;
-    text-align: left;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .dropdown-button:hover {
-    background-color: #f5f5f5;
-    color: #ff6a00;
-  }
-  
-  /* Category List (Horizontal) */
-  .category-list {
-    display: flex; /* Horizontal alignment */
-    justify-content: center; /* Centered under search bar */
-    gap: 20px; /* Spacing between items */
-    list-style: none;
-    margin: 0;
-    padding: 10px 0;
-    background-color: #fff; /* Optional: Background for category row */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .category-item {
-    font-size: 16px;
-    color: #555; /* Neutral color for text */
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: capitalize;
-  }
-  
-  .category-item:hover {
-    color: #ff6a00;
-    border-bottom: 2px solid #ff6a00; /* Highlight underline effect */
-  }
-  
-  .category-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-    vertical-align: middle; /* Align icons with text */
-  }
-  
-  .active-category {
-    color: #ff6a00;
-    border-bottom: 2px solid #ff6a00; /* Active category underline */
-    font-weight: bold;
-  }
-  
-  
-  
-  
-  /* Icon Group Styling */
-  .icon-group {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Space between each icon */
-  }
-  
-  /* Cart Icon */
-  .cart-icon {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-  
-  .cart-icon img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-  }
-  
-  /* Account Icon */
-  /* Icon Group Styling */
-  .icon-group {
-    display: flex;
-    align-items: center;
-    gap: 20px; /* Space between icons */
-  }
-  
-  /* Cart Icon */
-  .cart-icon img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-    cursor: pointer;
-  }
-  
-  /* Account Icon */
-  .user-icon-container {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-  
-  .user-icon {
-    width: 32px;
-    height: 32px;
-    object-fit: cover;
-  }
-  
-  /* Logout Icon */
-  .logout-icon-container {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-  
-  .logout-icon {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-    transition: transform 0.2s ease;
-  }
-  
-  .logout-icon:hover {
-    transform: scale(1.1); /* Slight zoom effect on hover */
-  }
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #f4f4f4;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #ff6a00;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.geartech-logo {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-link {
+  text-decoration: none;
+}
+
+.search-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  margin: 0 20px;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  border-radius: 50px;
+  border: none;
+  font-size: 16px;
+  outline: none;
+}
+
+.icon-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon-group img {
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+}
+
+.category-bar {
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+  padding: 10px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.category-list {
+  display: flex;
+  gap: 20px;
+}
+
+.category-item {
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.active-category {
+  color: #ff6a00;
+  font-weight: bold;
+}
+
+.category-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
