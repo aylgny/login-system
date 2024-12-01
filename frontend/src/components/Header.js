@@ -21,6 +21,8 @@ const Header = () => {
   const handleLogout = () => {
     // Remove token from localStorage
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.clear();
     // Redirect to login page
     navigate("/");
   };

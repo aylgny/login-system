@@ -95,6 +95,8 @@ const Layout = ({ children }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token"); // Remove the token from localStorage
+    localStorage.removeItem("userId");
+    localStorage.clear();
     alert("Logged out successfully!"); // Show a feedback message
     setDropdownOpen(false); // Close the dropdown
     navigate("/"); // Redirect to login page

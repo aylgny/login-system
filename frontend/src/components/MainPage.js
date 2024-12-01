@@ -107,6 +107,8 @@ const MainPage = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token"); // Remove the token from localStorage
+    localStorage.removeItem("userId");
+    localStorage.clear();
     setDropdownOpen(false); // Close the dropdown
     navigate("/"); // Redirect to login page
     };
