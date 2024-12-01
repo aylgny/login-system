@@ -19,6 +19,7 @@ const ProductPage = () => {
   useEffect(() => {
     // Fetch product details from the backend
     const fetchProduct = async () => {
+      
       try {
         const response = await axios.get(`http://localhost:5000/api/products/${productId}`);
         setProduct(response.data); // Set the product data
@@ -34,25 +35,19 @@ const ProductPage = () => {
   }, [productId]); // Run the effect when productId changes
 
   const handleAddToCart = async () => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
+    let userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
   
-    if (!token) {
-      alert("Please log in to add items to the cart.");
-      return;
+    if (!userId) {
+      userId = "674cdb83a58ccb372bf49485";
     }
-  
+    //alert("674cdb83a58ccb372bf49485");
     try {
       // Send the POST request to add the product to the user's cart
-      const response = await axios.post(
-        "http://localhost:5000/api/cart",
-        { userId: userId, productId: product._id, quantity: 1 },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post("http://localhost:5000/api/cart", {
+      userId: userId,
+      productId: product._id,
+      quantity: 1, // Default quantity to add
+    });
   
       alert(response.data.message || "Product added to cart!");
     } catch (error) {

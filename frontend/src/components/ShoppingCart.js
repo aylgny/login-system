@@ -15,7 +15,15 @@ const ShoppingCart = () => {
     // Fetching cart items for the logged-in user
     const fetchCartItems = async () => {
       try {
-        const userId = localStorage.getItem("userId"); // Get the logged-in user's ID
+        //const userId = localStorage.getItem("userId"); // Get the logged-in user's ID
+        let userId = localStorage.getItem("userId"); // Check if userId exists in localStorage
+        
+        // If userId is not found, use the default userId
+        if (!userId) {
+          console.log("No userId found in localStorage. Using default userId.");
+          userId = "674cdb83a58ccb372bf49485"; // Default userId
+        }
+        
         const response = await axios.get(
           `http://localhost:5000/api/cart/${userId}`
         );
@@ -34,7 +42,7 @@ const ShoppingCart = () => {
         }
       } catch (error) {
         console.error("Error fetching cart items:", error);
-        alert("An error occurred while fetching cart items.");
+        //alert("An error occurred while fetching cart items.");
       }
     };
 

@@ -20,6 +20,7 @@ const Login = () => {
         const { token, user } = response.data; // Extract token and user object
 
         // Save the token and userId in localStorage
+        localStorage.clear();
         localStorage.setItem('token', token);
         localStorage.setItem('userId', user.id); // Save the user ID in localStorage
 
