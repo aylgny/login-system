@@ -154,9 +154,13 @@ const MainPage = () => {
       setSelectedCategory(location.state.selectedCategory);
     }
 
-    let filtered = products.filter((product) =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    let filtered = products.filter((product) => {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        product.name.toLowerCase().includes(searchLower) ||
+        (product.description && product.description.toLowerCase().includes(searchLower))
+      );
+    });
 
 
     if (selectedCategory !== "All Products") {
