@@ -95,9 +95,7 @@ router.post("/cart", async (req, res) => {
   
       // If quantity becomes 0, remove the product from the cart
       if (productInCart.quantity <= 0) {
-        user.cart = user.cart.filter(
-          (item) => item.product.toString() !== productId
-        );
+        productInCart.quantity = 1;
       }
   
       await user.save();
