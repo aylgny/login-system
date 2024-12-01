@@ -6,6 +6,8 @@ const authRoutes = require("./routes/auth");
 const categoryRoutes = require("./routes/categoryRoutes"); // Import category routes
 const productRoutes = require("./routes/productRoutes"); // Product routes'u import et
 const cartRoutes = require("./routes/cartRoutes");
+const orderRoutes = require("./routes/orderRoutes"); // Adjust the path as needed
+
 
 const app = express();
 const PORT = 5000;
@@ -34,3 +36,4 @@ app.use(authRoutes); // Existing auth routes
 app.use('/api', categoryRoutes); // Add category routes
 app.use('/api', productRoutes); // Add product routes
 app.use("/api", cartRoutes);
+app.use("/api", orderRoutes);

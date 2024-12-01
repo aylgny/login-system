@@ -1,79 +1,23 @@
-// src/components/Order.js
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Order.css';
 import Layout from './Layout';
 import { Link } from 'react-router-dom';
-
-// Mock orders data
-const orders = [
-  {
-    id: 'ORD123456',
-    date: '2024-04-25',
-    status: 'Processing',
-    total: 150.0,
-    products: [
-      {
-        id: 'PROD1',
-        name: 'Wireless Headphones',
-        quantity: 2,
-        price: 50.0,
-        image: 'https://cdn.akakce.com/anker/anker-powercore-26800-mah-tasinabilir-sarj-cihazi-z.jpg',
-      },
-      {
-        id: 'PROD2',
-        name: 'Bluetooth Speaker',
-        quantity: 1,
-        price: 50.0,
-        image: 'https://via.placeholder.com/300x300',
-      },
-      // Add more products as needed
-    ],
-  },
-  {
-    id: 'ORD123457',
-    date: '2024-04-20',
-    status: 'Delivered',
-    total: 80.0,
-    products: [
-      {
-        id: 'PROD3',
-        name: 'Smart Watch',
-        quantity: 1,
-        price: 80.0,
-        image: 'https://via.placeholder.com/300x300',
-      },
-    ],
-  },
-  {
-    id: 'ORD12345512327',
-    date: '2024-04-20',
-    status: 'In-Transit',
-    total: 80.0,
-    products: [
-      {
-        id: 'PROD322',
-        name: 'Smart Watch',
-        quantity: 1,
-        price: 80.0,
-        image: 'https://via.placeholder.com/300x300',
-      },
-    ],
-  },
-  // Add more orders as needed
-];
+import axios from 'axios';
 
 // Component to display individual product details
 const ProductItem = ({ product }) => {
   return (
-    <div className="product-item">
-      <img src={product.image} alt={product.name} className="product-image" />
-      <div className="product-details">
-        <h4 className="product-name">{product.name}</h4>
-        <p>Quantity: {product.quantity}</p>
-        <p>Price: ${product.price.toFixed(2)}</p>
+    <Link to={`/product/${product._id}`} key={product._id} className="product-item-link">
+      <div className="product-item">
+        {/* Display the product image */}
+        <img src={product.photo} alt={product.name}className="product-image"/>
+        <div className="product-details">
+          <h4 className="product-name">{product.name}</h4>
+          <p>Quantity: {product.quantity}</p>
+          <p>Price: ${product.price.toFixed(2)}</p>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
@@ -86,15 +30,9 @@ const OrderCard = ({ order }) => {
   };
 
   // Format date
-  const formattedDate = new Date(order.date).toLocaleDateString();
+  const formattedDate = new Date(order.purchaseDate).toLocaleDateString();
 
   // Determine status color
-  const statusColors = {
-    processing: '#FFC107', // Yellow
-    delivered: '#28A745',  // Green
-    'in-transit': '#17A2B8', // Teal
-  };
-
   const statusClass = order.status.toLowerCase().replace(' ', '-');
 
   return (
@@ -103,7 +41,7 @@ const OrderCard = ({ order }) => {
         <div className="order-info-grid">
           <div className="order-info-item">
             <span className="info-label">Order ID</span>
-            <span className="info-data">{order.id}</span>
+            <span className="info-data">{order._id}</span>
           </div>
           <div className="order-info-item">
             <span className="info-label">Date</span>
@@ -115,7 +53,9 @@ const OrderCard = ({ order }) => {
           </div>
           <div className="order-info-item">
             <span className="info-label">Total</span>
-            <span className="info-data">${order.total.toFixed(2)}</span>
+            <span className="info-data">
+              ${order.products.reduce((total, p) => total + p.product.price * p.quantity, 0).toFixed(2)}
+            </span>
           </div>
         </div>
         <div className="toggle-icon">
@@ -146,27 +86,47 @@ const OrderCard = ({ order }) => {
           )}
         </div>
       </div>
-      
+      {showProducts && (
+        <div className="products-list">
+          {order.products.map((item) => (
+            <ProductItem key={item.product._id} product={{ ...item.product, quantity: item.quantity }} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-// Main OrdersPage component {showProducts && (
-    //     <div className="products-list">
-    //     {order.products.map((product) => (
-    //       <ProductItem key={product.id} product={product} />
-    //     ))}
-    //   </div>
-    // )}
+// Main OrdersPage component
 const OrdersPage = () => {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const userId = localStorage.getItem('userId'); // Assuming user ID is stored in localStorage
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/orders/${userId}`);
+        setOrders(response.data);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [userId]);
 
   // Filter orders based on search term
   const filteredOrders = orders.filter(
     (order) =>
-      order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.status.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (loading) return <p>Loading orders...</p>;
 
   return (
     <Layout>
@@ -185,7 +145,6 @@ const OrdersPage = () => {
                 Order History
               </Link>
             </li>
-            {/* Add more sidebar links as needed */}
           </ul>
         </div>
 
@@ -204,7 +163,7 @@ const OrdersPage = () => {
           {filteredOrders.length === 0 ? (
             <p className="no-orders">No orders found.</p>
           ) : (
-            filteredOrders.map((order) => <OrderCard key={order.id} order={order} />)
+            filteredOrders.map((order) => <OrderCard key={order._id} order={order} />)
           )}
         </div>
       </div>
