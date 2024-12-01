@@ -226,9 +226,7 @@ const MainPage = () => {
                 <Link to="/signup">
                   <button className="dropdown-button">Sign Up</button>
                 </Link>
-                <Link to="/order">
-                  <button className="dropdown-button">Orders</button>
-                </Link>
+              
               </div>
             )}
           </div>

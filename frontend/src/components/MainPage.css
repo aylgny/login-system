@@ -313,8 +313,9 @@
 
 /* Account Icon */
 .user-icon-container {
-  position: relative; /* Establishes a positioning context */
-  cursor: pointer; /* Changes cursor to pointer on hover */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .user-icon {
