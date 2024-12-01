@@ -1,4 +1,3 @@
-// src/components/Login.js
 import React, { useState } from 'react';
 import './Login.css';
 import axios from 'axios';
@@ -7,33 +6,25 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-        // Send POST request to the backend
-        const response = await axios.post('http://localhost:5000/login', { email, password });
-        
-        if (response && response.data) { // Check if response and response.data exist
-          //console.log(response.data); // Optional: Debug the response
-          const { token } = response.data; // Extract the token from the response
-          
-          // Save the token in localStorage
-          localStorage.setItem('token', token);
+      const response = await axios.post('http://localhost:5000/login', { email, password });
 
-          alert('Login successful');
-          
-          // Redirect the user to the main page
-          window.location.href = "/mainpage";
-        } else {
-            throw new Error("Unexpected response structure"); // Handle unexpected response
-        }
+      if (response && response.data) {
+        const { token } = response.data;
+        localStorage.setItem('token', token);
+        alert('Login successful');
+        window.location.href = "/mainpage";
+      } else {
+        throw new Error("Unexpected response structure");
+      }
     } catch (error) {
-        console.error('Error logging in:', error);
-        alert(error.response?.data?.message || "Login failed");
+      console.error('Error logging in:', error);
+      alert(error.response?.data?.message || "Login failed");
     }
+  };
 
-};
   return (
     <div className="login-container">
       <div className="login-box">
@@ -60,7 +51,12 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit" className="login-button">Login</button>
+          <button 
+            type="submit" 
+            className="login-button" 
+            style={{ background: 'blue', color: 'white', width: '100px', height: '50px' }}>
+            Login
+          </button>        
         </form>
         <div className="footer">
           <p>Don't have an account? <a href="/signup">Sign Up</a></p>
@@ -70,4 +66,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login;

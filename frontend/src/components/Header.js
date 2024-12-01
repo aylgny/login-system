@@ -1,14 +1,13 @@
 // src/components/Header/Header.js
-
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import './Header.css'; // Import the corresponding CSS
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./Header.css"; // Import the corresponding CSS
 
 // Import Icons (ensure these paths are correct based on your project structure)
-import shoppingIcon from '../assets/icons/shopping.png';
-import userIcon from '../assets/icons/account.png';
-import logoutIcon from '../assets/icons/logout.png';
-import { ReactComponent as EcommerceLogo } from '../assets/icons/EcommerceLogo.svg';
+import shoppingIcon from "../assets/icons/shopping.png";
+import userIcon from "../assets/icons/account.png";
+import logoutIcon from "../assets/icons/logout.png";
+import { ReactComponent as EcommerceLogo } from "../assets/icons/EcommerceLogo.svg";
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -21,10 +20,9 @@ const Header = () => {
 
   const handleLogout = () => {
     // Remove token from localStorage
-    localStorage.removeItem('token');
-    // Optionally, clear other user-related data here
+    localStorage.removeItem("token");
     // Redirect to login page
-    navigate('/');
+    navigate("/");
   };
 
   // Close dropdown when clicking outside
@@ -34,9 +32,9 @@ const Header = () => {
         setDropdownOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -47,7 +45,17 @@ const Header = () => {
         <EcommerceLogo className="logo-svg" />
       </Link>
 
-
+      {/* Search Bar */}
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Search for products, categories, or brands"
+        />
+        <button className="search-button">
+          <i className="fa fa-search"></i> {/* FontAwesome Icon */}
+        </button>
+      </div>
 
       {/* Icon Group */}
       <div className="icon-group">
@@ -59,7 +67,11 @@ const Header = () => {
         </div>
 
         {/* Account Icon */}
-        <div className="user-icon-container" onClick={handleAccountClick} ref={dropdownRef}>
+        <div
+          className="user-icon-container"
+          onClick={handleAccountClick}
+          ref={dropdownRef}
+        >
           <img src={userIcon} alt="User Icon" className="user-icon" />
           {dropdownOpen && (
             <div className="dropdown-menu">
@@ -77,7 +89,7 @@ const Header = () => {
         </div>
 
         {/* Logout Icon */}
-        {localStorage.getItem('token') && (
+        {localStorage.getItem("token") && (
           <div className="logout-icon-container" onClick={handleLogout}>
             <img src={logoutIcon} alt="Logout Icon" className="logout-icon" />
           </div>

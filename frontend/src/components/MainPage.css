@@ -5,11 +5,11 @@
   background-color: #f4f4f4;
   height: 100vh;
   box-sizing: border-box;
-
 }
 
 /* Header Section */
-.main-page-header {
+
+.main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -35,20 +35,19 @@
 }
 .login-button,
 .signup-button {
-  background-color: #007BFF; /* Default background color */
-  color: white;             /* Default text color */
-  border: none;             /* No border */
-  border-radius: 5px;       /* Optional: rounded corners */
-  padding: 10px 20px;       /* Spacing inside the button */
-  font-size: 16px;          /* Text size */
-  cursor: pointer;          /* Pointer cursor on hover */
-  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+  padding: 8px 16px;
+  font-size: 14px;
+  border: 2px solid white; /* White border */
+  border-radius: 4px;
+  background-color: transparent; /* Transparent background */
+  color: white; /* White text */
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .login-button:hover,
 .signup-button:hover {
-  background-color: #0056b3; /* Darker shade on hover */
-  color: white;             /* Ensure text remains visible */
+  background-color: rgba(255, 255, 255, 0.2); /* Subtle white overlay on hover */
 }
 
 /* Search Bar in Header */
@@ -340,5 +339,5 @@
 }
 
 .logout-icon:hover {
-  transform: scale(1.1); /* Slight zoom effect on hover */
+  transform: scale(1.1); /* Slight zoom effect on hover */
 }

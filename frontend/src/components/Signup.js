@@ -102,7 +102,12 @@ const Signup = () => {
               required
             />
           </div>
-          <button type="submit" className="signup-button">Sign Up</button>
+          <button 
+            type="submit" 
+            className="signup-button" 
+            style={{ background: 'blue', color: 'white', width: '100px', height: '50px' }}>
+            Signup
+          </button>        
         </form>
         <div className="footer">
           <p>Already have an account? <a href="/login">Login</a></p>
@@ -112,4 +117,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Signup;

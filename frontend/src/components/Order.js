@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import './Order.css';
+import Layout from './Layout';
 
 const orders = [
   {
@@ -99,6 +100,7 @@ const OrderCard = ({ order }) => {
   const formattedDate = new Date(order.date).toLocaleDateString();
 
   return (
+
     <div className="order-card">
       <div className="order-summary" onClick={toggleProducts}>
         <div className="order-info">
@@ -167,16 +169,20 @@ const OrdersPage = () => {
   );
 
   return (
-    <div className="orders-page">
-      {/* Orders Container */}
-      <div className="orders-container">
-        {filteredOrders.length === 0 ? (
-          <p className="no-orders">No orders found.</p>
-        ) : (
-          filteredOrders.map((order) => <OrderCard key={order.id} order={order} />)
-        )}
+    <Layout> 
+      <div className="orders-page">
+        {/* Orders Container */}
+        <div className="orders-container">
+          {filteredOrders.length === 0 ? (
+            <p className="no-orders">No orders found.</p>
+          ) : (
+            filteredOrders.map((order) => <OrderCard key={order.id} order={order} />)
+          )}
+        </div>
       </div>
-    </div>
+      
+    </Layout>
+    
   );
 };
 
