@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Order = require("../model/orderSchema"); // Path to Order schema
 const User = require("../model/userSchema"); // Path to User schema
+const Product = require("../model/productSchema");
 
 // Get Orders for a User
 router.get("/orders/:userId", async (req, res) => {
@@ -61,6 +62,25 @@ router.post("/orders", async (req, res) => {
     await newOrder.save();
 
     //user.orders.append(newOrder);
+
+    // Deduct quantities from the product stocks
+    
+    for (const item of products) {
+      const product = await Product.findById(item.product);
+      if (!product) {
+        throw new Error(`Product with ID ${item.product} not found`);
+      }
+
+      //if (product.quantity < item.quantity) {
+      //  throw new Error(
+      //    `Insufficient stock for product: ${product.name}. Requested: ${item.quantity}, Available: ${product.quantity}`
+      //  );
+      //}
+
+      product.quantity -= item.quantity;
+      await product.save();
+    }
+    
 
 
     user.cart = [];

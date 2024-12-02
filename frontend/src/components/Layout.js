@@ -154,15 +154,7 @@ const Layout = ({ children }) => {
         <Link to="/mainpage" className="logo-link">
           <img src={GearTechLogo} alt="GearTech Logo" className="geartech-logo" />
         </Link>
-        <div className="search-container">
-          <input
-            type="text"
-            placeholder="Search products..."
-            className="search-input"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-        </div>
+       
         {/* Icon Group */}
         <div className="icon-group">
           <div className="cart-icon">

@@ -49,17 +49,7 @@ const Header = () => {
         <img src ={GearTechLogo} alt="GearTech Logo" className="geartech-logo" />
       </Link>
 
-      {/* Search Bar */}
-      <div className="search-container">
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search for products, categories, or brands"
-        />
-        <button className="search-button">
-          <i className="fa fa-search"></i> {/* FontAwesome Icon */}
-        </button>
-      </div>
+
 
       {/* Icon Group */}
       <div className="icon-group">
