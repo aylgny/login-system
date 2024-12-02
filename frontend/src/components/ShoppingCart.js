@@ -62,9 +62,14 @@ const ShoppingCart = () => {
     setTotalItemsPrice(total);
   };
 
-  const handleIncrement = async (productId) => {
+  const handleIncrement = async (productId, currentQuantity, maxStock) => {
     const userId = localStorage.getItem("userId"); // Get the logged-in user's ID
-
+  
+    if (currentQuantity >= maxStock) {
+      alert(`You cannot add more than ${maxStock} units of this product.`);
+      return;
+    }
+  
     try {
       await axios.post(`http://localhost:5000/api/cart`, {
         userId,
@@ -75,6 +80,7 @@ const ShoppingCart = () => {
       console.error("Error incrementing item quantity:", error);
     }
   };
+  
 
   const handleDecrement = async (productId) => {
     let userId = localStorage.getItem("userId"); // Check if userId exists in localStorage
@@ -182,9 +188,10 @@ const ShoppingCart = () => {
                 <span>{item.quantity}</span>
                 <button
                   onClick={() => {
-                    handleIncrement(item.product._id);
+                    handleIncrement(item.product._id, item.quantity, item.product.quantity);
                     handleQuantityChange(index, 1);
                   }}
+                  disabled={item.quantity >= item.product.quantity} // Disable if stock limit is reached
                 >
                   +
                 </button>
