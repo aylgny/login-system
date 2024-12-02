@@ -76,7 +76,7 @@ const PaymentPage = () => {
 
       const data = await response.json();
       alert("Payment Successful! Order created.");
-      navigate("/mainpage");
+      navigate("/congrats");
     } catch (error) {
       console.error("Error creating order:", error);
       alert("Failed to create order. Please try again.");
