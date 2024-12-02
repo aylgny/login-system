@@ -9,6 +9,8 @@ const ProductPage = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userMap, setUserMap] = useState({}); // Map for storing user info
+
 
   // New states for review
   const [rating, setRating] = useState(0);
@@ -33,6 +35,38 @@ const ProductPage = () => {
 
     fetchProduct();
   }, [productId]); // Run the effect when productId changes
+
+  useEffect(() => {
+    // Fetch user details for each review
+    const fetchUserDetails = async () => {
+      if (!product || product.ratings.length === 0) return;
+
+      const userIds = product.ratings.map((rating) => rating.user);
+      const uniqueUserIds = [...new Set(userIds)];
+
+      try {
+        const userResponses = await Promise.all(
+          uniqueUserIds.map((userId) =>
+            axios.get(`http://localhost:5000/api/user/${userId}`)
+          )
+        );
+
+        const userDetails = userResponses.reduce((acc, response) => {
+          const user = response.data;
+          acc[user._id] = `${user.firstName} ${user.lastName}`;
+          return acc;
+        }, {});
+
+        setUserMap(userDetails);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    fetchUserDetails();
+  }, [product]);
+
+
 
   const handleAddToCart = async () => {
     let userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
@@ -180,7 +214,9 @@ const ProductPage = () => {
               <div key={index} className="review-item">
                 <p className="review-rating">⭐ {rating.rating}/5</p>
                 <p className="review-comment">"{rating.comment}"</p>
-                <p className="review-user">- User {rating.user}</p>
+                <p className="review-user">
+                  - {userMap[rating.user] || "Anonymous User"}
+                </p>
               </div>
             ))
           ) : (
