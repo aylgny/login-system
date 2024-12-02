@@ -75,7 +75,6 @@ const AccountInfo = () => {
         </div>
         <div className="main-content">
           <h2>Account Information</h2>
-          <form className="account-details" onSubmit={handleSave}>
             <div className="detail-item">
               <label htmlFor="firstName" className="label">First Name:</label>
               <input
@@ -83,6 +82,7 @@ const AccountInfo = () => {
                 id="firstName"
                 name="firstName"
                 value={user.firstName}
+                readOnly
                 onChange={handleChange}
                 required
               />
@@ -94,6 +94,8 @@ const AccountInfo = () => {
                 id="lastName"
                 name="lastName"
                 value={user.lastName}
+                readOnly
+
                 onChange={handleChange}
                 required
               />
@@ -104,6 +106,7 @@ const AccountInfo = () => {
                 type="tel"
                 id="phone"
                 name="phone"
+                readOnly
                 value={user.phone}
                 onChange={handleChange}
                 required
@@ -117,15 +120,12 @@ const AccountInfo = () => {
                 type="email"
                 id="email"
                 name="email"
+                readOnly
                 value={user.email}
                 onChange={handleChange}
                 required
               />
             </div>
-            <button type="submit" className="save-button">Save Changes</button>
-            {saveStatus === 'success' && <p className="success-message">Changes saved successfully!</p>}
-            {saveStatus === 'error' && <p className="error-message">Failed to save changes. Please try again.</p>}
-          </form>
         </div>
       </div>
     </Layout>

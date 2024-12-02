@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Function to create the PDF
-const createInvoicePDF = (name, email, address, invoiceProducts) => {
+const createInvoicePDF = (name, email, address, invoiceProducts, invoiceDate) => { // Added invoiceDate parameter
     return new Promise((resolve, reject) => {
       // Create a unique filename based on timestamp
       const timestamp = new Date().toISOString().replace(/[:.-]/g, '_');
@@ -29,17 +29,39 @@ const createInvoicePDF = (name, email, address, invoiceProducts) => {
         .text('Invoice', { align: 'center' })
         .moveDown(1);
   
+      // Add the invoice date at the top right
+      if (invoiceDate) { // Check if invoiceDate is provided
+        const pageWidth = doc.page.width;
+        const rightMargin = 150; // Adjust this value as needed
+      
+        doc
+          .fontSize(12)
+          .fillColor('#000')
+          .text(`Date: ${invoiceDate}`, pageWidth - rightMargin, 50, { // Positioning near the right margin
+            align: 'right',
+            width: rightMargin // Defines the width for right alignment
+          })
+          .moveDown(1);
+      }
+  
       // Customer Information
+      const leftMargin = 50;
+      let currentY = doc.y;
+      
       doc
         .fontSize(14)
         .fillColor('#000')
-        .text('Bill To:')
+        .text('Bill To:', leftMargin, currentY, { align: 'left' })
         .moveDown(0.5);
-      doc.text(`Name: ${name}`);
-      doc.text(`Email: ${email}`);
-      doc.text(`Address: ${address}`);
+      
+      currentY = doc.y;
+      
+      doc.text(`Name: ${name}`, leftMargin, currentY, { align: 'left' });
+      currentY = doc.y;
+      doc.text(`Email: ${email}`, leftMargin, currentY, { align: 'left' });
+      currentY = doc.y;
+      doc.text(`Address: ${address}`, leftMargin, currentY, { align: 'left' });
       doc.moveDown(1);
-  
       // Table Header
       const tableTop = doc.y;
       const itemWidth = 200;
@@ -113,12 +135,12 @@ const createInvoicePDF = (name, email, address, invoiceProducts) => {
   
 
 // Function to send an email with the generated invoice
-const sendEmailWithInvoice = async (userDetails, invoiceProducts) => {
+const sendEmailWithInvoice = async (userDetails, invoiceProducts, invoiceDate) => { // Added invoiceDate parameter
   const { name, email, address } = userDetails;
 
   try {
     // Generate Invoice PDF
-    const pdfPath = await createInvoicePDF(name, email, address, invoiceProducts);
+    const pdfPath = await createInvoicePDF(name, email, address, invoiceProducts, invoiceDate); // Pass invoiceDate
 
     // Email setup
     const transporter = nodemailer.createTransport({
