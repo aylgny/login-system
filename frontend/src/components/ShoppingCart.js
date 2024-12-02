@@ -135,8 +135,19 @@ const ShoppingCart = () => {
   };
 
   const handleCheckout = () => {
-    if (cartItems.length === 0) return; // Prevent checkout if the cart is empty
-    navigate("/payment");
+    let userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
+    
+    if (userId) {
+      // If userId is available, check if the cart has items and proceed to payment
+      if (cartItems.length === 0) {
+        alert("Your cart is empty. Add some items before proceeding to checkout.");
+        return;
+      }
+      navigate("/payment"); // Navigate to payment if user is logged in and cart is not empty
+    } else {
+      // If no userId, alert the user to log in
+      alert("Please log in to proceed.");
+    }
   };
 
   const totalPrice = totalItemsPrice + shippingCost;
