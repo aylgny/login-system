@@ -3,6 +3,7 @@ const router = express.Router();
 const Order = require("../model/orderSchema"); // Path to Order schema
 const User = require("../model/userSchema"); // Path to User schema
 const Product = require("../model/productSchema");
+const sendEmailWithInvoice = require("../routes/sendEmail"); // Adjust the path as necessary
 
 // Get Orders for a User
 router.get("/orders/:userId", async (req, res) => {
@@ -64,7 +65,7 @@ router.post("/orders", async (req, res) => {
     //user.orders.append(newOrder);
 
     // Deduct quantities from the product stocks
-    
+    const invoiceProducts = [];
     for (const item of products) {
       const product = await Product.findById(item.product);
       if (!product) {
@@ -76,6 +77,11 @@ router.post("/orders", async (req, res) => {
       //    `Insufficient stock for product: ${product.name}. Requested: ${item.quantity}, Available: ${product.quantity}`
       //  );
       //}
+      invoiceProducts.push({
+        description: product.name,
+        price: product.price,
+        quantity: item.quantity, // Updated quantity
+      });
 
       product.quantity -= item.quantity;
       await product.save();
@@ -85,7 +91,19 @@ router.post("/orders", async (req, res) => {
 
     user.cart = [];
     await user.save();
+    
+    const userDetails = {
+      name: `${user.firstName} ${user.lastName}`,
+      email: user.email,
+      address: ""
+    };
+    const formatDate = (date) => {
+      const options = { year: 'numeric', day: '2-digit', month: '2-digit' };
+      return date.toLocaleDateString('tr-TR', options);
+    };
+    const currentDate = formatDate(new Date());
 
+    await sendEmailWithInvoice(userDetails, invoiceProducts, currentDate);
     // Sipariş başarıyla oluşturuldu
     res.status(201).json({ message: "Order created successfully", order: newOrder });
 

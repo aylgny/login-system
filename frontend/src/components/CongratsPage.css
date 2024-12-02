@@ -1,0 +1,69 @@
+/* Ana kapsayıcı */
+.congrats-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f9f9f9;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+/* İçerik kapsayıcı */
+.congrats-content {
+  background: #fff;
+  padding: 40px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Başlık */
+h1 {
+  color: #2ecc71;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+/* Metin */
+p {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+/* Onay simgesi */
+.icon {
+  font-size: 3rem;
+  color: #2ecc71;
+  margin-bottom: 20px;
+}
+
+/* Buton grubu */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Butonlar */
+.btn {
+  background-color: #676a6c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #000000;
+}
+
+.btn:active {
+  background-color: #000000;
+}

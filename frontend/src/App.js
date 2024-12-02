@@ -40,6 +40,7 @@ import ShoppingCart from "./components/ShoppingCart";
 import PaymentPage from "./components/PaymentPage";
 import OrdersPage from "./components/Order";
 import AccountPage from "./components/AccountInfo";
+import CongratsPage from "./components/CongratsPage"
 
 
 
@@ -68,6 +69,8 @@ function App() {
 
           <Route path="/order" element={<OrdersPage />} />
           <Route path="/account" element={<AccountPage />} />
+
+          <Route path="/congrats" element={<CongratsPage/>} />
 
 
 

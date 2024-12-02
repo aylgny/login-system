@@ -156,7 +156,7 @@ const ShoppingCart = () => {
     }
   };
 
-  const totalPrice = totalItemsPrice + shippingCost;
+  const totalPrice = totalItemsPrice;
 
   return (
     <Layout>
@@ -221,15 +221,7 @@ const ShoppingCart = () => {
             <span>€ {totalItemsPrice.toFixed(2)}</span>
           </div>
           <div className="summary-item">
-            <label htmlFor="shipping">Shipping </label>
-            <select id="shipping" onChange={handleShippingChange}>
-              <option value="5.00">Standard-Delivery - €5.00</option>
-              <option value="10.00">Express-Delivery - €10.00</option>
-            </select>
-          </div>
-          <div className="summary-item">
-            <label htmlFor="code">Coupon </label>
-            <input type="text" id="code" placeholder="Enter your code" />
+
           </div>
           <div className="summary-total">
             <span>Total Price: </span>

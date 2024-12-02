@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import "./PaymentPage.css";
 import Layout from './Layout';
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-
-
+import "react-credit-cards/es/styles-compiled.css";
+import Cards from "react-credit-cards";
 
 const PaymentPage = () => {
   const [paymentDetails, setPaymentDetails] = useState({
@@ -14,57 +12,71 @@ const PaymentPage = () => {
     cvv: "",
     nameOnCard: "",
     billingAddress: "",
+    focused: "",
+    issuer: "",
   });
 
   const navigate = useNavigate();
 
+  // Card Type Detection
+  const detectCardType = (number) => {
+    const trimmedNumber = number.replace(/\s+/g, ""); // Remove spaces
+    if (/^5[1-5]/.test(trimmedNumber)) {
+      return "mastercard";
+    } else if (/^4/.test(trimmedNumber)) {
+      return "visa";
+    }
+    return "unknown";
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    // Format card number with spaces
+    let formattedValue = value;
+    if (name === "cardNumber") {
+      formattedValue = value.replace(/[^0-9]/g, "").replace(/(.{4})/g, "$1 ").trim();
+      const cardType = detectCardType(formattedValue);
+      setPaymentDetails((prev) => ({ ...prev, issuer: cardType }));
+    }
+
     setPaymentDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: value,
+      [name]: formattedValue,
     }));
   };
 
-  const handleSubmit2 = (e) => {
-    e.preventDefault();
-    console.log("Payment details submitted:", paymentDetails);
-    alert("Payment Successful!");
+  const handleFocus = (e) => {
+    setPaymentDetails((prevDetails) => ({
+      ...prevDetails,
+      focused: e.target.name,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
-    // Example order data
     const orderData = {
       userId: localStorage.getItem("userId"),
-      status: "Processing"
+      status: "Processing",
     };
-
-    //console.log("User ID from localStorage:", );
-
 
     try {
       const response = await fetch("http://localhost:5000/api/orders", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(orderData) // Veriyi JSON formatında gönderiyoruz
+        body: JSON.stringify(orderData),
       });
-  
+
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-  
+
       const data = await response.json();
-      console.log("Order response:", data);
       alert("Payment Successful! Order created.");
-      navigate("/mainpage");
-
-
+      navigate("/congrats");
     } catch (error) {
       console.error("Error creating order:", error);
       alert("Failed to create order. Please try again.");
@@ -75,6 +87,17 @@ const PaymentPage = () => {
     <Layout>
       <div className="payment-page">
         <h1>Secure Payment</h1>
+        
+        {/* Credit Card Visualization */}
+        <Cards
+          cvc={paymentDetails.cvv}
+          expiry={paymentDetails.expirationDate.replace("/", "")}
+          focused={paymentDetails.focused}
+          name={paymentDetails.nameOnCard}
+          number={paymentDetails.cardNumber.replace(/\s+/g, "")}
+          issuer={paymentDetails.issuer}
+        />
+
         <form className="payment-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="nameOnCard">Name on Card</label>
@@ -84,6 +107,7 @@ const PaymentPage = () => {
               name="nameOnCard"
               value={paymentDetails.nameOnCard}
               onChange={handleInputChange}
+              onFocus={handleFocus}
               required
               placeholder="John Doe"
             />
@@ -96,6 +120,7 @@ const PaymentPage = () => {
               name="cardNumber"
               value={paymentDetails.cardNumber}
               onChange={handleInputChange}
+              onFocus={handleFocus}
               required
               placeholder="1234 5678 9012 3456"
               maxLength="19"
@@ -110,6 +135,7 @@ const PaymentPage = () => {
                 name="expirationDate"
                 value={paymentDetails.expirationDate}
                 onChange={handleInputChange}
+                onFocus={handleFocus}
                 required
                 placeholder="MM/YY"
                 maxLength="5"
@@ -123,6 +149,7 @@ const PaymentPage = () => {
                 name="cvv"
                 value={paymentDetails.cvv}
                 onChange={handleInputChange}
+                onFocus={handleFocus}
                 required
                 placeholder="123"
                 maxLength="3"
@@ -137,6 +164,7 @@ const PaymentPage = () => {
               name="billingAddress"
               value={paymentDetails.billingAddress}
               onChange={handleInputChange}
+              onFocus={handleFocus}
               required
               placeholder="1234 Main St, Apt 101"
             />
@@ -145,9 +173,13 @@ const PaymentPage = () => {
             Pay Now
           </button>
         </form>
+
+        {/* Show detected card type */}
+        {paymentDetails.issuer !== "unknown" && (
+          <p className="card-type">Detected Card: {paymentDetails.issuer.toUpperCase()}</p>
+        )}
       </div>
     </Layout>
-
   );
 };
 
