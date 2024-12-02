@@ -157,54 +157,61 @@ router.delete("/cart/remove", async (req, res) => {
   }
 });
 
-// Merge Two Users' Carts
-router.post("/cart/merge", async (req, res) => {
-  const { localUserId } = req.body; // Get logged-in user's ID from the request body
-  const constantUserId = "674cdb83a58ccb372bf49485"; // Constant user ID
 
-  if (!localUserId) {
-    return res.status(400).json({ message: "Local userId is required" });
-  }
-
+// Merge Cart API: Merges the cart of a constant userId with another user's cart
+// Merge and Clear API
+router.post('/cart/merge-and-clear', async (req, res) => {
   try {
-    // Fetch both users
-    const localUser = await User.findById(localUserId).populate("cart.product");
-    const constantUser = await User.findById(constantUserId).populate("cart.product");
+      const constantUserId = "674cdb83a58ccb372bf49485"; // The constant user ID
+      const localUserId = req.body.localUserId || null; // Get userId from the request body or use a fallback
 
-    if (!localUser || !constantUser) {
-      return res.status(404).json({ message: "One or both users not found" });
-    }
-
-    // Merge carts
-    const mergedCart = [...localUser.cart]; // Start with the local user's cart
-    constantUser.cart.forEach((constantCartItem) => {
-      const existingItemIndex = mergedCart.findIndex(
-        (item) => item.product._id.toString() === constantCartItem.product._id.toString()
-      );
-
-      if (existingItemIndex >= 0) {
-        // Update quantity if the product exists
-        mergedCart[existingItemIndex].quantity += constantCartItem.quantity;
-      } else {
-        // Add the item if it doesn't exist in the local user's cart
-        mergedCart.push({
-          product: constantCartItem.product._id,
-          quantity: constantCartItem.quantity,
-        });
+      if (!localUserId) {
+          return res.status(400).json({ message: "Local userId is required in the request body." });
       }
-    });
 
-    // Update the local user's cart
-    localUser.cart = mergedCart;
-    await localUser.save();
+      // Fetch the user carts
+      const constantUser = await User.findById(constantUserId);
+      const localUser = await User.findById(localUserId);
 
-    res.status(200).json({
-      message: "Carts merged successfully",
-      cart: localUser.cart, // Return the updated cart
-    });
+      if (!constantUser || !localUser) {
+          return res.status(404).json({ message: "One or both users not found." });
+      }
+
+      // Ensure both users have carts initialized
+      constantUser.cart = constantUser.cart || [];
+      localUser.cart = localUser.cart || [];
+
+      // Merge carts
+      const mergedCart = [...localUser.cart];
+
+      constantUser.cart.forEach((item) => {
+          const existingItem = mergedCart.find((cartItem) =>
+              cartItem.product.toString() === item.product.toString()
+          );
+
+          if (existingItem) {
+              existingItem.quantity += item.quantity; // Add quantities if the product exists
+          } else {
+              mergedCart.push(item); // Add the new product to the cart
+          }
+      });
+
+      // Update the local user's cart
+      localUser.cart = mergedCart;
+      await localUser.save();
+
+      // Clear the constant user's cart
+      constantUser.cart = [];
+      await constantUser.save();
+
+      // Respond with the merged cart
+      res.status(200).json({
+          message: "Carts merged and cleared successfully",
+          mergedCart: localUser.cart,
+      });
   } catch (error) {
-    console.error("Error merging carts:", error);
-    res.status(500).json({ message: "Failed to merge carts" });
+      console.error("Error merging and clearing carts:", error);
+      res.status(500).json({ message: "Internal server error" });
   }
 });
 

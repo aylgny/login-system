@@ -16,13 +16,39 @@ const Login = () => {
       const response = await axios.post('http://localhost:5000/login', { email, password });
 
       if (response && response.data) { // Check if response and response.data exist
-        //console.log(response.data); // Optional: Debug the response
         const { token, user } = response.data; // Extract token and user object
 
         // Save the token and userId in localStorage
         localStorage.clear();
         localStorage.setItem('token', token);
         localStorage.setItem('userId', user.id); // Save the user ID in localStorage
+        
+        const localUserId = localStorage.getItem("userId");
+        /*const cartData = {
+          userid : user.id
+        };*/
+        try {
+          const mergeResponse  = await axios.post(
+            "http://localhost:5000/api/cart/merge-and-clear",
+            {localUserId}, 
+            {
+              headers: {
+                "Content-Type": "application/json", // Pass userId in headers
+              },
+            }
+          );
+
+          if (mergeResponse.status === 200) {
+            console.log("Carts merged successfully:", mergeResponse.data);
+          } else {
+            throw new Error("Failed to merge carts.");
+          }
+          
+        } catch (mergeError) {
+          console.error("Error merging carts:", mergeError);
+          // Optional: Notify the user of merge errors
+        }
+      
 
         // Redirect the user to the main page
         window.location.href = "/mainpage";
