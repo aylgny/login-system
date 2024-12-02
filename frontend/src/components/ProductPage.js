@@ -138,6 +138,12 @@ const ProductPage = () => {
           <img src={product.photo} alt={product.name} className="product-image" />
           <div className="product-info">
             <h1>{product.name}</h1>
+            {product.model && (
+              <>
+                <p className="product-model">Model: {product.model}</p>
+                <br />
+              </>
+            )}
             <p className="product-category">{product.category}</p>
             <p className="product-description">{product.description}</p>
             <h2>${product.price.toFixed(2)}</h2>
@@ -200,14 +206,14 @@ const ProductPage = () => {
               ))}
             </div>
             <textarea
-  value={comment}
-  onChange={(e) => setComment(e.target.value)}
-  placeholder="Write your review here..."
-  
-  className="review-textarea"
-  rows="6" // Increased from default
-  cols="60" // Adjust as needed
-></textarea>
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Write your review here..."
+              
+              className="review-textarea"
+              rows="6" // Increased from default
+              cols="60" // Adjust as needed
+            ></textarea>
             <button type="submit" className="submit-review-button" disabled={submitting}>
               {submitting ? "Submitting..." : "Submit Review"}
             </button>
