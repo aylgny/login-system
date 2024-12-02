@@ -24,34 +24,57 @@ router.get("/orders/:userId", async (req, res) => {
   }
 });
 
-// Add Order
 router.post("/orders", async (req, res) => {
   try {
-    const { userId, products, status } = req.body;
+    const { userId, status } = req.body;
 
-    if (!userId || !products || products.length === 0) {
-      return res.status(400).json({ message: "Invalid order data" });
+    // User ID ve Cart'in olup olmadığını kontrol et
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
     }
 
-    // Validate the user exists
-    const userExists = await User.findById(userId);
-    if (!userExists) {
+    // Kullanıcıyı veritabanında bul
+    const user = await User.findById(userId);
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Create a new order
+    // Kullanıcının sepetinde ürün olup olmadığını kontrol et
+    if (!user.cart || user.cart.length === 0) {
+      return res.status(400).json({ message: "Cart is empty" });
+    }
+
+    // Sipariş için ürün bilgilerini cart'tan al
+    const products = user.cart.map(item => ({
+      product: item.product,
+      quantity: item.quantity,
+    }));
+
+    // Yeni siparişi oluştur
     const newOrder = new Order({
       user: userId,
       products,
-      status: status || "Processing", // Default to "Processing" if not provided
+      status: status || "Processing", // Varsayılan durum "Processing"
     });
 
+    // Siparişi kaydet
     await newOrder.save();
+
+    //user.orders.append(newOrder);
+
+
+    user.cart = [];
+    await user.save();
+
+    // Sipariş başarıyla oluşturuldu
     res.status(201).json({ message: "Order created successfully", order: newOrder });
+
   } catch (error) {
     console.error("Error creating order:", error);
     res.status(500).json({ message: "Failed to create order", error: error.message });
   }
 });
+
+
 
 module.exports = router;

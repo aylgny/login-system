@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import "./PaymentPage.css";
 import Layout from './Layout';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+
 
 
 const PaymentPage = () => {
@@ -12,6 +16,9 @@ const PaymentPage = () => {
     billingAddress: "",
   });
 
+  const navigate = useNavigate();
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setPaymentDetails((prevDetails) => ({
@@ -20,10 +27,48 @@ const PaymentPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit2 = (e) => {
     e.preventDefault();
     console.log("Payment details submitted:", paymentDetails);
     alert("Payment Successful!");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+
+    // Example order data
+    const orderData = {
+      userId: localStorage.getItem("userId"),
+      status: "Processing"
+    };
+
+    //console.log("User ID from localStorage:", );
+
+
+    try {
+      const response = await fetch("http://localhost:5000/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(orderData) // Veriyi JSON formatında gönderiyoruz
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      console.log("Order response:", data);
+      alert("Payment Successful! Order created.");
+      navigate("/mainpage");
+
+
+    } catch (error) {
+      console.error("Error creating order:", error);
+      alert("Failed to create order. Please try again.");
+    }
   };
 
   return (
