@@ -259,7 +259,7 @@ const OrdersPage = () => {
       });
 
       if (response.status === 200) {
-        alert('Your review has been submitted successfully!');
+        // alert('Your review has been submitted successfully!');
         handleCloseModal();
       }
     } catch (error) {

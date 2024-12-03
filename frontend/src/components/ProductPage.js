@@ -83,7 +83,7 @@ const ProductPage = () => {
       quantity: 1, // Default quantity to add
     });
   
-      alert(response.data.message || "Product added to cart!");
+      // alert(response.data.message || "Product added to cart!");
     } catch (error) {
       console.error("Error adding to cart:", error);
   

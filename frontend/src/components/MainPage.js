@@ -218,7 +218,7 @@ const MainPage = () => {
                 src={require("../assets/icons/shopping.png")}
                 alt="Cart"
               />
-              <span class="cart-count">3</span>
+              {/* <span class="cart-count">3</span> */}
 
             </Link>
           </div>
