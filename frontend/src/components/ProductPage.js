@@ -166,12 +166,14 @@ const ProductPage = () => {
   const approvedRatings = product.ratings.filter(
     (rating) => rating.approved === "true" || rating.approved === true
   );
-
+ 
+debugger;
   const averageRating =
-    approvedRatings.length > 0
+  
+  product.ratings.length > 0
       ? (
-          approvedRatings.reduce((acc, curr) => acc + curr.rating, 0) /
-          approvedRatings.length
+        product.ratings.reduce((acc, curr) => acc + curr.rating, 0) /
+        product.ratings.length
         ).toFixed(1)
       : null;
 

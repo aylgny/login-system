@@ -249,7 +249,6 @@ const OrdersPage = () => {
     }
 
     setIsSubmitting(true);
-
     try {
       // Send POST request to the backend to submit the review
       const response = await axios.post(`http://localhost:5000/api/products/${selectedProduct._id}/reviews`, {
