@@ -207,22 +207,29 @@ const ProductPage = () => {
         </div>
 
         {/* Ratings and Reviews Section */}
+        {/* Ratings and Reviews Section */}
         <div className="reviews-section">
           <h2>Customer Reviews</h2>
           {product.ratings.length > 0 ? (
-            product.ratings.map((rating, index) => (
-              <div key={index} className="review-item">
-                <p className="review-rating">⭐ {rating.rating}/5</p>
-                <p className="review-comment">"{rating.comment}"</p>
-                <p className="review-user">
-                  - {userMap[rating.user] || "Anonymous User"}
-                </p>
-              </div>
-            ))
+            product.ratings
+              .filter((rating) => rating.approved === "true" || rating.approved === true) // Filter approved reviews
+              .map((rating, index) => (
+                <div key={index} className="review-item">
+                  <p className="review-rating">⭐ {rating.rating}/5</p>
+                  <p className="review-comment">{rating.comment}</p>
+                  <p className="review-user">
+                     {userMap[rating.user] || "Anonymous User"}
+                  </p>
+                </div>
+              ))
           ) : (
             <p>No reviews yet.</p>
           )}
         </div>
+
+
+          
+
 
         {/* Add Review Section */}
         {/* <div className="reviews-section">
