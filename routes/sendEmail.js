@@ -154,7 +154,7 @@ const sendEmailWithInvoice = async (userDetails, invoiceProducts, invoiceDate) =
     const mailOptions = {
       from: 'cs308projectmail1276@gmail.com',
       to: email, // Send to the user's email
-      subject: 'Login Notification with Invoice',
+      subject: 'Thank you for your purchase, your invoice is attached',
       text: `Hello ${name},\n\nThank you for logging in! Please find your invoice attached.`,
       attachments: [
         {
