@@ -155,7 +155,7 @@ const sendEmailWithInvoice = async (userDetails, invoiceProducts, invoiceDate) =
       from: 'cs308projectmail1276@gmail.com',
       to: email, // Send to the user's email
       subject: 'Thank you for your purchase, your invoice is attached',
-      text: `Hello ${name},\n\nThank you for logging in! Please find your invoice attached.`,
+      text: `Hello ${name},\n\n Please find your invoice attached.`,
       attachments: [
         {
           filename: path.basename(pdfPath),
