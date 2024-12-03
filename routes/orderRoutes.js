@@ -103,9 +103,13 @@ router.post("/orders", async (req, res) => {
     };
     const currentDate = formatDate(new Date());
 
-    await sendEmailWithInvoice(userDetails, invoiceProducts, currentDate);
-    // Sipariş başarıyla oluşturuldu
-    res.status(201).json({ message: "Order created successfully", order: newOrder });
+    var pdfPath = await sendEmailWithInvoice(userDetails, invoiceProducts, currentDate);
+    // Sipariş başarıyla oluşturuldu (Order successfully created)
+    res.status(201).json({ 
+        message: "Order created successfully", 
+        order: newOrder,
+        pdfPath: pdfPath // Include the pdfPath here
+    });
 
   } catch (error) {
     console.error("Error creating order:", error);

@@ -9,11 +9,11 @@ const createInvoicePDF = (name, email, address, invoiceProducts, invoiceDate) =>
       // Create a unique filename based on timestamp
       const timestamp = new Date().toISOString().replace(/[:.-]/g, '_');
       const fileName = `invoice_${timestamp}.pdf`;
-      const filePath = path.join('./invoices', fileName);
+      const filePath = path.join(`./frontend/public/invoices`, fileName);
   
       // Ensure the `invoices` directory exists
-      if (!fs.existsSync('./invoices')) {
-        fs.mkdirSync('./invoices');
+      if (!fs.existsSync(`./frontend/public/invoices`)) {
+        fs.mkdirSync(`./frontend/public/invoices`);
       }
   
       const doc = new PDFDocument({ margin: 50 });
@@ -167,6 +167,8 @@ const sendEmailWithInvoice = async (userDetails, invoiceProducts, invoiceDate) =
     // Send the email
     await transporter.sendMail(mailOptions);
     console.log(`Email sent with invoice attached: ${pdfPath}`);
+    return pdfPath;
+
   } catch (error) {
     console.error('Error sending email with invoice:', error);
   }

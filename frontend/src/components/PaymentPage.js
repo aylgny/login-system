@@ -73,10 +73,16 @@ const PaymentPage = () => {
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-
+      debugger;
       const data = await response.json();
-      alert("Payment Successful! Order created.");
-      navigate("/congrats");
+      const sanitizedPdfPath = data.pdfPath.replace(/^invoices[\\/]/, '');
+      const filePath = sanitizedPdfPath;
+      // Split the path using both backslash and forward slash as separators
+      const parts = filePath.split(/[/\\]/);
+      
+      // Get the last part, which should be the filename
+      const fileName = parts.pop();      
+      navigate(`/congrats/${fileName}`);
     } catch (error) {
       console.error("Error creating order:", error);
       alert("Failed to create order. Please try again.");

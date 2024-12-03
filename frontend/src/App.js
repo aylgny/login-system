@@ -70,7 +70,7 @@ function App() {
           <Route path="/order" element={<OrdersPage />} />
           <Route path="/account" element={<AccountPage />} />
 
-          <Route path="/congrats" element={<CongratsPage/>} />
+          <Route path="/congrats/:pdfPath" element={<CongratsPage/>} />
 
 
 

@@ -225,7 +225,7 @@ const ProductPage = () => {
         </div>
 
         {/* Add Review Section */}
-        <div className="reviews-section">
+        {/* <div className="reviews-section">
           <h2>Add a Review</h2>
           <form onSubmit={handleSubmitReview} className="review-form">
             <div className="star-rating">
@@ -254,7 +254,7 @@ const ProductPage = () => {
               {submitting ? "Submitting..." : "Submit Review"}
             </button>
           </form>
-        </div>
+        </div> */}
       </div>
     </Layout>
   );
