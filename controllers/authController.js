@@ -80,7 +80,7 @@ const loginUser = async (req, res) => {
         email: user.email,
         address: "User Address (You can add dynamically if available)"
       };
-      await sendEmailWithInvoice(userDetails, invoiceProducts);
+      // await sendEmailWithInvoice(userDetails, invoiceProducts);
 
       // Respond with user details (excluding password) and token
       res.status(200).json({
