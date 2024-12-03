@@ -290,8 +290,8 @@ const MainPage = () => {
         <select id="sort" value={sortCriteria} onChange={handleSortChange}>
           <option value="price-asc">Price: Low to High</option>
           <option value="price-desc">Price: High to Low</option>
-          <option value="popularity-desc">Popularity: Low to High</option>
-          <option value="popularity-asc">Popularity: High to Low</option>
+          <option value="popularity-desc">Popularity: High to Low</option>
+          <option value="popularity-asc">Popularity: Low to High</option>
         </select>
       </div>
 
