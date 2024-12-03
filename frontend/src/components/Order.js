@@ -331,7 +331,7 @@ const OrdersPage = () => {
               />
               <div className="modal-product-info">
                 <h2>{selectedProduct.name}</h2>
-                {selectedOrderStatus === 'Delivered' ? (
+                {selectedOrderStatus === 'delivered' ? (
   <p><strong>Description:</strong> {selectedProduct.description || 'No description available.'}</p>
 ) : (
   <p>You cannot write a review before delivery.</p>
@@ -375,7 +375,7 @@ const OrdersPage = () => {
                   <button
                     type="submit"
                     className="submit-button"
-                    disabled={selectedOrderStatus !== 'Delivered' || isSubmitting} // Disable based on order status
+                    disabled={selectedOrderStatus !== 'delivered' || isSubmitting} // Disable based on order status
                   >
                     {isSubmitting ? 'Submitting...' : 'Submit Review'}
                   </button>
