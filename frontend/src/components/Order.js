@@ -365,7 +365,6 @@ const OrdersPage = () => {
                     placeholder="Write your review here..."
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    required
                   ></textarea>
                 </div>
 

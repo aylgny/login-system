@@ -65,6 +65,7 @@ const productSchema = new mongoose.Schema({
       comment: {
         type: String,
         trim: true,
+        requeired: false
       },
       approved: {
         type: Boolean,

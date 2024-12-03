@@ -54,7 +54,7 @@ router.post("/products/:productId/reviews", async (req, res) => {
   const { productId } = req.params;
   const { userId, rating, comment } = req.body;
 
-  if (!userId || !rating || !comment) {
+  if (!userId || !rating) {
     return res.status(400).json({ message: "All fields are required." });
   }
 
