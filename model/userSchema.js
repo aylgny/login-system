@@ -48,6 +48,11 @@ const userSchema = new mongoose.Schema({
       ref: "Order", // Reference to the Order schema
     },
   ],
+  wishlist: [
+    {
+      product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" }, // Reference to Product schema
+    },
+  ],
 });
 
 // Hashing password before saving in database
