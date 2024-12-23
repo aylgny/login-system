@@ -60,6 +60,12 @@ const Header = () => {
           </Link>
         </div>
 
+        <div className="wishlist-icon">
+          <Link to="/wishlist">
+            <img src={require("../assets/icons/wishlist.png")} alt="Wishlist" />
+          </Link>
+        </div>
+
         {/* Account Icon */}
         <div
           className="user-icon-container"

@@ -37,6 +37,7 @@ import Signup from './components/Signup'; // Import your Signup component
 import MainPage from './components/MainPage';
 import ProductPage from "./components/ProductPage";
 import ShoppingCart from "./components/ShoppingCart";
+import Wishlist from "./components/Wishlist";
 import PaymentPage from "./components/PaymentPage";
 import OrdersPage from "./components/Order";
 import AccountPage from "./components/AccountInfo";
@@ -64,6 +65,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
 
           <Route path="/cart" element={<ShoppingCart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
 
           <Route path="/payment" element={<PaymentPage />} />
 

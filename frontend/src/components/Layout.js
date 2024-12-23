@@ -14,6 +14,7 @@ import laptopsIcon from "../assets/icons/laptop.png";
 import speakersIcon from "../assets/icons/speaker.png";
 import tvsIcon from "../assets/icons/tv.png";
 import GearTechLogo from '../assets/icons/geartech.png';
+import wishlistIcon from '../assets/icons/wishlist.png';
 
 // Map categories to icons
 const categoryIcons = {
@@ -163,6 +164,14 @@ const Layout = ({ children }) => {
             </Link>
           </div>
 
+          {localStorage.getItem("token") && (
+          <div className="wishlist-icon">
+            <Link to="/wishlist">
+              <img src={require("../assets/icons/wishlist.png")} alt="Wishlist" />
+            </Link>
+          </div>
+          )}
+          
           <div className="user-icon-container" onClick={handleAccountClick}>
             <img src={userIcon} alt="User Icon" className="user-icon" />
             {dropdownOpen && (

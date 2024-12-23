@@ -10,6 +10,7 @@ const ProductPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userMap, setUserMap] = useState({}); // Map for storing user info
+  const [isWishlisted, setIsWishlisted] = useState(false); // Wishlist status
 
   // New states for review
   const [rating, setRating] = useState(0);
@@ -35,34 +36,54 @@ const ProductPage = () => {
   }, [productId]); // Run the effect when productId changes
 
   useEffect(() => {
-    // Fetch user details for each review
-    const fetchUserDetails = async () => {
-      if (!product || product.ratings.length === 0) return;
-
-      const userIds = product.ratings.map((rating) => rating.user);
-      const uniqueUserIds = [...new Set(userIds)];
+    // Check if the product is in the wishlist
+    const checkWishlistStatus = async () => {
+      let userId = localStorage.getItem("userId");
+      if (!userId) {
+        userId = "674cdb83a58ccb372bf49485"; // Default userId
+      }
 
       try {
-        const userResponses = await Promise.all(
-          uniqueUserIds.map((userId) =>
-            axios.get(`http://localhost:5000/api/user/${userId}`)
-          )
-        );
-
-        const userDetails = userResponses.reduce((acc, response) => {
-          const user = response.data;
-          acc[user._id] = `${user.firstName} ${user.lastName}`;
-          return acc;
-        }, {});
-
-        setUserMap(userDetails);
+        const response = await axios.get(`http://localhost:5000/api/wishlist/${userId}`);
+        const wishlist = response.data.wishlist || [];
+        const isInWishlist = wishlist.some((item) => item.product._id === productId);
+        setIsWishlisted(isInWishlist);
       } catch (error) {
-        console.error("Error fetching user details:", error);
+        console.error("Error checking wishlist status:", error);
       }
     };
 
-    fetchUserDetails();
-  }, [product]);
+    checkWishlistStatus();
+  }, [productId]);
+
+  const toggleWishlist = async () => {
+    let userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("Please log in to proceed.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/wishlist", {
+        userId,
+        productId,
+      });
+
+      if (response.data.message.includes("added")) {
+        setIsWishlisted(true);
+        alert("Product added to wishlist.");
+      } else if (response.data.message.includes("removed")) {
+        setIsWishlisted(false);
+        alert("Product removed from wishlist.");
+      }
+    } catch (error) {
+      console.error("Error toggling wishlist:", error);
+      alert(
+        error.response?.data?.message ||
+          "An error occurred while updating the wishlist."
+      );
+    }
+  };
 
   const handleAddToCart = async () => {
     let userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
@@ -166,11 +187,9 @@ const ProductPage = () => {
   const approvedRatings = product.ratings.filter(
     (rating) => rating.approved === "true" || rating.approved === true
   );
- 
-debugger;
+
   const averageRating =
-  
-  product.ratings.length > 0
+    product.ratings.length > 0
       ? (
         product.ratings.reduce((acc, curr) => acc + curr.rating, 0) /
         product.ratings.length
@@ -230,6 +249,18 @@ debugger;
             >
               {product.quantity > 0 ? "Add to Cart" : "Out of Stock"}
             </button>
+
+            {/* Wishlist Button */}
+            <button
+              className={`wishlist-button ${
+                isWishlisted ? "wishlisted" : ""
+              }`}
+              onClick={toggleWishlist}
+            >
+              {isWishlisted
+                ? "❤️"
+                : "🤍"}
+            </button>
           </div>
         </div>
 
@@ -258,37 +289,6 @@ debugger;
             <p>No reviews yet.</p>
           )}
         </div>
-
-        {/* Add Review Section */}
-        {/* <div className="reviews-section">
-          <h2>Add a Review</h2>
-          <form onSubmit={handleSubmitReview} className="review-form">
-            <div className="star-rating">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span
-                  key={star}
-                  className={`star ${star <= (hoverRating || rating) ? "filled" : ""}`}
-                  onClick={() => setRating(star)}
-                  onMouseEnter={() => setHoverRating(star)}
-                  onMouseLeave={() => setHoverRating(null)}
-                >
-                  &#9733;
-                </span>
-              ))}
-            </div>
-            <textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="Write your review here..."
-              className="review-textarea"
-              rows="6" // Increased from default
-              cols="60" // Adjust as needed
-            ></textarea>
-            <button type="submit" className="submit-review-button" disabled={submitting}>
-              {submitting ? "Submitting..." : "Submit Review"}
-            </button>
-          </form>
-        </div> */}
       </div>
     </Layout>
   );
