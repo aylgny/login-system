@@ -13,7 +13,7 @@ router.get('/categories', async (req, res) => {
 });
 
 // Route to create a new category
-router.post('/categories', async (req, res) => {
+router.post('/addCategory', async (req, res) => {
   const { name } = req.body;
   try {
     // Check if category already exists
@@ -31,7 +31,7 @@ router.post('/categories', async (req, res) => {
 });
 
 // Optional: Route to delete a category
-router.delete('/categories/:id', async (req, res) => {
+router.delete('/deleteCategory/:id', async (req, res) => {
   try {
     await Category.findByIdAndDelete(req.params.id);
     res.json({ message: 'Category deleted' });
