@@ -4,7 +4,7 @@ const router = express.Router();
 const Product = require('../model/productSchema'); // Product modelinizin yolunu ayarlayın
 
 // POST endpoint to create a new product
-router.post('/products', async (req, res) => {
+router.post('/addProduct', async (req, res) => {
   try {
     const newProduct = new Product(req.body);
     const savedProduct = await newProduct.save();
@@ -18,6 +18,30 @@ router.post('/products', async (req, res) => {
   }
 });
 
+// DELETE endpoint to remove a product by ID
+router.delete('/deleteProduct/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!id) {
+      return res.status(400).json({ message: 'ID not provided' });
+    }
+
+    const deletedProduct = await Product.findByIdAndDelete(id);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.status(200).json({ message: 'Product deleted successfully', deletedProduct });
+  } catch (error) {
+    console.error('Error deleting product:', error.message);
+    res.status(500).json({ 
+      message: 'Error deleting product', 
+      error: error.message 
+    });
+  }
+});
 
 
 // GET endpoint to fetch all products
