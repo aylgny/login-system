@@ -41,7 +41,8 @@ import Wishlist from "./components/Wishlist";
 import PaymentPage from "./components/PaymentPage";
 import OrdersPage from "./components/Order";
 import AccountPage from "./components/AccountInfo";
-import CongratsPage from "./components/CongratsPage"
+import CongratsPage from "./components/CongratsPage";
+import OrdersPageAdmin from "./components/OrderAdmin";
 
 
 
@@ -73,6 +74,7 @@ function App() {
           <Route path="/account" element={<AccountPage />} />
 
           <Route path="/congrats/:pdfPath" element={<CongratsPage/>} />
+          <Route path="/orderAdmin" element={<OrdersPageAdmin />} />
 
 
 
