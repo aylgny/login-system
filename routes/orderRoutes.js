@@ -71,10 +71,21 @@ router.post("/orders", async (req, res) => {
     }
 
     // Sipariş için ürün bilgilerini cart'tan al
-    const products = user.cart.map(item => ({
-      product: item.product,
-      quantity: item.quantity,
-    }));
+    const products = await Promise.all(
+      user.cart.map(async (item) => {
+        const product = await Product.findById(item.product); // Product modelinden ürün bilgisi al
+        if (!product) {
+          throw new Error(`Product with ID ${item.product} not found`);
+        }
+    
+        return {
+          product: item.product, // Product ID
+          quantity: item.quantity, // Kullanıcının istediği miktar
+          price: product.current_price, // Product modelinden current_price
+        };
+      })
+    );
+    
 
     // Yeni siparişi oluştur
     
@@ -89,27 +100,23 @@ router.post("/orders", async (req, res) => {
         throw new Error(`Product with ID ${item.product} not found`);
       }
 
-      //if (product.quantity < item.quantity) {
-      //  throw new Error(
-      //    `Insufficient stock for product: ${product.name}. Requested: ${item.quantity}, Available: ${product.quantity}`
-      //  );
-      //}
+
       invoiceProducts.push({
         description: product.name,
-        price: product.price,
-        quantity: item.quantity, // Updated quantity
+        price: product.current_price, // Make sure this is a valid number
+        quantity: item.quantity,
       });
 
       product.quantity -= item.quantity;
       await product.save();
     }
-
+    
     // Yeni siparişi oluştur
     const newOrder = new Order({
       user: userId,
       products,
       status: status || "Processing", // Varsayılan durum "Processing",
-      invoice_id: currentTimestamp,
+      //invoice_id: currentTimestamp,
     });
 
     // Siparişi kaydet
@@ -123,7 +130,7 @@ router.post("/orders", async (req, res) => {
     const userDetails = {
       name: `${user.firstName} ${user.lastName}`,
       email: user.email,
-      address: "",
+      address: "empty hard coded adress for now",
     };
     const formatDate = (date) => {
       const options = { year: 'numeric', day: '2-digit', month: '2-digit' };
@@ -132,9 +139,9 @@ router.post("/orders", async (req, res) => {
     const currentDate = formatDate(new Date());
 
 
-
+    
     var pdfPath = await sendEmailWithInvoice(userDetails, invoiceProducts, currentDate);
-
+    
     
     // Sipariş başarıyla oluşturuldu (Order successfully created)
     res.status(201).json({ 
@@ -162,16 +169,17 @@ router.post('/create-invoice', async (req, res) => {
     }
 
     // Verileri hazırlama
-    const name = user.firstName + " " + user.lastName;
+    const name = `${user.firstName} ${user.lastName}`;
     const email = user.email;
     //const invoiceDate = new Date().toISOString().split('T')[0]; // Tarihi 'YYYY-MM-DD' formatında alır
     const formatDate = (date) => {
       const options = { year: 'numeric', day: '2-digit', month: '2-digit' };
       return date.toLocaleDateString('tr-TR', options);
     };
+    const products = order.products;
     const invoiceDate = formatDate(new Date());
 
-    const products = order.products;
+    
 
 
     const invoiceProducts = [];
@@ -188,15 +196,16 @@ router.post('/create-invoice', async (req, res) => {
       //}
       invoiceProducts.push({
         description: product.name,
-        price: product.price,
-        quantity: item.quantity, // Updated quantity
+        price: product.current_price, // Make sure this is a valid number
+        quantity: item.quantity,
       });
 
     }
 
     // PDF oluşturma
-    const filePath = await createInvoiceAdmin(name, email, invoiceProducts, invoiceDate);
-
+    const filePath = await createInvoiceAdmin(userDetails, invoiceProducts, invoiceDate);
+    
+    
     // PDF'i istemciye döndürme
     res.status(200).json({
       message: 'Invoice created successfully',

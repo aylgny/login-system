@@ -6,7 +6,8 @@ const Order = require("../model/orderSchema"); // Path to Order schema
 const User = require("../model/userSchema"); // Path to User schema
 
 // Function to create the PDF
-const createInvoicePDF = (name, email, address, invoiceProducts, invoiceDate) => { // Added invoiceDate parameter
+const createInvoicePDF = (userDetails, invoiceProducts, invoiceDate) => { // Added invoiceDate parameter
+    const { name, email, address } = userDetails;
     return new Promise((resolve, reject) => {
       // Create a unique filename based on timestamp
       const timestamp = new Date().toISOString().replace(/[:.-]/g, '_');
@@ -138,11 +139,12 @@ const createInvoicePDF = (name, email, address, invoiceProducts, invoiceDate) =>
 
 // Function to send an email with the generated invoice
 const sendEmailWithInvoice = async (userDetails, invoiceProducts, invoiceDate) => { // Added invoiceDate parameter
-  const { name, email, address } = userDetails;
+  
+  //const { name, email, address } = userDetails;
 
   try {
     // Generate Invoice PDF
-    const pdfPath = await createInvoicePDF(name, email, address, invoiceProducts, invoiceDate); // Pass invoiceDate
+    const pdfPath = await createInvoicePDF(userDetails, invoiceProducts, invoiceDate); // Pass invoiceDate
 
     // Email setup
     const transporter = nodemailer.createTransport({
@@ -176,8 +178,9 @@ const sendEmailWithInvoice = async (userDetails, invoiceProducts, invoiceDate) =
   }
 };
 
-const createInvoiceAdmin = async (name, email, invoiceProducts, invoiceDate) => {
-
+const createInvoiceAdmin = async (userDetails, invoiceProducts, invoiceDate) => {
+  const { name, email, address } = userDetails;
+  
   return new Promise((resolve, reject) => {
     // Create a unique filename based on timestamp
     const timestamp = new Date().toISOString().replace(/[:.-]/g, '_');
