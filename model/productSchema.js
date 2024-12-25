@@ -68,8 +68,9 @@ const productSchema = new mongoose.Schema({
         requeired: false
       },
       approved: {
-        type: Boolean,
-        default: false,
+        type: String,
+        enum: ["waiting", "approved", "rejected"], // Valid states for this field
+        default: "waiting", // Default value
       },
     },
   ],

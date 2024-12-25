@@ -185,7 +185,7 @@ const ProductPage = () => {
 
   // Calculate average rating for approved reviews
   const approvedRatings = product.ratings.filter(
-    (rating) => rating.approved === "true" || rating.approved === true
+    (rating) => rating.approved === "approved"
   );
 
   const averageRating =
