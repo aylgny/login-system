@@ -53,6 +53,12 @@ const userSchema = new mongoose.Schema({
       product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" }, // Reference to Product schema
     },
   ],
+  // New `status` field
+  status: {
+    type: String,
+    enum: ["customer", "sales_manager", "product_owner"], // Allowed values
+    default: "customer", // Default value
+  },
 });
 
 // Hashing password before saving in database
