@@ -74,6 +74,12 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
+  discount: {
+    type: Number,
+    default: 0, // 0% discount by default
+    min: 0,     // discount must be >= 0
+    max: 100,   // discount must be <= 100
+  },
 });
 
 module.exports = mongoose.model('Product', productSchema);
