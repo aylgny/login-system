@@ -387,45 +387,45 @@ router.put('/products/quantity', async (req, res) => {
  * 
  * 
  */
-router.put('/products/discount', async (req, res) => {
+router.put("/products/discount", async (req, res) => {
+  const { productId, newDiscount } = req.body;
+
+  if (!productId || typeof newDiscount !== "number") {
+    return res.status(400).json({ message: "Invalid request data." });
+  }
+
+  if (newDiscount < 0 || newDiscount > 100) {
+    return res.status(400).json({ message: "Discount must be between 0 and 100." });
+  }
+
   try {
-    const { productId, newDiscount } = req.body;
+    const product = await Product.findById(productId);
 
-    if (!productId || typeof newDiscount !== 'number') {
-      return res.status(400).json({ 
-        message: "Provide 'productId' and a numeric 'newDiscount' field."
-      });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found." });
     }
 
-    // Ensure discount is within acceptable range:
-    if (newDiscount < 0 || newDiscount > 100) {
-      return res.status(400).json({
-        message: "Discount value must be between 0 and 100."
-      });
-    }
+    // Update discount
+    product.discount = newDiscount;
 
-    const updatedProduct = await Product.findByIdAndUpdate(
-      productId,
-      { discount: newDiscount },
-      { new: true } // Return the updated doc
-    );
+    // Calculate the current price manually
+    product.current_price = product.price - (product.price * product.discount) / 100;
 
-    if (!updatedProduct) {
-      return res.status(404).json({ message: 'Product not found.' });
-    }
+    // Save the updated product
+    await product.save();
 
-    return res.status(200).json({
-      message: 'Product discount updated successfully.',
-      updatedProduct,
+    res.status(200).json({
+      message: "Product discount and current price updated successfully.",
+      updatedProduct: product,
     });
   } catch (error) {
-    console.error('Error updating product discount:', error);
-    return res.status(500).json({
-      message: 'Error updating product discount.',
-      error: error.message,
-    });
+    console.error("Error updating product discount:", error);
+    res.status(500).json({ message: "Error updating product discount.", error });
   }
 });
+
+module.exports = router;
+
 
 
 module.exports = router;
