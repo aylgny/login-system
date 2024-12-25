@@ -179,6 +179,12 @@ router.post('/create-invoice', async (req, res) => {
     const products = order.products;
     const invoiceDate = formatDate(new Date());
 
+    const userDetails = {
+      name: name,
+      email: email,
+      address: "empty hard coded adress for now",
+    };
+
     
 
 
