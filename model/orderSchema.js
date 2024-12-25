@@ -10,8 +10,19 @@ const orderSchema = new mongoose.Schema({
     {
       product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" }, // Reference to Product schema
       quantity: { type: Number, required: true, min: 1 },
+      price: { type: Number, required: true, min: 0 }, // Added price attribute
     },
   ],
+  address: {
+    type: String, // Added address field
+    required: true, // Address is required for an order
+    trim: true,
+  },
+  invoiceid: {
+    type: String, // Added invoiceid field
+    required: true, // invoiceid is required for an order
+    trim: true,
+  },
   status: {
     type: String,
     enum: ["Processing", "Shipped", "Delivered", "Cancelled"],
