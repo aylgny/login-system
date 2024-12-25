@@ -327,4 +327,52 @@ router.put('/products/price', async (req, res) => {
 });
 
 
+/**
+ * PUT endpoint to update a product's quantity
+ http://localhost:5000/api/products/quantity
+  {
+  "productId": "6743459455a7b0084cc00cc2",
+  "newQuantity": 20
+  }
+ * 
+ * 
+ * 
+ */
+router.put('/products/quantity', async (req, res) => {
+  try {
+    const { productId, newQuantity } = req.body;
+
+    // Validate inputs
+    if (!productId || typeof newQuantity !== 'number') {
+      return res.status(400).json({ 
+        message: "Please provide 'productId' and a numeric 'newQuantity'." 
+      });
+    }
+
+    // Find and update the product
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      { quantity: newQuantity },
+      { new: true } // Returns the updated document instead of the old one
+    );
+
+    // If no product found
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found.' });
+    }
+
+    // Success response
+    res.status(200).json({
+      message: 'Product quantity updated successfully.',
+      updatedProduct,
+    });
+  } catch (error) {
+    console.error('Error updating product quantity:', error);
+    res.status(500).json({
+      message: 'An error occurred while updating the product quantity.',
+      error: error.message,
+    });
+  }
+});
+
 module.exports = router;
