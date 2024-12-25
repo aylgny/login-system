@@ -375,4 +375,57 @@ router.put('/products/quantity', async (req, res) => {
   }
 });
 
+
+/**
+ * PUT endpoint to update a product's discount
+ http://localhost:5000/api/products/disscount
+  {
+  "productId": "64ff90c3b97d01f1a1234567",
+  "newDiscount": 20
+}
+ * 
+ * 
+ * 
+ */
+router.put('/products/discount', async (req, res) => {
+  try {
+    const { productId, newDiscount } = req.body;
+
+    if (!productId || typeof newDiscount !== 'number') {
+      return res.status(400).json({ 
+        message: "Provide 'productId' and a numeric 'newDiscount' field."
+      });
+    }
+
+    // Ensure discount is within acceptable range:
+    if (newDiscount < 0 || newDiscount > 100) {
+      return res.status(400).json({
+        message: "Discount value must be between 0 and 100."
+      });
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      { discount: newDiscount },
+      { new: true } // Return the updated doc
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found.' });
+    }
+
+    return res.status(200).json({
+      message: 'Product discount updated successfully.',
+      updatedProduct,
+    });
+  } catch (error) {
+    console.error('Error updating product discount:', error);
+    return res.status(500).json({
+      message: 'Error updating product discount.',
+      error: error.message,
+    });
+  }
+});
+
+
 module.exports = router;
