@@ -280,4 +280,51 @@ router.post('/reviews/decline', async (req, res) => {
   }
 });
 
+
+/**
+ * PUT endpoint to update a product's price
+ http://localhost:5000/api/products/price
+
+  {
+  "productId": "6743459455a7b0084cc00cc2",
+  "newPrice": 1699.99
+  }
+ 
+ */
+router.put('/products/price', async (req, res) => {
+  try {
+    const { productId, newPrice } = req.body;
+
+    // Validate inputs
+    if (!productId || typeof newPrice !== 'number') {
+      return res.status(400).json({ message: "Please provide 'productId' and a numeric 'newPrice'." });
+    }
+
+    // Find and update the product
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      { price: newPrice },
+      { new: true } // Returns the updated document
+    );
+
+    // If no product found
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found.' });
+    }
+
+    // Success
+    res.status(200).json({
+      message: 'Product price updated successfully.',
+      updatedProduct,
+    });
+  } catch (error) {
+    console.error('Error updating product price:', error);
+    res.status(500).json({
+      message: 'An error occurred while updating the product price.',
+      error: error.message,
+    });
+  }
+});
+
+
 module.exports = router;
