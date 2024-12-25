@@ -32,10 +32,16 @@ const productSchema = new mongoose.Schema({
     required: true,
     min: 0, // Minimum miktar kontrolü (opsiyonel)
   },
+  //base price
   price: {
     type: Number,
     required: true,
-    min: 0, // Minimum fiyat kontrolü (opsiyonel)
+    min: 0, 
+  },
+  //price after discount
+  current_price: {
+    type: Number,
+    min: 0, 
   },
   warrantyStatus: {
     type: Boolean,
@@ -81,5 +87,18 @@ const productSchema = new mongoose.Schema({
     max: 100,   // discount must be <= 100
   },
 });
+
+
+// Middleware to calculate `current_price` before saving
+productSchema.pre("save", function (next) {
+  if (this.isModified("price") || this.isModified("discount")) {
+    // Calculate current_price based on discount and round to 2 decimal places
+    this.current_price = parseFloat(
+      (this.price - (this.price * this.discount) / 100).toFixed(2)
+    );
+  }
+  next();
+});
+
 
 module.exports = mongoose.model('Product', productSchema);
