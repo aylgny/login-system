@@ -260,6 +260,51 @@ router.put("/orders/cancel/:orderId", async (req, res) => {
   }
 });
 
+// Update order status to "In-Transit"
+// http://localhost:5000/api/orders/in-transit/676d9889b6604be935c44b89
+router.put("/orders/in-transit/:orderId", async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    // Find the order
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Update order status to "In-Transit"
+    order.status = "In-Transit";
+    await order.save();
+
+    res.status(200).json({ message: "Order status updated to In-Transit", order });
+  } catch (error) {
+    console.error("Error updating order status to In-Transit:", error);
+    res.status(500).json({ message: "Failed to update order status", error: error.message });
+  }
+});
+
+// Update order status to "Delivered"
+//http://localhost:5000/api/orders/delivered/676d9889b6604be935c44b89
+router.put("/orders/delivered/:orderId", async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    // Find the order
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Update order status to "Delivered"
+    order.status = "Delivered";
+    await order.save();
+
+    res.status(200).json({ message: "Order status updated to Delivered", order });
+  } catch (error) {
+    console.error("Error updating order status to Delivered:", error);
+    res.status(500).json({ message: "Failed to update order status", error: error.message });
+  }
+});
 
 
 module.exports = router;
