@@ -8,6 +8,8 @@ const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes")
+const refundRoutes = require("./routes/refundRoutes")
+
 
 const app = express();
 const PORT = process.env.PORT || 5000; // Ensure flexibility for deployment
@@ -30,6 +32,7 @@ async function startServer() {
         app.use("/api", cartRoutes);
         app.use("/api", orderRoutes);
         app.use("/api", wishlistRoutes);
+        app.use("/api", refundRoutes);
 
         app.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}`);
