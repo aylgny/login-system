@@ -156,6 +156,10 @@
   background-color: #17A2B8; /* Teal */
 }
 
+.status.cancelled {
+  background-color: #e60808; /* Teal */
+}
+
 /* Toggle Icon Styling */
 .toggle-icon {
   display: flex;

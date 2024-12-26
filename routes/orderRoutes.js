@@ -218,6 +218,40 @@ router.post('/create-invoice', async (req, res) => {
 });
 
 
+// Cancel order API
+router.put("/orders/cancel/:orderId", async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    // Find the order
+    const order = await Order.findById(orderId).populate("products.product");
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+
+    // Update stock of each product in the order
+    for (const item of order.products) {
+      const product = item.product; // Populated product
+      if (!product) {
+        return res.status(404).json({ message: `Product with ID ${item.product} not found` });
+      }
+
+      product.quantity += item.quantity; // Restore the stock
+      await product.save();
+    }
+
+    // Update order status to "Cancelled"
+    order.status = "Cancelled";
+    await order.save();
+
+    res.status(200).json({ message: "Order cancelled successfully", order });
+  } catch (error) {
+    console.error("Error cancelling order:", error);
+    res.status(500).json({ message: "Failed to cancel order", error: error.message });
+  }
+});
+
 
 
 module.exports = router;
