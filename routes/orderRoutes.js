@@ -54,23 +54,23 @@ router.post("/orders", async (req, res) => {
   try {
     const { userId, status } = req.body;
 
-    // User ID ve Cart'in olup olmadığını kontrol et
+    // Validate userId
     if (!userId) {
       return res.status(400).json({ message: "User ID is required" });
     }
 
-    // Kullanıcıyı veritabanında bul
+    // Find the user
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Kullanıcının sepetinde ürün olup olmadığını kontrol et
+    // Check if cart is empty
     if (!user.cart || user.cart.length === 0) {
       return res.status(400).json({ message: "Cart is empty" });
     }
 
-    // Sipariş için ürün bilgilerini cart'tan al
+    // Prepare products array with refund_status initialized to false
     const products = await Promise.all(
       user.cart.map(async (item) => {
         const product = await Product.findById(item.product); // Product modelinden ürün bilgisi al
@@ -82,6 +82,7 @@ router.post("/orders", async (req, res) => {
           product: item.product, // Product ID
           quantity: item.quantity, // Kullanıcının istediği miktar
           price: product.current_price, // Product modelinden current_price
+          refund_status: false, // Initialize refund_status to false
         };
       })
     );
