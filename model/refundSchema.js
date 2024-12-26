@@ -7,8 +7,8 @@ const refundSchema = new mongoose.Schema({
   },
   refund_status: {
     type: String,
-    enum: ["waiting", "approved", "declined"], // Valid statuses for the refund
-    default: "waiting", // Default status is "waiting"
+    enum: ["Waiting", "Approved", "Declined"], // Valid statuses for the refund
+    default: "Waiting", // Default status is "waiting"
   },
   products: [
     {
