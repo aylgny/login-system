@@ -219,6 +219,7 @@ router.post('/create-invoice', async (req, res) => {
 
 
 // Cancel order API
+// http://localhost:5000/api/orders/cancel/676c8bf3cdf7f16452137b35
 router.put("/orders/cancel/:orderId", async (req, res) => {
   try {
     const { orderId } = req.params;
