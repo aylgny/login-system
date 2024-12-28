@@ -36,22 +36,27 @@ router.post("/create_refund", async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    // Validate products
-    for (const item of products) {
-      const product = await Product.findById(item.productId);
-      if (!product) {
-        return res.status(404).json({ message: `Product with ID ${item.productId} not found` });
+    // Validate products and get prices
+    const refundProducts = products.map((item) => {
+      const orderProduct = order.products.find(
+        (p) => p.product.toString() === item.productId
+      );
+      if (!orderProduct) {
+        throw new Error(`Product with ID ${item.productId} not found in order`);
       }
-    }
+
+      return {
+        product: item.productId,
+        quantity: item.quantity,
+        price: orderProduct.price, // Get price from order
+      };
+    });
 
     // Create refund request
     const refund = new Refund({
       refund_date: new Date(),
-      refund_status: "Waiting", // Default status
-      products: products.map((item) => ({
-        product: item.productId,
-        quantity: item.quantity,
-      })),
+      refund_status: "waiting", // Default status
+      products: refundProducts,
       order: orderId,
     });
 
