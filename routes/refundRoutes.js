@@ -7,19 +7,20 @@ const Product = require("../model/productSchema");
 // Create a Refund Request
 // http://localhost:5000/api/create_refund
 /**
-    {
-    "orderId": "676d8df153b5b96887aad199",
+  {
+    "orderId": "677044829e3a8e1ab754e273",
     "products": [
-        {
-        "productId": "67433531bb4b140ec62687e3",
-        "quantity": 1
-        },
-        {
-        "productId": "674334d4bb4b140ec62687da",
-        "quantity": 2
-        }
+      {
+        "productId": "676943982c5dd7bfea11437b"
+      },
+      {
+        "productId": "674335b9bb4b140ec62687e9"
+      },
+      {
+        "productId": "674334d4bb4b140ec62687da"
+      }
     ]
-    }
+  }
  */
 router.post("/create_refund", async (req, res) => {
   try {
@@ -50,7 +51,7 @@ router.post("/create_refund", async (req, res) => {
 
       return {
         product: item.productId,
-        quantity: item.quantity,
+        quantity: orderProduct.quantity,
         price: orderProduct.price, // Get price from order
       };
     });
