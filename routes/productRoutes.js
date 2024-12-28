@@ -409,8 +409,8 @@ router.put("/products/discount", async (req, res) => {
     product.discount = newDiscount;
 
     // Calculate the current price manually
-    product.current_price = product.price - (product.price * product.discount) / 100;
-
+    product.current_price = Math.round((product.price - (product.price * product.discount) / 100) * 100) / 100;
+    
     // Save the updated product
     await product.save();
 
