@@ -46,8 +46,6 @@ router.post("/create_refund", async (req, res) => {
         throw new Error(`Product with ID ${item.productId} not found in order`);
       }
 
-      // Update refund_status for the product in the order
-      orderProduct.refund_status = true;
 
       return {
         product: item.productId,
@@ -120,6 +118,25 @@ router.put("/refunds/decline/:refundId", async (req, res) => {
     refund.refund_status = "Declined";
     await refund.save();
 
+    // Find the associated order
+    const order = await Order.findById(refund.order);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found for the refund" });
+    }
+
+    // Update refund_status of the products in the order
+    refund.products.forEach((refundProduct) => {
+      const orderProduct = order.products.find(
+        (p) => p.product.toString() === refundProduct.product.toString()
+      );
+      if (orderProduct) {
+        orderProduct.refund_status = "declined"; // Set to "declined"
+      }
+    });
+
+    // Save the updated order
+    await order.save();
+
     res.status(200).json({
       message: "Refund request declined successfully",
       refund,
@@ -132,4 +149,64 @@ router.put("/refunds/decline/:refundId", async (req, res) => {
     });
   }
 });
+
+// Approve a Refund Request
+router.put("/refunds/approve/:refundId", async (req, res) => {
+  try {
+    const { refundId } = req.params;
+
+    // Find the refund request
+    const refund = await Refund.findById(refundId);
+    if (!refund) {
+      return res.status(404).json({ message: "Refund request not found" });
+    }
+
+    // Update refund status in the Refund schema
+    refund.refund_status = "Approved";
+    await refund.save();
+
+    // Find the associated order
+    const order = await Order.findById(refund.order);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found for the refund" });
+    }
+
+    // Process each refunded product
+    for (const refundProduct of refund.products) {
+      // Update refund_status of the product in the order
+      const orderProduct = order.products.find(
+        (p) => p.product.toString() === refundProduct.product.toString()
+      );
+      if (orderProduct) {
+        orderProduct.refund_status = "approved";
+      }
+
+      // Update the stock of the product
+      const product = await Product.findById(refundProduct.product);
+      if (!product) {
+        return res
+          .status(404)
+          .json({ message: `Product with ID ${refundProduct.product} not found` });
+      }
+      product.quantity += refundProduct.quantity; // Add refunded quantity back to stock
+      await product.save();
+    }
+
+    // Save the updated order
+    await order.save();
+
+    res.status(200).json({
+      message: "Refund request approved successfully, order products updated, and stock restored",
+      refund,
+    });
+  } catch (error) {
+    console.error("Error approving refund request:", error);
+    res.status(500).json({
+      message: "Failed to approve refund request",
+      error: error.message,
+    });
+  }
+});
+
+
 module.exports = router;

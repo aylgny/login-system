@@ -82,7 +82,7 @@ router.post("/orders", async (req, res) => {
           product: item.product, // Product ID
           quantity: item.quantity, // Kullanıcının istediği miktar
           price: product.current_price, // Product modelinden current_price
-          refund_status: false, // Initialize refund_status to false
+          refund_status: "waiting", // Initialize refund_status to false
         };
       })
     );

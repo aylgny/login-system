@@ -11,7 +11,11 @@ const orderSchema = new mongoose.Schema({
       product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" }, // Reference to Product schema
       quantity: { type: Number, required: true, min: 1 },
       price: { type: Number, required: true, min: 0 }, // Added price attribute
-      refund_status: { type: Boolean, default: false }, // Default refund status is false
+      refund_status: {
+        type: String,
+        enum: ["waiting", "declined", "approved"], // Possible values for refund status
+        default: "waiting", // Default refund status is "waiting"
+      },
     },
   ],
   /*address: {
