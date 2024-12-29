@@ -18,8 +18,8 @@ const orderSchema = new mongoose.Schema({
       },
       delivery_status: {
         type: String,
-        enum: ["delivered", "not delivered"], // Possible values for refund status
-        default: "not delivered", // Default refund status is "waiting"
+        enum: ["Processing", "In-Transit", "Delivered", "Cancelled"],
+        default: "Processing",
       },
     },
   ],

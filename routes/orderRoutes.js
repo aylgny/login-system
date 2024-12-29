@@ -83,7 +83,7 @@ router.post("/orders", async (req, res) => {
           quantity: item.quantity, // Kullanıcının istediği miktar
           price: product.current_price, // Product modelinden current_price
           refund_status: "waiting", // Initialize refund_status to false
-          delivery_status: "not delivered",
+          delivery_status: "Processing",
         };
       })
     );
@@ -302,6 +302,72 @@ router.put("/orders/delivered/:orderId", async (req, res) => {
   } catch (error) {
     console.error("Error updating order status to Delivered:", error);
     res.status(500).json({ message: "Failed to update order status", error: error.message });
+  }
+});
+
+// http://localhost:5000/api/orders/6771ae06dd3b6206fb71b842/products/674334fabb4b140ec62687dd/in-transit
+router.put("/orders/:orderId/products/:productId/in-transit", async (req, res) => {
+  try {
+    const { orderId, productId } = req.params;
+
+    // Find the order by ID
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Find the product in the order
+    const orderProduct = order.products.find(
+      (p) => p.product.toString() === productId
+    );
+    if (!orderProduct) {
+      return res.status(404).json({ message: "Product not found in order" });
+    }
+
+    // Update the status of the product to "In-Transit"
+    orderProduct.delivery_status = "In-Transit";
+    await order.save();
+
+    res.status(200).json({
+      message: "Product status updated to 'In-Transit' successfully",
+      order,
+    });
+  } catch (error) {
+    console.error("Error updating product status:", error);
+    res.status(500).json({ message: "Failed to update product status", error: error.message });
+  }
+});
+
+// http://localhost:5000/api/orders/6771ae06dd3b6206fb71b842/products/674334fabb4b140ec62687dd/delivered
+router.put("/orders/:orderId/products/:productId/delivered", async (req, res) => {
+  try {
+    const { orderId, productId } = req.params;
+
+    // Find the order by ID
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Find the product in the order
+    const orderProduct = order.products.find(
+      (p) => p.product.toString() === productId
+    );
+    if (!orderProduct) {
+      return res.status(404).json({ message: "Product not found in order" });
+    }
+
+    // Update the status of the product to "Delivered"
+    orderProduct.delivery_status = "Delivered";
+    await order.save();
+
+    res.status(200).json({
+      message: "Product status updated to 'Delivered' successfully",
+      order,
+    });
+  } catch (error) {
+    console.error("Error updating product status:", error);
+    res.status(500).json({ message: "Failed to update product status", error: error.message });
   }
 });
 
