@@ -52,7 +52,7 @@ router.get("/ordersAdmin", async (req, res) => {
 
 router.post("/orders", async (req, res) => {
   try {
-    const { userId, status } = req.body;
+    const { userId, status, address} = req.body;
 
     // Validate userId
     if (!userId) {
@@ -83,6 +83,7 @@ router.post("/orders", async (req, res) => {
           quantity: item.quantity, // Kullanıcının istediği miktar
           price: product.current_price, // Product modelinden current_price
           refund_status: "waiting", // Initialize refund_status to false
+          delivery_status: "not delivered",
         };
       })
     );
@@ -117,7 +118,7 @@ router.post("/orders", async (req, res) => {
       user: userId,
       products,
       status: status || "Processing", // Varsayılan durum "Processing",
-      //invoice_id: currentTimestamp,
+      address: address,
     });
 
     // Siparişi kaydet
@@ -131,7 +132,7 @@ router.post("/orders", async (req, res) => {
     const userDetails = {
       name: `${user.firstName} ${user.lastName}`,
       email: user.email,
-      address: "empty hard coded adress for now",
+      address: address,
     };
     const formatDate = (date) => {
       const options = { year: 'numeric', day: '2-digit', month: '2-digit' };
@@ -185,8 +186,6 @@ router.post('/create-invoice', async (req, res) => {
       email: email,
       address: "empty hard coded adress for now",
     };
-
-    
 
 
     const invoiceProducts = [];

@@ -16,13 +16,19 @@ const orderSchema = new mongoose.Schema({
         enum: ["waiting", "declined", "approved"], // Possible values for refund status
         default: "waiting", // Default refund status is "waiting"
       },
+      delivery_status: {
+        type: String,
+        enum: ["delivered", "not delivered"], // Possible values for refund status
+        default: "not delivered", // Default refund status is "waiting"
+      },
     },
   ],
-  /*address: {
+  address: {
     type: String, // Added address field
     required: true, // Address is required for an order
     trim: true,
   },
+  /*
   invoiceid: {
     type: String, // Added invoiceid field
     required: true, // invoiceid is required for an order

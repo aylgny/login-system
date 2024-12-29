@@ -140,7 +140,7 @@ const createInvoicePDF = (userDetails, invoiceProducts, invoiceDate) => { // Add
 // Function to send an email with the generated invoice
 const sendEmailWithInvoice = async (userDetails, invoiceProducts, invoiceDate) => { // Added invoiceDate parameter
   
-  //const { name, email, address } = userDetails;
+  const { name, email, address } = userDetails;
 
   try {
     // Generate Invoice PDF
@@ -232,8 +232,8 @@ const createInvoiceAdmin = async (userDetails, invoiceProducts, invoiceDate) => 
     doc.text(`Name: ${name}`, leftMargin, currentY, { align: 'left' });
     currentY = doc.y;
     doc.text(`Email: ${email}`, leftMargin, currentY, { align: 'left' });
-    //currentY = doc.y;
-    //doc.text(`Address: ${address}`, leftMargin, currentY, { align: 'left' });
+    currentY = doc.y;
+    doc.text(`Address: ${address}`, leftMargin, currentY, { align: 'left' });
     doc.moveDown(1);
 
     // Table Header

@@ -43,6 +43,7 @@ import OrdersPage from "./components/Order";
 import AccountPage from "./components/AccountInfo";
 import CongratsPage from "./components/CongratsPage";
 import OrdersPageAdmin from "./components/OrderAdmin";
+import DeliveryListPage from './components/DeliveryListPage';
 
 
 
@@ -75,6 +76,8 @@ function App() {
 
           <Route path="/congrats/:pdfPath" element={<CongratsPage/>} />
           <Route path="/orderAdmin" element={<OrdersPageAdmin />} />
+          <Route path="/deliveryList" element={<DeliveryListPage />} />
+
 
 
 

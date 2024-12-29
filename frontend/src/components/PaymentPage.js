@@ -59,6 +59,7 @@ const PaymentPage = () => {
     const orderData = {
       userId: localStorage.getItem("userId"),
       status: "Processing",
+      address: paymentDetails.billingAddress,
     };
 
     try {
