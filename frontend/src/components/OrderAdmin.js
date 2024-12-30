@@ -4,7 +4,13 @@ import React, { useState, useEffect } from 'react';
 import './OrderAdmin.css';
 import Layout from './Layout';
 import { Link } from 'react-router-dom';
+import { Chart as ChartJS, LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
+
 import axios from 'axios';
+
+ChartJS.register(LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip, Legend);
 
 // Modal Component
 const Modal = ({ show, onClose, children }) => {
@@ -100,10 +106,10 @@ const handleViewInvoice = async (userID, orderID) => {
       const fileUrl = `${process.env.PUBLIC_URL}/invoices/${filePath}`; // Path to the PDF
       window.open(fileUrl, '_blank'); // Open PDF in a new tab
     } else {
-      console.error('Fatura oluşturulamadı:', response.data.message);
+      console.error('Invoice could not be created:', response.data.message);
     }
   } catch (error) {
-    console.error('Fatura oluşturma hatası:', error);
+    console.error('Error creating invoice:', error);
   }
 };
 
@@ -165,10 +171,7 @@ const OrderCard = ({ order, onProductClick }) => {
               ${order.products.reduce((total, p) => total + p.product.price * p.quantity, 0).toFixed(2)}
             </span>
           </div>
-
         </div>
-
-        
 
         <div className="toggle-icon">
           {showProducts ? (
@@ -225,6 +228,13 @@ const OrderCard = ({ order, onProductClick }) => {
 // Main OrdersPage component
 const OrdersPageAdmin = () => {
   const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [profitLossData, setProfitLossData] = useState([]); // Initialize as an empty array
+  const [revenueData, setRevenueData] = useState([]); // Initialize revenue data as an empty array
+  const [showProfitLossChart, setShowProfitLossChart] = useState(false); // Separate state for Profit/Loss chart
+  const [showRevenueChart, setShowRevenueChart] = useState(false); // Separate state for Revenue chart
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -239,6 +249,7 @@ const OrdersPageAdmin = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/ordersAdmin`);
         setOrders(response.data);
+        setFilteredOrders(response.data); // Set initial filtered orders to all orders
       } catch (error) {
         console.error('Error fetching orders:', error);
       } finally {
@@ -249,13 +260,121 @@ const OrdersPageAdmin = () => {
     fetchOrders();
   }, [userId]);
 
-  // Filter orders based on search term
-  const filteredOrders = orders.filter(
-    (order) =>
-      order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.user._id.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filterOrdersByDate = () => {
+    if (!startDate || !endDate) {
+      alert('Please select both start and end dates.');
+      return;
+    }
+
+    const filtered = orders.filter((order) => {
+      const orderDate = new Date(order.purchaseDate);
+      return orderDate >= new Date(startDate) && orderDate <= new Date(endDate);
+    });
+
+    setFilteredOrders(filtered);
+    calculateProfitLoss(filtered);
+    calculateRevenue(filtered);
+  };
+
+  const calculateProfitLoss = async (orders) => {
+    const dailyProfitLoss = {};
+
+    for (const order of orders) {
+      const orderDate = new Date(order.purchaseDate).toLocaleDateString();
+
+      if (!dailyProfitLoss[orderDate]) {
+        dailyProfitLoss[orderDate] = 0;
+      }
+
+      for (const product of order.products) {
+        try {
+          const response = await axios.get(`http://localhost:5000/api/products/${product.product._id}`);
+          const actualProduct = response.data;
+
+          const sellingPrice = product.price;
+          const costPrice = (2 / 3) * actualProduct.price;
+          const quantity = product.quantity;
+          const profitOrLoss = (sellingPrice - costPrice) * quantity;
+
+          dailyProfitLoss[orderDate] += profitOrLoss;
+        } catch (error) {
+          console.error('Error fetching product data:', error);
+        }
+      }
+    }
+
+    const profitLossArray = Object.keys(dailyProfitLoss).map((date) => ({
+      date,
+      profitOrLoss: dailyProfitLoss[date]
+    }));
+
+    setProfitLossData(profitLossArray);
+  };
+
+  const calculateRevenue = (orders) => {
+    const dailyRevenue = {};
+
+    for (const order of orders) {
+      const orderDate = new Date(order.purchaseDate).toLocaleDateString();
+
+      if (!dailyRevenue[orderDate]) {
+        dailyRevenue[orderDate] = 0;
+      }
+
+      const orderTotal = order.products.reduce((total, p) => total + p.product.price * p.quantity, 0);
+      dailyRevenue[orderDate] += orderTotal;
+    }
+
+    const revenueArray = Object.keys(dailyRevenue).map((date) => ({
+      date,
+      revenue: dailyRevenue[date]
+    }));
+
+    setRevenueData(revenueArray);
+  };
+
+  if (loading) return <p>Loading orders...</p>;
+
+  const profitLossChartData = {
+    labels: profitLossData.map(item => item.date),
+    datasets: [
+      {
+        label: 'Daily Profit/Loss',
+        data: profitLossData.map(item => item.profitOrLoss),
+        backgroundColor: profitLossData.map(item => item.profitOrLoss >= 0 ? 'rgba(76, 175, 80, 0.2)' : 'rgba(244, 67, 54, 0.2)'),
+        borderColor: profitLossData.map(item => item.profitOrLoss >= 0 ? 'rgba(76, 175, 80, 1)' : 'rgba(244, 67, 54, 1)'),
+        borderWidth: 1,
+        fill: true,
+      }
+    ]
+  };
+
+  const revenueChartData = {
+    labels: revenueData.map(item => item.date),
+    datasets: [
+      {
+        label: 'Daily Revenue',
+        data: revenueData.map(item => item.revenue),
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+        fill: true,
+      }
+    ]
+  };
+
+  const chartOptions = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function(value) {
+            return '$' + value;
+          }
+        }
+      }
+    }
+  };
 
   // Handler to open modal with product details
   const handleProductClick = (product, orderStatus) => { // Receive both product and orderStatus
@@ -272,9 +391,6 @@ const OrdersPageAdmin = () => {
     setRating(0);
     setComment('');
   };
-
-  
-
 
   // Handler to submit comment and rating
   const handleSubmit = async (e) => {
@@ -312,25 +428,50 @@ const OrdersPageAdmin = () => {
     }
   };
 
-  if (loading) return <p>Loading orders...</p>;
-
   return (
     <Layout>
       <div className="orders-page">
-        
-
-        {/* Orders Container */}
-        <div className="orders-container">
-          <h2>Order History</h2>
+        <h2>Order History</h2>
+        <div className="orders-header">
+          <div className="date-filter">
+            <label>
+              Start Date:
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </label>
+            <label>
+              End Date:
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </label>
+            <button onClick={filterOrdersByDate}>Filter</button>
+            <button onClick={() => setShowProfitLossChart(true)} className="view-chart-button">
+              View Loss-Profit Chart
+            </button>
+            <button onClick={() => setShowRevenueChart(true)} className="view-chart-button">
+              View Revenue Chart
+            </button>
+          </div>
           {/* Search Bar */}
-          <div className="search-bar">
+          {/*<div className="search-bar">
             <input
               type="text"
               placeholder="Search orders by ID or status..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </div>
+          </div>*/}
+        </div>
+
+        {/* Orders Container */}
+        <div className="orders-container">
+          
           {filteredOrders.length === 0 ? (
             <p className="no-orders">No orders found.</p>
           ) : (
@@ -338,7 +479,6 @@ const OrdersPageAdmin = () => {
               <OrderCard key={order._id} order={order} onProductClick={handleProductClick} />
             ))
           )}
-
         </div>
 
         {/* Modal for Product Details */}
@@ -354,18 +494,30 @@ const OrdersPageAdmin = () => {
               <div className="modal-product-info">
                 <h2>{selectedProduct.name}</h2>
                 {selectedOrderStatus === 'delivered' ? (
-  <p><strong>Description:</strong> {selectedProduct.description || 'No description available.'}</p>
-) : (
-  <p>You cannot write a review before delivery.</p>
-)}
+                  <p><strong>Description:</strong> {selectedProduct.description || 'No description available.'}</p>
+                ) : (
+                  <p>You cannot write a review before delivery.</p>
+                )}
                 {/* Add more product details as needed */}
                 <Link to={`/product/${selectedProduct._id}`} className="modal-view-link" onClick={handleCloseModal}>
                   View Product Page
                 </Link>
               </div>
             </div>
+          </Modal>
+        )}
 
+        {showProfitLossChart && (
+          <Modal show={showProfitLossChart} onClose={() => setShowProfitLossChart(false)}>
+            <h3>Profit/Loss Analysis</h3>
+            <Line data={profitLossChartData} options={chartOptions} />
+          </Modal>
+        )}
 
+        {showRevenueChart && (
+          <Modal show={showRevenueChart} onClose={() => setShowRevenueChart(false)}>
+            <h3>Revenue Analysis</h3>
+            <Line data={revenueChartData} options={chartOptions} />
           </Modal>
         )}
       </div>
