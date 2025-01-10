@@ -76,6 +76,7 @@ h2 {
   color: #333;
 }
 
+/* Delivery Status Styling */
 .delivery-status {
   display: inline-block;
   padding: 5px 10px;
@@ -84,13 +85,25 @@ h2 {
   text-align: center;
 }
 
-.delivery-status.delivered {
+.delivery-status.Processing {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+}
+
+.delivery-status.In-Transit {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+.delivery-status.Delivered {
   background-color: #d4edda;
   color: #155724;
   border: 1px solid #c3e6cb;
 }
 
-.delivery-status.not-delivered {
+.delivery-status.Cancelled {
   background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;

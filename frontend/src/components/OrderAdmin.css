@@ -537,3 +537,32 @@
 .modal-view-link:hover {
   background-color: #0056b3;
 }
+
+/* Invoice Button Styling */
+.view-invoice-button,
+.download-invoice-button {
+  padding: 10px 15px;
+  margin: 10px;
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.view-invoice-button {
+  background-color: #007bff;
+}
+
+.view-invoice-button:hover {
+  background-color: #0056b3;
+}
+
+.download-invoice-button {
+  background-color: #28a745;
+}
+
+.download-invoice-button:hover {
+  background-color: #218838;
+}
+

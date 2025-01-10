@@ -113,6 +113,30 @@ const handleViewInvoice = async (userID, orderID) => {
   }
 };
 
+const handleDownloadInvoice = async (userID, orderID) => {
+  try {
+    const response = await axios.post('http://localhost:5000/api/create-invoice', {
+      userID,
+      orderID
+    });
+
+    if (response.status === 200) {
+      const { filePath } = response.data;
+      const fileUrl = `${process.env.PUBLIC_URL}/invoices/${filePath}`; // Path to the PDF
+      const link = document.createElement('a');
+      link.href = fileUrl;
+      link.setAttribute('download', `invoice_${orderID}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      console.error('Invoice could not be created:', response.data.message);
+    }
+  } catch (error) {
+    console.error('Error creating invoice:', error);
+  }
+};
+
 // Component to display individual order summary and products
 const OrderCard = ({ order, onProductClick }) => {
   const [showProducts, setShowProducts] = useState(false);
@@ -202,9 +226,14 @@ const OrderCard = ({ order, onProductClick }) => {
         </div>
       </div>
 
-      <button className="view-invoice-button" onClick={() => handleViewInvoice(order.user._id, order._id)}>
-        View Invoice
-      </button>
+      <div className="invoice-buttons">
+        <button className="view-invoice-button" onClick={() => handleViewInvoice(order.user._id, order._id)}>
+          View Invoice
+        </button>
+        <button className="download-invoice-button" onClick={() => handleDownloadInvoice(order.user._id, order._id)}>
+          Download Invoice
+        </button>
+      </div>
 
       {showProducts && (
         <div className="products-list">
@@ -493,11 +522,7 @@ const OrdersPageAdmin = () => {
               />
               <div className="modal-product-info">
                 <h2>{selectedProduct.name}</h2>
-                {selectedOrderStatus === 'delivered' ? (
-                  <p><strong>Description:</strong> {selectedProduct.description || 'No description available.'}</p>
-                ) : (
-                  <p>You cannot write a review before delivery.</p>
-                )}
+                
                 {/* Add more product details as needed */}
                 <Link to={`/product/${selectedProduct._id}`} className="modal-view-link" onClick={handleCloseModal}>
                   View Product Page

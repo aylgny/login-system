@@ -45,8 +45,8 @@ const DeliveryItem = ({ product, order }) => {
         <p><strong>Delivery Address:</strong> {order.address}</p>
         <p>
           <strong>Delivery Status:</strong>
-          <span className={`delivery-status ${product.delivery_status === 'delivered' ? 'delivered' : 'not-delivered'}`}>
-            {product.delivery_status === 'delivered' ? 'Delivered' : 'Not Delivered'}
+          <span className={`delivery-status ${product.delivery_status}`}>
+            {product.delivery_status}
           </span>
         </p>
       </div>
