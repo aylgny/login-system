@@ -28,7 +28,7 @@ html, body {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #ff6a00; /* Set background to orange */
+  background-color: #f48220; /* Set background to orange */
   color: white; /* Text color for better contrast */
   border-bottom: none; /* Remove the border */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -95,7 +95,7 @@ html, body {
 }
 
 .active-category {
-  color: #ff6a00;
+  color: #f48220;
   font-weight: bold;
 }
 

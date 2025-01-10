@@ -178,7 +178,7 @@ body {
   width: 100%;
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #ff6a00;
+  background-color: #f48220;
   color: #ffffff;
   border: none;
   border-radius: 5px;
@@ -188,7 +188,7 @@ body {
 }
 
 .summary button:hover {
-  background-color: #ff6a00;
+  background-color: #f48220;
 }
 
 .checkout-btn {
@@ -214,7 +214,7 @@ body {
 
 .empty-cart-message {
   margin-top: 10px;
-  color: #ff6a00; /* Highlight the message with orange color */
+  color: #f48220; /* Highlight the message with orange color */
   font-size: 0.9rem;
   text-align: center;
 }
