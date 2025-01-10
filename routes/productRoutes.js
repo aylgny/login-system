@@ -4,6 +4,20 @@ const router = express.Router();
 const Product = require('../model/productSchema'); // Product modelinizin yolunu ayarlayın
 
 // POST endpoint to create a new product
+/*{
+  "category": "Laptops",
+  "name": "Titan Blade G17",
+  "model": "G17",
+  "serialNumber": "LTP123456",
+  "description": "A high-performance gaming laptop powered by an AMD Ryzen 9 processor, NVIDIA RTX graphics, and advanced cooling for marathon gaming sessions.",
+  "quantity": 20,
+  "price": 1999.99,
+  "warrantyStatus": true,
+  "distributor": "MSI",
+  "photo": "https://www.gaming.gen.tr/wp-content/uploads/2022/06/msi-17-3-titan-gt77-12uhs-037tr-i9-12900hx-128gb-ddr5-rtx3080ti-gddr6-16gb-2tb-ssd-120hz-notebook.jpg",
+  "ratings": []
+}
+*/
 router.post('/addProduct', async (req, res) => {
   try {
     const newProduct = new Product(req.body);
