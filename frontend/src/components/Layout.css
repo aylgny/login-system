@@ -1,10 +1,26 @@
+/* 1) Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif; /* or your preferred font */
+  background-color: #f4f4f4;
+}
+
 .layout-container {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 0;
   background-color: #f4f4f4;
   height: 100vh;
   box-sizing: border-box;
+  max-width: 1440px; /* Set a max width to limit scaling */
+  width: 100%;
 }
 
 .main-header {
@@ -12,19 +28,23 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #ff6a00;
-  color: white;
+  background-color: #ff6a00; /* Set background to orange */
+  color: white; /* Text color for better contrast */
+  border-bottom: none; /* Remove the border */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height: 50px; 
 }
 
-.geartech-logo {
-  height: 50px;
-  width: auto;
+.teknosu-logo {
+  height: 80px !important; /* Set a larger height */
+  width: auto !important; /* Maintain aspect ratio */
+  max-height: none !important; /* Remove any maximum height restrictions */
+  max-width: none !important; /* Remove any maximum width restrictions */
   object-fit: contain;
 }
-
 .logo-link {
-  text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
 .search-container {
@@ -36,7 +56,7 @@
 
 .search-input {
   width: 100%;
-  max-width: 500px;
+  max-width: 5000px;
   padding: 10px;
   border-radius: 50px;
   border: none;
@@ -84,4 +104,3 @@
   height: 24px;
   margin-right: 8px;
 }
-

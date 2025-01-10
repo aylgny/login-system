@@ -13,7 +13,7 @@ import headphonesIcon from "../assets/icons/headphone.png";
 import laptopsIcon from "../assets/icons/laptop.png";
 import speakersIcon from "../assets/icons/speaker.png";
 import tvsIcon from "../assets/icons/tv.png";
-import GearTechLogo from '../assets/icons/geartech.png';
+import teknosuLogo from '../assets/icons/teknosu.png';
 import wishlistIcon from '../assets/icons/wishlist.png';
 
 // Map categories to icons
@@ -153,7 +153,7 @@ const Layout = ({ children }) => {
       {/* Header Section */}
       <header className="main-header">
         <Link to="/mainpage" className="logo-link">
-          <img src={GearTechLogo} alt="GearTech Logo" className="geartech-logo" />
+          <img src={teknosuLogo} alt="teknosu Logo" className="teknosu-logo" />
         </Link>
        
         {/* Icon Group */}

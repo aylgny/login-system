@@ -14,7 +14,7 @@ import headphonesIcon from "../assets/icons/headphone.png";
 import laptopsIcon from "../assets/icons/laptop.png";
 import speakersIcon from "../assets/icons/speaker.png";
 import tvsIcon from "../assets/icons/tv.png";
-import GearTechLogo from "../assets/icons/geartech.png";
+import teknosuLogo from "../assets/icons/teknosu.png";
 import wishlistIcon from "../assets/icons/wishlist.png";
 
 
@@ -38,6 +38,7 @@ const MainPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Products"); // Default to "All Products"
   const [sortCriteria, setSortCriteria] = useState("price-asc"); // Default sorting criteria
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
  
   const productsApiUrl = "http://localhost:5000/api/products";
@@ -54,9 +55,11 @@ const MainPage = () => {
         setFilteredProducts(response.data); // Initially show all products
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        // Even if error, stop loading
+        setLoading(false);
       }
     };
-
 
     fetchProducts();
   }, []);
@@ -194,7 +197,7 @@ const MainPage = () => {
       {/* Header Section */}
       <header className="main-header">
         <Link to="/mainpage" className="logo-link">
-          <img src={GearTechLogo} alt="GearTech Logo" className="geartech-logo" />
+          <img src={teknosuLogo} alt="teknosu Logo" className="teknosu-logo" />
         </Link>
         <div className="search-container">
           <input
@@ -282,7 +285,10 @@ const MainPage = () => {
         </select>
       </div>
       <div className="product-list">
-        {filteredProducts.length === 0 ? (
+        {/* First check if loading */}
+        {loading ? (
+          <p>Loading products...</p> // or <SpinnerComponent />
+        ) :filteredProducts.length === 0 ? (
           <p>No products found.</p>
         ) : (
           filteredProducts.map((product) => (
