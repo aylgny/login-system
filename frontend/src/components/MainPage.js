@@ -111,6 +111,7 @@ const MainPage = () => {
     localStorage.removeItem("token"); // Remove the token from localStorage
     localStorage.removeItem("userId");
     localStorage.clear();
+    alert("Logged out successfully!"); // Show a feedback message
     setDropdownOpen(false); // Close the dropdown
     navigate("/"); // Redirect to login page
     };
@@ -190,17 +191,11 @@ const MainPage = () => {
 
   return (
     <div className="main-page">
-
-
       {/* Header Section */}
       <header className="main-header">
-        
         <Link to="/mainpage" className="logo-link">
           <img src={GearTechLogo} alt="GearTech Logo" className="geartech-logo" />
         </Link>
-
-
-
         <div className="search-container">
           <input
             type="text"
@@ -220,10 +215,8 @@ const MainPage = () => {
                 alt="Cart"
               />
               {/* <span class="cart-count">3</span> */}
-
             </Link>
           </div>
-
           {localStorage.getItem("token") && (
           <div className="wishlist-icon">
             <Link to="/wishlist">
@@ -231,7 +224,6 @@ const MainPage = () => {
             </Link>
           </div>
           )}
-
           {/* Account Icon */}
           <div className="user-icon-container" onClick={handleAccountClick}>
             <img src={userIcon} alt="User Icon" className="user-icon" />
@@ -243,12 +235,9 @@ const MainPage = () => {
                 <Link to="/signup">
                   <button className="dropdown-button">Sign Up</button>
                 </Link>
-              
               </div>
             )}
           </div>
-
-
           {/* Logout Icon */}
           {localStorage.getItem("token") && (
             <div className="logout-icon-container" onClick={handleLogout}>
@@ -257,10 +246,6 @@ const MainPage = () => {
           )}
         </div>
       </header>
-
-
-
-
       {/* Horizontal Category Bar */}
       <div className="category-bar">
         <ul className="category-list">
@@ -286,8 +271,6 @@ const MainPage = () => {
           ))}
         </ul>
       </div>
-
-
       {/* Sort and Products Section */}
       <div className="sort-container">
         <label htmlFor="sort"></label>
@@ -298,8 +281,6 @@ const MainPage = () => {
           <option value="popularity-asc">Popularity: Low to High</option>
         </select>
       </div>
-
-
       <div className="product-list">
         {filteredProducts.length === 0 ? (
           <p>No products found.</p>
@@ -310,7 +291,6 @@ const MainPage = () => {
                 <img src={product.photo} alt={product.name} className="product-image" />
                 <div className="product-details">
                   <h4>{product.name}</h4>
-                 
                   <p>${product.price.toFixed(2)}</p>
                 </div>
               </div>
