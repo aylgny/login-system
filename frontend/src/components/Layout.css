@@ -7,7 +7,8 @@
   background-color: #f4f4f4;
   height: 100vh;
   box-sizing: border-box;
-  max-width: 1440px; /* Set a max width to limit scaling */
+  max-width: 1920px; /* Set a max width to limit scaling */
+  margin: 0 auto; 
   width: 100%;
 }
 

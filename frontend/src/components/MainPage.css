@@ -5,7 +5,7 @@
   background-color: #f4f4f4;
   height: 100vh;
   box-sizing: border-box;
-  max-width: 1440px; /* Set a max width to limit scaling */
+  max-width: 1920px; /* Set a max width to limit scaling */
   width: 100%;
   margin: 0 auto; /* Center the layout horizontally */
   background: white;
@@ -164,7 +164,7 @@
   padding: 0 20px;
   position: relative;
   /* Thin gray line across the bottom */
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #f48220;
 }
 
 
@@ -223,15 +223,16 @@
 .product-item {
   background-color: white;
   border-radius: 8px;
-  border: 2px solid transparent; /* Default transparent border */
-  padding: 15px;
+  border: 2px solid transparent;
+  padding: 8px;            /* Some padding so the content isn't flush */
   text-align: center;
-  width: 220px;
-  height: 280px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: border-color 0.3s ease; /* Smooth transition for border */
+  transition: border-color 0.3s ease;
+  /* NO fixed width, NO fixed height */
+  /* width: auto; */
+  /* height: auto; */
 }
 
 /* Highlighted orange border on hover */
