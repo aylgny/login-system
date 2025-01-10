@@ -172,10 +172,13 @@ html, body {
 /* Sort Container */
 .sort-container {
   display: flex;
-  justify-content: flex-end; /* Align to the right */
-  padding: 0 20px; /* Match padding with product container */
-  margin-bottom: 10px; /* Space below the sort container */
-  margin-right: 0; /* Align to the right edge of the product grid */
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  padding: 0 20px;
+  position: relative;
+  /* Thin gray line across the bottom */
+  border-bottom: 1px solid #ccc;
 }
 
 
@@ -186,13 +189,24 @@ html, body {
 }
 
 .sort-container select {
-  padding: 8px;
+  /* Remove default appearance */
+  appearance: none;
+  -webkit-appearance: none;
+  
+  /* Make background transparent, no border */
+  background-color: transparent;
+  border: none;
+  
+  /* Reference your arrow file */
+  background: url("../assets/icons/arrow.png") no-repeat right 10px center;
+  background-size: 12px 12px; /* Adjust arrow size as needed */
+  
+  /* Spacing so text doesn't overlap the arrow */
+  padding: 8px 8px 8px 8px;
+  
   font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  outline: none; /* no outline on focus, optional */
 }
 
 .sort-container select:hover {
