@@ -227,11 +227,11 @@ const MainPage = () => {
       );
     }
 
-    // Sorting
+    // Sorting by `current_price`
     if (sortCriteria === "price-asc") {
-      filtered.sort((a, b) => a.price - b.price);
+      filtered.sort((a, b) => a.current_price - b.current_price);
     } else if (sortCriteria === "price-desc") {
-      filtered.sort((a, b) => b.price - a.price);
+      filtered.sort((a, b) => b.current_price - a.current_price);
     } else if (sortCriteria === "popularity-desc") {
       filtered.sort((a, b) => a.quantity - b.quantity);
     } else if (sortCriteria === "popularity-asc") {
