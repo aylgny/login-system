@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./MainPage.css";
 import axios from "axios";
 
-
 // Import local icons
 import userIcon from "../assets/icons/account.png";
 import logoutIcon from "../assets/icons/logout.png";
@@ -17,6 +16,43 @@ import tvsIcon from "../assets/icons/tv.png";
 import teknosuLogo from "../assets/icons/teknosu.png";
 import wishlistIcon from "../assets/icons/wishlist.png";
 
+/* BRAND LOGOS (replace with your actual images) */
+import brandPreo from "../assets/logos/preo.png";
+import brandApple from "../assets/logos/apple.png";
+import brandSamsung from "../assets/logos/samsung.png";
+import brandLG from "../assets/logos/lg.png";
+import brandAsus from "../assets/logos/asus.png";
+import brandMsi from "../assets/logos/msi.png";
+import brandFakir from "../assets/logos/fakir.png";
+import brandBraun from "../assets/logos/braun.png";
+import brandNikon from "../assets/logos/nikon.png";
+import brandSony from "../assets/logos/sony.png";
+
+
+/* SOCIAL ICONS (replace with your actual images or font icons) */
+import iconFacebook from "../assets/socials/facebook.png";
+import iconX from "../assets/socials/x.avif"; // old Twitter
+import iconLinkedIn from "../assets/socials/linkedin.png";
+import iconYouTube from "../assets/socials/youtube.png";
+import iconInstagram from "../assets/socials/instagram.png";
+import iconWhatsApp from "../assets/socials/whatsapp.png";
+
+// PROMOTION IMAGES (local)
+import promo1 from "../assets/promotions/bose-promo.png";
+import promo2 from "../assets/promotions/lg-promo.png";
+import promo3 from "../assets/promotions/airpods.jpg";
+import promo4 from "../assets/promotions/airtag.jpg";
+import promo5 from "../assets/promotions/apple_watch.jpg";
+import promo6 from "../assets/promotions/samsung_unpacked.png";
+import promo7 from "../assets/promotions/samsung_watch_.jpg";
+
+// import promo3 from "../assets/promotions/promo3.png"; // If you add a third image, uncomment
+
+// NEW: Icons for guarantee/delivery/refund/shipment placeholders
+import iconGuarantee from "../assets/deliverables/guarantee.svg";
+import iconDelivery from "../assets/deliverables/delivery.svg";
+import iconRefund from "../assets/deliverables/refund.svg";
+import iconShipment from "../assets/deliverables/shipment.svg";
 
 // Map categories to icons
 const categoryIcons = {
@@ -29,122 +65,140 @@ const categoryIcons = {
   TVs: tvsIcon,
 };
 
-
 const MainPage = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [categories, setCategories] = useState([]); // State for categories
-  const [selectedCategory, setSelectedCategory] = useState("All Products"); // Default to "All Products"
-  const [sortCriteria, setSortCriteria] = useState("price-asc"); // Default sorting criteria
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All Products");
+  const [sortCriteria, setSortCriteria] = useState("price-asc");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  // Promotions state
+  const [currentPromotionIndex, setCurrentPromotionIndex] = useState(0);
+  const promotions = [
+    { id: 1, image: promo1 },
+    { id: 2, image: promo2 },
+    { id: 3, image: promo3 },
+    { id: 4, image: promo4 },
+    { id: 5, image: promo5 },
+    { id: 6, image: promo6 },
+    { id: 7, image: promo7 },
+    // { id: 3, image: promo3 },
+  ];
+
+  // Router & location
   const navigate = useNavigate();
- 
-  const productsApiUrl = "http://localhost:5000/api/products";
-  const categoriesApiUrl = "http://localhost:5000/api/categories"; // URL for fetching categories
   const location = useLocation();
 
+  // API URLs (adjust as needed)
+  const productsApiUrl = "http://localhost:5000/api/products";
+  const categoriesApiUrl = "http://localhost:5000/api/categories";
 
-  // Fetching products from the backend
+  // Fetching products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(productsApiUrl);
-        setProducts(response.data); // Store products
-        setFilteredProducts(response.data); // Initially show all products
+        setProducts(response.data);
+        setFilteredProducts(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
-        // Even if error, stop loading
         setLoading(false);
       }
     };
-
     fetchProducts();
   }, []);
 
-
-  // Fetching categories from backend
+  // Fetching categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(categoriesApiUrl); // GET request for categories
+        const response = await axios.get(categoriesApiUrl);
         let fetchedCategories = response.data;
 
-
-        // Sort categories, ensuring "All Products" is at the top if present
+        // Sort so "All Products" is on top if present
         fetchedCategories.sort((a, b) => {
           if (a.name === "All Products") return -1;
           if (b.name === "All Products") return 1;
-          return a.name.localeCompare(b.name); // Alphabetical order for other categories
+          return a.name.localeCompare(b.name);
         });
 
-
-        setCategories(fetchedCategories); // Update categories state
+        setCategories(fetchedCategories);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
     };
-
-
     fetchCategories();
   }, []);
 
+  // Promotions auto-slide (5s)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNextPromo();
+    }, 5000);
 
-  // Handling search input changes
+    return () => {
+      clearInterval(interval);
+    };
+    // eslint-disable-next-line
+  }, [promotions.length]);
+
+  // Manual forward/back
+  const handleNextPromo = () => {
+    setCurrentPromotionIndex((prev) =>
+      prev === promotions.length - 1 ? 0 : prev + 1
+    );
+  };
+  const handlePrevPromo = () => {
+    setCurrentPromotionIndex((prev) =>
+      prev === 0 ? promotions.length - 1 : prev - 1
+    );
+  };
+
+  // Handle search
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-
-  // Handling category selection
+  // Handle category
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
 
-
-  // Handle sorting criteria
+  // Handle sort
   const handleSortChange = (event) => {
     setSortCriteria(event.target.value);
   };
 
-
+  // Handle logout
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove the token from localStorage
+    localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.clear();
-    alert("Logged out successfully!"); // Show a feedback message
-    setDropdownOpen(false); // Close the dropdown
-    navigate("/"); // Redirect to login page
-    };
+    alert("Logged out successfully!");
+    setDropdownOpen(false);
+    navigate("/");
+  };
 
-
-  // Handle account icon click
+  // Account icon click
   const handleAccountClick = () => {
     const token = localStorage.getItem("token");
-    //alert(Token: ${token}); // Show the token in an alert
-
-
     if (token) {
-      // If token exists, redirect to account page
       navigate("/account");
     } else {
-      // If no token, toggle the dropdown
-      setDropdownOpen((prevState) => !prevState);
+      setDropdownOpen((prev) => !prev);
     }
   };
 
-
-  // Handle click outside dropdown
+  // Close dropdown if clicked outside
   const handleClickOutside = (event) => {
     if (!event.target.closest(".user-icon-container")) {
       setDropdownOpen(false);
     }
   };
-
-
-  // Add event listener to close dropdown when clicking outside
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
@@ -152,12 +206,8 @@ const MainPage = () => {
     };
   }, []);
 
-
-
-
-  // Filter products based on search term and selected category
+  // Filter & sort
   useEffect(() => {
-
     if (location.state && location.state.selectedCategory) {
       setSelectedCategory(location.state.selectedCategory);
     }
@@ -166,31 +216,30 @@ const MainPage = () => {
       const searchLower = searchTerm.toLowerCase();
       return (
         product.name.toLowerCase().includes(searchLower) ||
-        (product.description && product.description.toLowerCase().includes(searchLower))
+        (product.description &&
+          product.description.toLowerCase().includes(searchLower))
       );
     });
 
-
     if (selectedCategory !== "All Products") {
-      filtered = filtered.filter((product) => product.category === selectedCategory);
+      filtered = filtered.filter(
+        (product) => product.category === selectedCategory
+      );
     }
 
-
-    // Apply sorting based on the criteria
+    // Sorting
     if (sortCriteria === "price-asc") {
       filtered.sort((a, b) => a.price - b.price);
     } else if (sortCriteria === "price-desc") {
       filtered.sort((a, b) => b.price - a.price);
     } else if (sortCriteria === "popularity-desc") {
-      filtered.sort((a, b) => a.quantity - b.quantity); // High popularity: least stock first
+      filtered.sort((a, b) => a.quantity - b.quantity);
     } else if (sortCriteria === "popularity-asc") {
-      filtered.sort((a, b) => b.quantity - a.quantity); // Low popularity: most stock first
+      filtered.sort((a, b) => b.quantity - a.quantity);
     }
-
 
     setFilteredProducts(filtered);
   }, [searchTerm, selectedCategory, sortCriteria, products, location.state]);
-
 
   return (
     <div className="main-page">
@@ -210,24 +259,18 @@ const MainPage = () => {
         </div>
         {/* Icon Group */}
         <div className="icon-group">
-          {/* Cart Icon */}
           <div className="cart-icon">
             <Link to="/cart">
-              <img
-                src={require("../assets/icons/shopping.png")}
-                alt="Cart"
-              />
-              {/* <span class="cart-count">3</span> */}
+              <img src={require("../assets/icons/shopping.png")} alt="Cart" />
             </Link>
           </div>
           {localStorage.getItem("token") && (
-          <div className="wishlist-icon">
-            <Link to="/wishlist">
-              <img src={require("../assets/icons/wishlist.png")} alt="Wishlist" />
-            </Link>
-          </div>
+            <div className="wishlist-icon">
+              <Link to="/wishlist">
+                <img src={wishlistIcon} alt="Wishlist" />
+              </Link>
+            </div>
           )}
-          {/* Account Icon */}
           <div className="user-icon-container" onClick={handleAccountClick}>
             <img src={userIcon} alt="User Icon" className="user-icon" />
             {dropdownOpen && (
@@ -241,7 +284,6 @@ const MainPage = () => {
               </div>
             )}
           </div>
-          {/* Logout Icon */}
           {localStorage.getItem("token") && (
             <div className="logout-icon-container" onClick={handleLogout}>
               <img src={logoutIcon} alt="Logout Icon" className="logout-icon" />
@@ -249,6 +291,7 @@ const MainPage = () => {
           )}
         </div>
       </header>
+
       {/* Horizontal Category Bar */}
       <div className="category-bar">
         <ul className="category-list">
@@ -260,8 +303,7 @@ const MainPage = () => {
               }`}
               onClick={() => {
                 navigate("/MainPage", { state: { selectedCategory: category.name } });
-
-                handleCategoryChange(category.name)
+                handleCategoryChange(category.name);
               }}
             >
               <img
@@ -274,7 +316,27 @@ const MainPage = () => {
           ))}
         </ul>
       </div>
-      {/* Sort and Products Section */}
+
+      {/* PROMOTIONS SLIDER (bigger container + manual Next/Prev) */}
+      <div className="promotions-section">
+        <div className="promotion-slide">
+          {/* Promotion Image */}
+          <img
+            src={promotions[currentPromotionIndex].image}
+            alt={`Promotion ${promotions[currentPromotionIndex].id}`}
+            className="promotion-image"
+          />
+          {/* Manual Buttons */}
+          <button className="promotion-nav-button prev-button" onClick={handlePrevPromo}>
+            ‹
+          </button>
+          <button className="promotion-nav-button next-button" onClick={handleNextPromo}>
+            ›
+          </button>
+        </div>
+      </div>
+
+      {/* Sort & Products */}
       <div className="sort-container">
         <label htmlFor="sort"></label>
         <select id="sort" value={sortCriteria} onChange={handleSortChange}>
@@ -284,29 +346,114 @@ const MainPage = () => {
           <option value="popularity-asc">Popularity: Low to High</option>
         </select>
       </div>
-      <div className="product-list">
-        {/* First check if loading */}
+
+      <div className="mainpage-product-list">
         {loading ? (
-          <p>Loading products...</p> // or <SpinnerComponent />
-        ) :filteredProducts.length === 0 ? (
+          <p>Loading products...</p>
+        ) : filteredProducts.length === 0 ? (
           <p>No products found.</p>
         ) : (
           filteredProducts.map((product) => (
-            <Link to={`/product/${product._id}`} key={product._id} className="product-item-link">
-              <div className="product-item">
-                <img src={product.photo} alt={product.name} className="product-image" />
-                <div className="product-details">
+            <Link
+              to={`/product/${product._id}`}
+              key={product._id}
+              className="mainpage-product-item-link"
+            >
+              <div className="mainpage-product-item">
+                {/* discount badge pinned top-left if discount > 0 */}
+                {product.discount > 0 && (
+                  <span className="mainpage-discount-badge">
+                    %{product.discount}
+                  </span>
+                )}
+                <img
+                  src={product.photo}
+                  alt={product.name}
+                  className="mainpage-product-image"
+                />
+                <div className="mainpage-product-details">
                   <h4>{product.name}</h4>
-                  <p>${product.price.toFixed(2)}</p>
+                  {product.discount > 0 ? (
+                    <>
+                      <span className="mainpage-old-price">
+                        ${product.price.toLocaleString()}
+                      </span>
+                      <span className="mainpage-current-price">
+                        ${product.current_price.toLocaleString()}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="mainpage-current-price">
+                      ${product.price.toLocaleString()}
+                    </span>
+                  )}
                 </div>
               </div>
             </Link>
           ))
         )}
+      </div>
+
+      {/* BRAND LOGOS SECTION (below product grid) */}
+      <div className="brand-logos-section">
+        <h3 className="brand-logos-title">Our Brands</h3>
+        <div className="brand-logos">
+          <img src={brandPreo} alt="Preo" />
+          <img src={brandApple} alt="Apple" />
+          <img src={brandSamsung} alt="Samsung" />
+          <img src={brandLG} alt="LG" />
+          <img src={brandAsus} alt="Asus" />
+          <img src={brandMsi} alt="Msi" />
+          <img src={brandFakir} alt="Fakir" />
+          <img src={brandBraun} alt="Braun" />
+          <img src={brandNikon} alt="Nikon" />
+          <img src={brandSony} alt="Sony" />
+          {/* Additional brand logos if needed */}
         </div>
+      </div>
+
+      {/* INFO ABOUT WEBSITE (with icons) */}
+      <div className="info-cards-section">
+        <div className="info-card">
+          <img
+            src={iconGuarantee}
+            alt="Guarantee Icon"
+            className="info-icon"
+          />
+          <h4>Extra Guarantee</h4>
+          <p>Extend your product’s legal guarantee for peace of mind.</p>
+        </div>
+        <div className="info-card">
+          <img src={iconDelivery} alt="Delivery Icon" className="info-icon" />
+          <h4>Fast Delivery</h4>
+          <p>Same-day shipping for select cities, next-day for others.</p>
+        </div>
+        <div className="info-card">
+          <img src={iconShipment} alt="Free Shipping Icon" className="info-icon" />
+          <h4>Free Shipping Over $150</h4>
+          <p>Enjoy free shipping for orders above $150.</p>
+        </div>
+        <div className="info-card">
+          <img src={iconRefund} alt="Refund Icon" className="info-icon" />
+          <h4>Easy Refund</h4>
+          <p>Return within 30 days if you are not fully satisfied.</p>
+        </div>
+      </div>
+
+      {/* FOLLOW US SECTION */}
+      <div className="follow-us-section">
+        <span className="follow-text">Follow Us</span>
+        <div className="social-icons">
+          <img src={iconFacebook} alt="Facebook" />
+          <img src={iconX} alt="X" />
+          <img src={iconLinkedIn} alt="LinkedIn" />
+          <img src={iconYouTube} alt="YouTube" />
+          <img src={iconInstagram} alt="Instagram" />
+          <img src={iconWhatsApp} alt="WhatsApp" />
+        </div>
+      </div>
     </div>
   );
 };
 
-
-export default MainPage;
+export default MainPage;
