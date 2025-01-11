@@ -213,6 +213,115 @@ async function testAPIs() {
               });
               console.log("Add Review Response for Product 1:", addReviewResponse4.data);
 
+              // Example 29: Add to Wishlist
+              const addToWishlistResponse1 = await axios.post(`${baseUrl}/wishlist`, {
+                userId: userId1, // Replace with a valid userId
+                productId: productId1, // Replace with a valid productId
+              });
+              console.log("Add to Wishlist Response for User 1:", addToWishlistResponse1.data);
+
+              // Example 30: Add to Wishlist for another product
+              const addToWishlistResponse2 = await axios.post(`${baseUrl}/wishlist`, {
+                userId: userId2, // Replace with a valid userId
+                productId: productId2, // Replace with a valid productId
+              });
+              console.log("Add to Wishlist Response for User 2:", addToWishlistResponse2.data);
+
+              // Example 31: Get Wishlist Items for User 1
+              const getWishlistResponse1 = await axios.get(`${baseUrl}/wishlist/${userId1}`);
+              console.log("Get Wishlist Response for User 1:", getWishlistResponse1.data);
+
+              // Example 32: Get Wishlist Items for User 2
+              const getWishlistResponse2 = await axios.get(`${baseUrl}/wishlist/${userId2}`);
+              console.log("Get Wishlist Response for User 2:", getWishlistResponse2.data);
+              // Example 33: Get All Categories
+              const getAllCategoriesResponse2 = await axios.get(`${baseUrl}/categories`);
+              console.log("Get All Categories Response:", getAllCategoriesResponse2.data);
+
+              // Example 34: Create a New Category
+              const createCategoryResponse = await axios.post(`${baseUrl}/addCategory`, {
+                  name: "New Category 1",
+              });
+              console.log("Create Category Response:", createCategoryResponse.data);
+
+              // Example 35: Create Another New Category
+              const createAnotherCategoryResponse = await axios.post(`${baseUrl}/addCategory`, {
+                  name: "New Category 2",
+              });
+              console.log("Create Another Category Response:", createAnotherCategoryResponse.data);
+
+              // Example 36: Delete a Category by ID
+              const deleteCategoryResponse1 = await axios.delete(`${baseUrl}/deleteCategory/${categoryId1}`);
+              console.log("Delete Category Response:", deleteCategoryResponse1.data);
+
+              // Example 37: Delete Another Category by ID
+              const deleteCategoryResponse2 = await axios.delete(`${baseUrl}/deleteCategory/${categoryId2}`);
+              console.log("Delete Another Category Response:", deleteCategoryResponse2.data);
+              // Example 38: Get Orders for User 1
+const getOrdersUser1 = await axios.get(`${baseUrl}/orders/${userId1}`);
+console.log("Get Orders Response for User 1:", getOrdersUser1.data);
+
+// Example 39: Get Orders for User 2
+const getOrdersUser2 = await axios.get(`${baseUrl}/orders/${userId2}`);
+console.log("Get Orders Response for User 2:", getOrdersUser2.data);
+
+// Example 40: Create Order for User 1
+const createOrderUser1 = await axios.post(`${baseUrl}/orders`, {
+    userId: userId1,
+    status: "Processing",
+    address: "123 Test Address"
+});
+console.log("Create Order Response for User 1:", createOrderUser1.data);
+
+// Example 41: Create Order for User 2
+const createOrderUser2 = await axios.post(`${baseUrl}/orders`, {
+    userId: userId2,
+    status: "Processing",
+    address: "456 Another Address"
+});
+console.log("Create Order Response for User 2:", createOrderUser2.data);
+
+// Example 42: Cancel Order
+const cancelOrderResponse1 = await axios.put(`${baseUrl}/orders/cancel/${orderId1}`);
+console.log("Cancel Order Response:", cancelOrderResponse1.data);
+
+// Example 43: Cancel Another Order
+const cancelOrderResponse2 = await axios.put(`${baseUrl}/orders/cancel/${orderId2}`);
+console.log("Cancel Another Order Response:", cancelOrderResponse2.data);
+
+// Example 44: Update Order to In-Transit
+const updateOrderInTransit1 = await axios.put(`${baseUrl}/orders/in-transit/${orderId1}`);
+console.log("Update Order to In-Transit Response:", updateOrderInTransit1.data);
+
+// Example 45: Update Another Order to In-Transit
+const updateOrderInTransit2 = await axios.put(`${baseUrl}/orders/in-transit/${orderId2}`);
+console.log("Update Another Order to In-Transit Response:", updateOrderInTransit2.data);
+
+// Example 46: Update Order to Delivered
+const updateOrderDelivered1 = await axios.put(`${baseUrl}/orders/delivered/${orderId1}`);
+console.log("Update Order to Delivered Response:", updateOrderDelivered1.data);
+
+// Example 47: Update Another Order to Delivered
+const updateOrderDelivered2 = await axios.put(`${baseUrl}/orders/delivered/${orderId2}`);
+console.log("Update Another Order to Delivered Response:", updateOrderDelivered2.data);
+
+// Example 48: Update Product Status to In-Transit in an Order
+const updateProductInTransit = await axios.put(`${baseUrl}/orders/${orderId1}/products/${productId1}/in-transit`);
+console.log("Update Product to In-Transit Response:", updateProductInTransit.data);
+
+// Example 49: Update Another Product Status to In-Transit in an Order
+const updateAnotherProductInTransit = await axios.put(`${baseUrl}/orders/${orderId2}/products/${productId2}/in-transit`);
+console.log("Update Another Product to In-Transit Response:", updateAnotherProductInTransit.data);
+
+// Example 50: Update Product Status to Delivered in an Order
+const updateProductDelivered = await axios.put(`${baseUrl}/orders/${orderId1}/products/${productId1}/delivered`);
+console.log("Update Product to Delivered Response:", updateProductDelivered.data);
+
+// Example 51: Update Another Product Status to Delivered in an Order
+const updateAnotherProductDelivered = await axios.put(`${baseUrl}/orders/${orderId2}/products/${productId2}/delivered`);
+console.log("Update Another Product to Delivered Response:", updateAnotherProductDelivered.data);
+
+
         console.log("API tests completed.");
     } catch (error) {
         console.error("Error during API testing:", error.response ? error.response.data : error.message);
