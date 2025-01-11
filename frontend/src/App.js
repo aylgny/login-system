@@ -44,6 +44,7 @@ import AccountPage from "./components/AccountInfo";
 import CongratsPage from "./components/CongratsPage";
 import OrdersPageAdmin from "./components/OrderAdmin";
 import DeliveryListPage from './components/DeliveryListPage';
+import ProductUpdate from './components/ProductUpdate';
 
 
 
@@ -62,6 +63,7 @@ function App() {
 
           {/* Product page */}
           <Route path="/product/:productId" element={<ProductPage />} />
+          <Route path="/productUpdate/:productId" element={<ProductUpdate />} />
 
           {/* Fallback route */}
           <Route path="*" element={<Navigate to="/" />} />

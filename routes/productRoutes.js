@@ -305,41 +305,46 @@ router.post('/reviews/decline', async (req, res) => {
   }
  
  */
-router.put('/products/price', async (req, res) => {
-  try {
-    const { productId, newPrice } = req.body;
-
-    // Validate inputs
-    if (!productId || typeof newPrice !== 'number') {
-      return res.status(400).json({ message: "Please provide 'productId' and a numeric 'newPrice'." });
+  router.put('/products/price', async (req, res) => {
+    try {
+      const { productId, newPrice } = req.body;
+  
+      // Validate inputs
+      if (!productId || typeof newPrice !== 'number') {
+        return res.status(400).json({ message: "Please provide 'productId' and a numeric 'newPrice'." });
+      }
+  
+      // Find the product
+      const product = await Product.findById(productId);
+  
+      // If no product found
+      if (!product) {
+        return res.status(404).json({ message: 'Product not found.' });
+      }
+  
+      // Update the price
+      product.price = newPrice;
+  
+      // Recalculate the current_price based on the new price and discount
+      product.current_price = Math.round((product.price - (product.price * product.discount) / 100) * 100) / 100;
+  
+      // Save the updated product
+      const updatedProduct = await product.save();
+  
+      // Success response
+      res.status(200).json({
+        message: 'Product price and current price updated successfully.',
+        updatedProduct,
+      });
+    } catch (error) {
+      console.error('Error updating product price:', error);
+      res.status(500).json({
+        message: 'An error occurred while updating the product price.',
+        error: error.message,
+      });
     }
-
-    // Find and update the product
-    const updatedProduct = await Product.findByIdAndUpdate(
-      productId,
-      { price: newPrice },
-      { new: true } // Returns the updated document
-    );
-
-    // If no product found
-    if (!updatedProduct) {
-      return res.status(404).json({ message: 'Product not found.' });
-    }
-
-    // Success
-    res.status(200).json({
-      message: 'Product price updated successfully.',
-      updatedProduct,
-    });
-  } catch (error) {
-    console.error('Error updating product price:', error);
-    res.status(500).json({
-      message: 'An error occurred while updating the product price.',
-      error: error.message,
-    });
-  }
-});
-
+  });
+  
 
 /**
  * PUT endpoint to update a product's quantity
