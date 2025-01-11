@@ -1,7 +1,7 @@
-// src/components/OrdersPage.js
+// src/components/OrderHistoryPage.js
 
 import React, { useState, useEffect } from 'react';
-import './Order.css';
+import './OrderHistory.css'; // <-- Updated import
 import Layout from './Layout';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -26,9 +26,9 @@ const Modal = ({ show, onClose, children }) => {
   if (!show) return null;
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close-button" onClick={onClose}>
+    <div className="order-modal-backdrop" onClick={onClose}>
+      <div className="order-modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="order-modal-close-button" onClick={onClose}>
           &times;
         </button>
         {children}
@@ -42,14 +42,14 @@ const StarRating = ({ rating, setRating }) => {
   const [hover, setHover] = useState(0);
 
   return (
-    <div className="star-rating">
+    <div className="order-star-rating">
       {[...Array(5)].map((star, index) => {
         index += 1;
         return (
           <button
             type="button"
             key={index}
-            className={index <= (hover || rating) ? "on" : "off"}
+            className={index <= (hover || rating) ? 'on' : 'off'}
             onClick={() => setRating(index)}
             onMouseEnter={() => setHover(index)}
             onMouseLeave={() => setHover(rating)}
@@ -67,19 +67,20 @@ const StarRating = ({ rating, setRating }) => {
 const ProductItem = ({ product, onClick }) => {
   const imageUrl = `${product.photo}`;
   // Fallback image URL
-  const fallbackImage = 'https://via.placeholder.com/150'; // Replace with your fallback image URL
+  const fallbackImage = 'https://via.placeholder.com/150';
 
   return (
-    <div className="product-item" onClick={() => onClick(product)}>
-      {/* Display the product image with fallback */}
+    <div className="order-product-item" onClick={() => onClick(product)}>
       <img
         src={imageUrl}
         alt={product.name}
-        className="product-image"
-        onError={(e) => { e.target.src = fallbackImage; }}
+        className="order-product-image"
+        onError={(e) => {
+          e.target.src = fallbackImage;
+        }}
       />
-      <div className="product-details">
-        <h4 className="product-name">{product.name}</h4>
+      <div className="order-product-details">
+        <h4 className="order-product-name">{product.name}</h4>
         <p>Quantity: {product.quantity}</p>
         <p>Price: ${product.price.toFixed(2)}</p>
       </div>
@@ -88,6 +89,7 @@ const ProductItem = ({ product, onClick }) => {
 };
 
 // Component to display individual order summary and products
+// Updated OrderCard Component to Render Products in Stacked Layout
 const OrderCard = ({ order, onProductClick }) => {
   const [showProducts, setShowProducts] = useState(false);
 
@@ -101,27 +103,9 @@ const OrderCard = ({ order, onProductClick }) => {
   // Determine status color
   const statusClass = order.status.toLowerCase().replace(' ', '-');
 
-  // Function to group products into rows of 3 and 4 alternately
-  const groupProducts = (products) => {
-    const rows = [];
-    let index = 0;
-    let toggle = true; // true for 3, false for 4
-
-    while (index < products.length) {
-      const count = toggle ? 3 : 4;
-      rows.push(products.slice(index, index + count));
-      index += count;
-      toggle = !toggle;
-    }
-
-    return rows;
-  };
-
-  const productRows = groupProducts(order.products);
-
   return (
-    <div className="order-card">
-      <div className="order-summary" onClick={toggleProducts}>
+    <div className="order-history-card">
+      <div className="order-history-summary" onClick={toggleProducts}>
         <div className="order-info-grid">
           <div className="order-info-item">
             <span className="info-label">Order ID</span>
@@ -142,45 +126,69 @@ const OrderCard = ({ order, onProductClick }) => {
             </span>
           </div>
         </div>
-        <div className="toggle-icon">
+        <div className="order-toggle-icon">
           {showProducts ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-up"
+              className="order-icon order-icon-up"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
               width="24"
               height="24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 15l7-7 7 7"
+              />
             </svg>
           ) : (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-down"
+              className="order-icon order-icon-down"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
               width="24"
               height="24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           )}
         </div>
       </div>
       {showProducts && (
-        <div className="products-list">
-          {productRows.map((row, rowIndex) => (
-            <div className="products-row" key={rowIndex}>
-              {row.map((item) => (
-                <ProductItem
-                  key={item.product._id}
-                  product={{ ...item.product, quantity: item.quantity }}
-                  onClick={() => onProductClick(item.product, order.status)} // Pass both product and order.status
+        <div className="order-products-list">
+          {order.products.map((item) => (
+            <div
+              className="order-products-row"
+              key={item.product._id}
+            >
+              <div
+                className="order-product-item"
+                onClick={() => onProductClick(item.product)}
+              >
+                <img
+                  src={item.product.photo}
+                  alt={item.product.name}
+                  className="order-product-image"
+                  onError={(e) => {
+                    e.target.src = "https://via.placeholder.com/100";
+                  }}
                 />
-              ))}
+                <div className="order-product-details">
+                  <h4 className="order-product-name">{item.product.name}</h4>
+                  <p>Quantity: {item.quantity}</p>
+                  <p>Price: ${item.product.price.toFixed(2)}</p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -189,17 +197,18 @@ const OrderCard = ({ order, onProductClick }) => {
   );
 };
 
-// Main OrdersPage component
-const OrdersPage = () => {
+
+// Main OrderHistoryPage component
+const OrderHistoryPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedOrderStatus, setSelectedOrderStatus] = useState(null); // New state variable
+  const [selectedOrderStatus, setSelectedOrderStatus] = useState(null);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const userId = localStorage.getItem('userId'); // Assuming user ID is stored in localStorage
+  const userId = localStorage.getItem('userId'); // Assuming userId is in localStorage
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -212,7 +221,6 @@ const OrdersPage = () => {
         setLoading(false);
       }
     };
-
     fetchOrders();
   }, [userId]);
 
@@ -224,9 +232,9 @@ const OrdersPage = () => {
   );
 
   // Handler to open modal with product details
-  const handleProductClick = (product, orderStatus) => { // Receive both product and orderStatus
+  const handleProductClick = (product, orderStatus) => {
     setSelectedProduct(product);
-    setSelectedOrderStatus(orderStatus); // Set the order status
+    setSelectedOrderStatus(orderStatus);
     setRating(0);
     setComment('');
   };
@@ -250,24 +258,24 @@ const OrdersPage = () => {
 
     setIsSubmitting(true);
     try {
-      // Send POST request to the backend to submit the review
-      const response = await axios.post(`http://localhost:5000/api/products/${selectedProduct._id}/reviews`, {
-        userId,
-        rating,
-        comment,
-      });
+      const response = await axios.post(
+        `http://localhost:5000/api/products/${selectedProduct._id}/reviews`,
+        {
+          userId,
+          rating,
+          comment,
+        }
+      );
 
       if (response.status === 200) {
-        // alert('Your review has been submitted successfully!');
+        // Optionally show success message
         handleCloseModal();
       }
     } catch (error) {
       console.error('Error submitting review:', error);
       if (error.response) {
-        // Server responded with a status other than 2xx
         alert(error.response.data.message || 'There was an error submitting your review.');
       } else {
-        // Network error or other issues
         alert('There was an error submitting your review. Please try again later.');
       }
     } finally {
@@ -279,29 +287,29 @@ const OrdersPage = () => {
 
   return (
     <Layout>
-      <div className="orders-page">
+      <div className="order-history-page">
         {/* Sidebar */}
-        <div className="sidebar">
+        <div className="order-history-sidebar">
           <h3>Menu</h3>
           <ul>
             <li>
-              <Link to="/account" className="sidebar-link">
+              <Link to="/account" className="order-sidebar-link">
                 Account Info
               </Link>
             </li>
             <li>
-              <Link to="/order" className="sidebar-link">
+              <Link to="/order" className="order-sidebar-link">
                 Order History
               </Link>
             </li>
           </ul>
         </div>
 
-        {/* Orders Container */}
-        <div className="orders-container">
+        {/* Main Content */}
+        <div className="order-history-main">
           <h2>Order History</h2>
           {/* Search Bar */}
-          <div className="search-bar">
+          <div className="order-search-bar">
             <input
               type="text"
               placeholder="Search orders by ID or status..."
@@ -309,11 +317,16 @@ const OrdersPage = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+
           {filteredOrders.length === 0 ? (
-            <p className="no-orders">No orders found.</p>
+            <p className="order-no-orders">No orders found.</p>
           ) : (
             filteredOrders.map((order) => (
-              <OrderCard key={order._id} order={order} onProductClick={handleProductClick} />
+              <OrderCard
+                key={order._id}
+                order={order}
+                onProductClick={handleProductClick}
+              />
             ))
           )}
         </div>
@@ -321,43 +334,54 @@ const OrdersPage = () => {
         {/* Modal for Product Details */}
         {selectedProduct && (
           <Modal show={!!selectedProduct} onClose={handleCloseModal}>
-            <div className="modal-product-details">
+            <div className="order-modal-product-details">
               <img
                 src={selectedProduct.photo}
                 alt={selectedProduct.name}
-                className="modal-product-image"
-                onError={(e) => { e.target.src = 'https://via.placeholder.com/150'; }}
+                className="order-modal-product-image"
+                onError={(e) => {
+                  e.target.src = 'https://via.placeholder.com/150';
+                }}
               />
-              <div className="modal-product-info">
+              <div className="order-modal-product-info">
                 <h2>{selectedProduct.name}</h2>
                 {selectedOrderStatus === 'delivered' ? (
-  <p><strong>Description:</strong> {selectedProduct.description || 'No description available.'}</p>
-) : (
-  <p>You cannot write a review before delivery.</p>
-)}
-                {/* Add more product details as needed */}
-                <Link to={`/product/${selectedProduct._id}`} className="modal-view-link" onClick={handleCloseModal}>
+                  <p>
+                    <strong>Description:</strong>{' '}
+                    {selectedProduct.description || 'No description available.'}
+                  </p>
+                ) : (
+                  <p>You cannot write a review before delivery.</p>
+                )}
+                <Link
+                  to={`/product/${selectedProduct._id}`}
+                  className="order-modal-view-link"
+                  onClick={handleCloseModal}
+                >
                   View Product Page
                 </Link>
               </div>
             </div>
 
-            {/* Divider */}
-            <hr className="modal-divider" />
+            <hr className="order-modal-divider" />
 
             {/* Review Section */}
-            <div className="modal-review-section">
+            <div className="order-modal-review-section">
               <h3>Leave a Review</h3>
-              <form onSubmit={handleSubmit} className="review-form">
+              <form onSubmit={handleSubmit} className="order-review-form">
                 {/* Star Rating Input */}
-                <div className="form-group">
-                  <label htmlFor="rating"><strong>Rating:</strong></label>
+                <div className="order-form-group">
+                  <label htmlFor="rating">
+                    <strong>Rating:</strong>
+                  </label>
                   <StarRating rating={rating} setRating={setRating} />
                 </div>
 
                 {/* Comment Area */}
-                <div className="form-group">
-                  <label htmlFor="comment"><strong>Comment:</strong></label>
+                <div className="order-form-group">
+                  <label htmlFor="comment">
+                    <strong>Comment:</strong>
+                  </label>
                   <textarea
                     id="comment"
                     name="comment"
@@ -369,11 +393,11 @@ const OrdersPage = () => {
                 </div>
 
                 {/* Submit Button */}
-                <div className="form-group">
+                <div className="order-form-group">
                   <button
                     type="submit"
-                    className="submit-button"
-                    disabled={selectedOrderStatus !== 'delivered' || isSubmitting} // Disable based on order status
+                    className="order-submit-button"
+                    disabled={selectedOrderStatus !== 'delivered' || isSubmitting}
                   >
                     {isSubmitting ? 'Submitting...' : 'Submit Review'}
                   </button>
@@ -387,4 +411,4 @@ const OrdersPage = () => {
   );
 };
 
-export default OrdersPage;
+export default OrderHistoryPage;

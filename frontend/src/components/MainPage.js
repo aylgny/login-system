@@ -13,6 +13,7 @@ import headphonesIcon from "../assets/icons/headphone.png";
 import laptopsIcon from "../assets/icons/laptop.png";
 import speakersIcon from "../assets/icons/speaker.png";
 import tvsIcon from "../assets/icons/tv.png";
+import tabletsIcon from "../assets/icons/tablet.png";
 import teknosuLogo from "../assets/icons/teknosu.png";
 import wishlistIcon from "../assets/icons/wishlist.png";
 
@@ -63,6 +64,7 @@ const categoryIcons = {
   Laptops: laptopsIcon,
   Speakers: speakersIcon,
   TVs: tvsIcon,
+  Tablets: tabletsIcon,
 };
 
 const MainPage = () => {
