@@ -41,7 +41,7 @@ const DeliveryItem = ({ product, order }) => {
         <p><strong>Product ID:</strong> {product.product._id}</p>
         <p><strong>Product Name:</strong> {product.product.name}</p>
         <p><strong>Quantity:</strong> {product.quantity}</p>
-        <p><strong>Price:</strong> ${product.price.toFixed(2)}</p>
+        <p><strong>Total Price:</strong> ${product.price.toFixed(2)*product.quantity}</p>
         <p><strong>Delivery Address:</strong> {order.address}</p>
         <p>
           <strong>Delivery Status:</strong>

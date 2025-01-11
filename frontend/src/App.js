@@ -45,6 +45,7 @@ import CongratsPage from "./components/CongratsPage";
 import OrdersPageAdmin from "./components/OrderAdmin";
 import DeliveryListPage from './components/DeliveryListPage';
 import ProductUpdate from './components/ProductUpdate';
+import ProductManagement from './components/ProductManagement';
 
 
 
@@ -64,6 +65,7 @@ function App() {
           {/* Product page */}
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/productUpdate/:productId" element={<ProductUpdate />} />
+          <Route path="/productManagement" element={<ProductManagement />} />
 
           {/* Fallback route */}
           <Route path="*" element={<Navigate to="/" />} />
@@ -79,6 +81,7 @@ function App() {
           <Route path="/congrats/:pdfPath" element={<CongratsPage/>} />
           <Route path="/orderAdmin" element={<OrdersPageAdmin />} />
           <Route path="/deliveryList" element={<DeliveryListPage />} />
+          
 
 
 
