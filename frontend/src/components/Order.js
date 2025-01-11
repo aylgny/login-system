@@ -63,7 +63,6 @@ const StarRating = ({ rating, setRating }) => {
   );
 };
 
-// Component to display individual product details
 const ProductItem = ({ product, onClick }) => {
   const imageUrl = `${product.photo}`;
   // Fallback image URL
@@ -82,14 +81,13 @@ const ProductItem = ({ product, onClick }) => {
       <div className="order-product-details">
         <h4 className="order-product-name">{product.name}</h4>
         <p>Quantity: {product.quantity}</p>
+        {/* Updated to use the purchase price */}
         <p>Price: ${product.price.toFixed(2)}</p>
       </div>
     </div>
   );
 };
 
-// Component to display individual order summary and products
-// Updated OrderCard Component to Render Products in Stacked Layout
 const OrderCard = ({ order, onProductClick }) => {
   const [showProducts, setShowProducts] = useState(false);
 
@@ -121,8 +119,12 @@ const OrderCard = ({ order, onProductClick }) => {
           </div>
           <div className="order-info-item">
             <span className="info-label">Total</span>
+            {/* Updated to use the purchase price from the order schema */}
             <span className="info-data">
-              ${order.products.reduce((total, p) => total + p.product.price * p.quantity, 0).toFixed(2)}
+              $
+              {order.products
+                .reduce((total, p) => total + p.price * p.quantity, 0)
+                .toFixed(2)}
             </span>
           </div>
         </div>
@@ -167,35 +169,22 @@ const OrderCard = ({ order, onProductClick }) => {
       {showProducts && (
         <div className="order-products-list">
           {order.products.map((item) => (
-            <div
-              className="order-products-row"
+            <ProductItem
               key={item.product._id}
-            >
-              <div
-                className="order-product-item"
-                onClick={() => onProductClick(item.product)}
-              >
-                <img
-                  src={item.product.photo}
-                  alt={item.product.name}
-                  className="order-product-image"
-                  onError={(e) => {
-                    e.target.src = "https://via.placeholder.com/100";
-                  }}
-                />
-                <div className="order-product-details">
-                  <h4 className="order-product-name">{item.product.name}</h4>
-                  <p>Quantity: {item.quantity}</p>
-                  <p>Price: ${item.product.price.toFixed(2)}</p>
-                </div>
-              </div>
-            </div>
+              product={{
+                ...item.product,
+                price: item.price, // Pass the purchase price from the order schema
+                quantity: item.quantity,
+              }}
+              onClick={() => onProductClick(item.product)}
+            />
           ))}
         </div>
       )}
     </div>
   );
 };
+
 
 
 // Main OrderHistoryPage component

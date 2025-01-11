@@ -69,31 +69,32 @@ const StarRating = ({ rating, setRating }) => {
   );
 };
 
-// Component to display individual product details
 const ProductItem = ({ product, onClick }) => {
   const imageUrl = `${product.photo}`;
   // Fallback image URL
   const fallbackImage = 'https://via.placeholder.com/150'; // Replace with your fallback image URL
 
   return (
-    <div className="product-item" onClick={() => onClick(product)}>
+    <div className="product-item-a" onClick={() => onClick(product)}>
       {/* Display the product image with fallback */}
       <img
         src={imageUrl}
         alt={product.name}
         className="product-image"
-        onError={(e) => { e.target.src = fallbackImage; }}
+        onError={(e) => {
+          e.target.src = fallbackImage;
+        }}
       />
       <div className="product-details">
         <h4 className="product-name">{product.name}</h4>
         <p>Quantity: {product.quantity}</p>
+        {/* Updated to display the purchase price */}
         <p>Price: ${product.price.toFixed(2)}</p>
         <p>Product Id: {product._id}</p>
       </div>
     </div>
   );
 };
-
 const handleViewInvoice = async (userID, orderID) => {
   try {
     const response = await axios.post('http://localhost:5000/api/create-invoice', {
@@ -151,24 +152,6 @@ const OrderCard = ({ order, onProductClick }) => {
   // Determine status color
   const statusClass = order.status.toLowerCase().replace(' ', '-');
 
-  // Function to group products into rows of 3 and 4 alternately
-  const groupProducts = (products) => {
-    const rows = [];
-    let index = 0;
-    let toggle = true; // true for 3, false for 4
-
-    while (index < products.length) {
-      const count = toggle ? 3 : 4;
-      rows.push(products.slice(index, index + count));
-      index += count;
-      toggle = !toggle;
-    }
-
-    return rows;
-  };
-
-  const productRows = groupProducts(order.products);
-
   return (
     <div className="order-card">
       <div className="order-summary" onClick={toggleProducts}>
@@ -191,8 +174,12 @@ const OrderCard = ({ order, onProductClick }) => {
           </div>
           <div className="order-info-item">
             <span className="info-label">Total</span>
+            {/* Updated to calculate total using the purchase price */}
             <span className="info-data">
-              ${order.products.reduce((total, p) => total + p.product.price * p.quantity, 0).toFixed(2)}
+              $
+              {order.products
+                .reduce((total, p) => total + p.price * p.quantity, 0)
+                .toFixed(2)}
             </span>
           </div>
         </div>
@@ -208,7 +195,12 @@ const OrderCard = ({ order, onProductClick }) => {
               width="24"
               height="24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 15l7-7 7 7"
+              />
             </svg>
           ) : (
             <svg
@@ -220,33 +212,44 @@ const OrderCard = ({ order, onProductClick }) => {
               width="24"
               height="24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           )}
         </div>
       </div>
 
       <div className="invoice-buttons">
-        <button className="view-invoice-button" onClick={() => handleViewInvoice(order.user._id, order._id)}>
+        <button
+          className="view-invoice-button"
+          onClick={() => handleViewInvoice(order.user._id, order._id)}
+        >
           View Invoice
         </button>
-        <button className="download-invoice-button" onClick={() => handleDownloadInvoice(order.user._id, order._id)}>
+        <button
+          className="download-invoice-button"
+          onClick={() => handleDownloadInvoice(order.user._id, order._id)}
+        >
           Download Invoice
         </button>
       </div>
 
       {showProducts && (
         <div className="products-list">
-          {productRows.map((row, rowIndex) => (
-            <div className="products-row" key={rowIndex}>
-              {row.map((item) => (
-                <ProductItem
-                  key={item.product._id}
-                  product={{ ...item.product, quantity: item.quantity }}
-                  onClick={() => onProductClick(item.product, order.status)} // Pass both product and order.status
-                />
-              ))}
-            </div>
+          {order.products.map((item) => (
+            <ProductItem
+              key={item.product._id}
+              product={{
+                ...item.product,
+                price: item.price, // Pass the purchase price from the order schema
+                quantity: item.quantity,
+              }}
+              onClick={() => onProductClick(item.product, order.status)}
+            />
           ))}
         </div>
       )}
