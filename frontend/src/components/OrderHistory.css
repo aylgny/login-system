@@ -422,3 +422,32 @@
 .order-star-rating button:focus {
   outline: none;
 }
+
+/* Refund Button Styling */
+.refund-button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 25px;
+  background-color: #f7f7f7;
+  border-top: 1px solid #e0e0e0;
+}
+
+.refund-button {
+  background-color: #ff4757;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s;
+}
+
+.refund-button:hover {
+  background-color: #ff6b81;
+}
+
+.refund-button:disabled {
+  background-color: #ff9999;
+  cursor: not-allowed;
+}

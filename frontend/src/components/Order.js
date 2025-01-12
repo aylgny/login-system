@@ -1,5 +1,4 @@
-// src/components/OrderHistoryPage.js
-
+// Import necessary dependencies
 import React, { useState, useEffect } from 'react';
 import './OrderHistory.css'; // <-- Updated import
 import Layout from './Layout';
@@ -90,6 +89,8 @@ const ProductItem = ({ product, onClick }) => {
 
 const OrderCard = ({ order, onProductClick }) => {
   const [showProducts, setShowProducts] = useState(false);
+  const [isRefunding, setIsRefunding] = useState(false);
+  const [hasRefunded, setHasRefunded] = useState(order.refund_status === 'requested');
 
   const toggleProducts = () => {
     setShowProducts((prev) => !prev);
@@ -97,9 +98,31 @@ const OrderCard = ({ order, onProductClick }) => {
 
   // Format date
   const formattedDate = new Date(order.purchaseDate).toLocaleDateString();
+  const purchaseDate = new Date(order.purchaseDate);
+  const currentDate = new Date();
+  const isRefundable = (currentDate - purchaseDate) / (1000 * 60 * 60 * 24) <= 30;
 
   // Determine status color
   const statusClass = order.status.toLowerCase().replace(' ', '-');
+
+  const handleRefund = async () => {
+    setIsRefunding(true);
+    try {
+      const response = await axios.post('http://localhost:5000/api/create_refund', {
+        orderId: order._id,
+        products: order.products.map(p => ({ productId: p.product._id })),
+      });
+      if (response.status === 201) {
+        alert('Refund request created successfully');
+        setHasRefunded(true);
+      }
+    } catch (error) {
+      console.error('Error creating refund request:', error);
+      alert('Failed to create refund request');
+    } finally {
+      setIsRefunding(false);
+    }
+  };
 
   return (
     <div className="order-history-card">
@@ -181,11 +204,20 @@ const OrderCard = ({ order, onProductClick }) => {
           ))}
         </div>
       )}
+      {isRefundable && (
+        <div className="refund-button-container">
+          <button
+            className="refund-button"
+            onClick={handleRefund}
+            disabled={isRefunding || hasRefunded}
+          >
+            {isRefunding ? 'Processing...' : 'Request Refund'}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
-
-
 
 // Main OrderHistoryPage component
 const OrderHistoryPage = () => {
