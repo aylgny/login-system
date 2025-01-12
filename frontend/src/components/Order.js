@@ -1,3 +1,5 @@
+// src/components/OrderHistoryPage.js
+
 import React, { useState, useEffect } from 'react';
 import './OrderHistory.css'; // <-- Updated import
 import Layout from './Layout';
@@ -61,16 +63,29 @@ const StarRating = ({ rating, setRating }) => {
   );
 };
 
-const ProductItem = ({ product, orderDate, onClick, onRefund }) => {
+const ProductItem = ({ product, onClick, refundStatus, orderId }) => {
+  const [isRefunding, setIsRefunding] = useState(false);
+
   const imageUrl = `${product.photo}`;
   // Fallback image URL
   const fallbackImage = 'https://via.placeholder.com/150';
 
-  // Calculate the number of days since the order date
-  const daysSinceOrder = Math.floor((new Date() - new Date(orderDate)) / (1000 * 60 * 60 * 24));
+  const handleRefundClick = async () => {
+    setIsRefunding(true);
+    try {
+      const response = await axios.post('http://localhost:5000/api/create_refund', {
+        orderId,
+        products: [{ productId: product._id }]
+      });
+      console.log('Refund request created successfully:', response.data);
+      alert(response.data.message);
+    } catch (error) {
+      console.error('Error creating refund request:', error);
+    }
+  };
 
   return (
-    <div className="order-product-item">
+    <div className="order-product-item" onClick={() => onClick(product)}>
       <img
         src={imageUrl}
         alt={product.name}
@@ -83,17 +98,22 @@ const ProductItem = ({ product, orderDate, onClick, onRefund }) => {
         <h4 className="order-product-name">{product.name}</h4>
         <p>Quantity: {product.quantity}</p>
         <p>Price: ${product.price.toFixed(2)}</p>
-        {daysSinceOrder <= 30 && (
-          <button className="refund-button" onClick={() => onRefund(product._id)}>
-            Refund
-          </button>
-        )}
+        <button
+          className="refund-button"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRefundClick();
+          }}
+          disabled={refundStatus !== 'neutral' || isRefunding}
+        >
+          Request Refund
+        </button>
       </div>
     </div>
   );
 };
 
-const OrderCard = ({ order, onProductClick, onRefund }) => {
+const OrderCard = ({ order, onProductClick }) => {
   const [showProducts, setShowProducts] = useState(false);
 
   const toggleProducts = () => {
@@ -180,9 +200,9 @@ const OrderCard = ({ order, onProductClick, onRefund }) => {
                 price: item.price, // Pass the purchase price from the order schema
                 quantity: item.quantity,
               }}
-              orderDate={order.purchaseDate}
+              refundStatus={item.refund_status} // Pass the refund status
+              orderId={order._id} // Pass the order ID
               onClick={() => onProductClick(item.product)}
-              onRefund={(productId) => onRefund(order._id, productId)}
             />
           ))}
         </div>
@@ -276,23 +296,6 @@ const OrderHistoryPage = () => {
     }
   };
 
-  // Handler to submit refund request
-  const handleRefund = async (orderId, productId) => {
-    try {
-      const response = await axios.post(`http://localhost:5000/api/create_refund`, {
-        orderId,
-        products: [{ productId }]
-      });
-
-      if (response.status === 201) {
-        alert('Refund request created successfully');
-      }
-    } catch (error) {
-      console.error('Error creating refund request:', error);
-      alert('Failed to create refund request');
-    }
-  };
-
   if (loading) return <p>Loading orders...</p>;
 
   return (
@@ -336,7 +339,6 @@ const OrderHistoryPage = () => {
                 key={order._id}
                 order={order}
                 onProductClick={handleProductClick}
-                onRefund={handleRefund}
               />
             ))
           )}
