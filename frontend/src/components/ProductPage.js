@@ -226,7 +226,28 @@ const ProductPage = () => {
             )}
             <p className="product-category">{product.category}</p>
             <p className="product-description">{product.description}</p>
-            <h2>${product.price.toFixed(2)}</h2>
+
+              {/* Updated price rendering */}
+              <h2 className="product-price">
+                {product.discount > 0 ? (
+                  <div className="price-with-discount">
+                    <span className="product-discount-badge">-%{product.discount}</span>
+                    <div className="price-details">
+                      <span className="product-old-price">
+                        ${product.price.toFixed(2)}
+                      </span>
+                      <span className="product-current-price">
+                        ${product.current_price.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <span className="product-current-price">
+                    ${product.price.toFixed(2)}
+                  </span>
+                )}
+              </h2>
+
 
             {/* Stock Information */}
             <p className="product-stock">
