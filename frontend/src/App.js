@@ -48,7 +48,8 @@ import ProductUpdate from './components/ProductUpdate';
 import ProductManagement from './components/ProductManagement';
 import RefundRequests from './components/RefundRequests';
 import SalesAdmin from './components/SalesAdmin'; 
-import ProductAdmin from './components/ProductAdmin'; // Import the ProductAdmin component
+import ProductAdmin from './components/ProductAdmin'; 
+import Comments from './components/Comments'; 
 
 
 
@@ -89,6 +90,8 @@ function App() {
           
           <Route path="/salesAdmin" element={<SalesAdmin />} /> {/* SalesAdmin route */}
           <Route path="/productAdmin" element={<ProductAdmin />} />
+          {/* Comments Management */}
+          <Route path="/comments" element={<Comments />} />
 
 
 
