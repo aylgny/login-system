@@ -76,6 +76,7 @@ const MainPage = () => {
   const [sortCriteria, setSortCriteria] = useState("price-asc");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [popularProducts, setPopularProducts] = useState([]); // For popular products
 
   // Promotions state
   const [currentPromotionIndex, setCurrentPromotionIndex] = useState(0);
@@ -99,12 +100,23 @@ const MainPage = () => {
   const categoriesApiUrl = "http://localhost:5000/api/categories";
 
   // Fetching products
+// Fetching products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(productsApiUrl);
         setProducts(response.data);
         setFilteredProducts(response.data);
+
+        // Filter for popular products (rating >= 4)
+        const popular = response.data.filter(
+          (product) =>
+            product.ratings &&
+            product.ratings.length > 0 &&
+            product.ratings.reduce((acc, cur) => acc + cur.rating, 0) /
+              product.ratings.length >= 4
+        );
+        setPopularProducts(popular);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -349,43 +361,7 @@ const MainPage = () => {
           </button>
         </div>
       </div>
-
-      <div className="discounted-products-section">
-        <h2>Discounted Products</h2>
-        <div className="discounted-products-list">
-          {products
-            .filter((product) => product.discount > 0) // Sadece indirimde olan ürünler
-            .slice(0, 5) // İlk 5 ürünü göstermek için (isteğe bağlı)
-            .map((product) => (
-              <Link
-                to={`/product/${product._id}`}
-                key={product._id}
-                className="mainpage-product-item-link"
-              >
-                <div className="mainpage-product-item">
-                  <span className="mainpage-discount-badge">%{product.discount}</span>
-                  <img
-                    src={product.photo}
-                    alt={product.name}
-                    className="mainpage-product-image"
-                  />
-                  <div className="mainpage-product-details">
-                    <h4>{product.name}</h4>
-                    <span className="mainpage-old-price">
-                      ${product.price.toLocaleString()}
-                    </span>
-                    <span className="mainpage-current-price">
-                      ${product.current_price.toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-        </div>
-        <Link to="/discounted-products" className="view-more-button">
-          See all the discounted products
-        </Link>
-      </div>
+      
 
       {/* Sort & Products */}
       <div className="sort-container">
@@ -443,6 +419,87 @@ const MainPage = () => {
             </Link>
           ))
         )}
+      </div>
+      {/* Popular Products Section */}
+      <div className="popular-products-section">
+        <h3 className="section-title">Discover Popular Products</h3>
+        <div className="popular-products-list">
+          {loading ? (
+            <p>Loading popular products...</p>
+          ) : popularProducts.length === 0 ? (
+            <p>No popular products found.</p>
+          ) : (
+            popularProducts.map((product) => (
+              <Link
+                to={`/product/${product._id}`}
+                key={product._id}
+                className="popular-product-item-link"
+              >
+                <div className="popular-product-item">
+                  <img
+                    src={product.photo}
+                    alt={product.name}
+                    className="popular-product-image"
+                  />
+                  <div className="popular-product-details">
+                    <h4>{product.name}</h4>
+                    <p>
+                      {product.ratings.length > 0 && (
+                        <span>
+                          ⭐{" "}
+                          {(
+                            product.ratings.reduce((acc, cur) => acc + cur.rating, 0) /
+                            product.ratings.length
+                          ).toFixed(1)}{" "}
+                          ({product.ratings.length} reviews)
+                        </span>
+                      )}
+                    </p>
+                    <p>${product.current_price.toLocaleString()}</p>
+                  </div>
+                </div>
+              </Link>
+            ))
+          )}
+        </div>
+      </div>
+
+
+
+
+      <div className="discounted-products-section">
+        <h2>Discounted Products</h2>
+        <div className="discounted-products-list">
+          {products
+            .filter((product) => product.discount > 0) // Sadece indirimde olan ürünler
+            .slice(0, 5) // İlk 5 ürünü göstermek için (isteğe bağlı)
+            .map((product) => (
+              <Link
+                to={`/product/${product._id}`}
+                key={product._id}
+                className="mainpage-product-item-link"
+              >
+                <div className="mainpage-product-item">
+                  <span className="mainpage-discount-badge">%{product.discount}</span>
+                  <img
+                    src={product.photo}
+                    alt={product.name}
+                    className="mainpage-product-image"
+                  />
+                  <div className="mainpage-product-details">
+                    <h4>{product.name}</h4>
+                    <span className="mainpage-old-price">
+                      ${product.price.toLocaleString()}
+                    </span>
+                    <span className="mainpage-current-price">
+                      ${product.current_price.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+        </div>
+
       </div>
 
       {/* BRAND LOGOS SECTION (below product grid) */}
