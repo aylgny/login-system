@@ -83,17 +83,14 @@ router.post("/create_refund", async (req, res) => {
 // http://localhost:5000/api/refunds
 router.get("/refunds", async (req, res) => {
   try {
-    // Retrieve all refund requests
     const refunds = await Refund.find()
-      .populate("products.product", "name price") // Populate product details (e.g., name, price)
-      .populate("order", "status purchaseDate"); // Optionally populate order details
+      .populate("products.product", "name price") // Populate product details
+      .populate("order", "purchaseDate _id"); // Populate order details
 
-    // Check if no refunds found
     if (!refunds || refunds.length === 0) {
       return res.status(404).json({ message: "No refunds found" });
     }
 
-    // Return the refund requests
     res.status(200).json({ message: "Refunds retrieved successfully", refunds });
   } catch (error) {
     console.error("Error fetching refunds:", error);

@@ -1,128 +1,135 @@
 .refunds-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 80vh;
-  background-color: #f9f9f9;
-  padding: 20px;
-}
-
-.refunds-container {
-  margin-top: 20px;
-}
-
-.refund-card {
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  padding: 20px;
-}
-
-.refund-summary {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.refund-info-grid {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.refund-info-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.info-label {
-  font-weight: 600;
-  color: #555555;
-}
-
-.info-data {
-  font-size: 1em;
-  color: #333333;
-}
-
-.status {
-  padding: 4px 10px;
-  border-radius: 12px;
-  color: #ffffff;
-  text-transform: capitalize;
-  font-size: 0.9em;
-}
-
-.status.pending {
-  background-color: #ffc107;
-}
-
-.status.approved {
-  background-color: #28a745;
-}
-
-.status.declined {
-  background-color: #dc3545;
-}
-
-.refund-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.approve-button,
-.decline-button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 0.9em;
-}
-
-.approve-button {
-  background-color: #28a745;
-}
-
-.approve-button:hover {
-  background-color: #218838;
-}
-
-.decline-button {
-  background-color: #dc3545;
-}
-
-.decline-button:hover {
-  background-color: #c82333;
-}
-
-.products-list {
-  margin-top: 15px;
-}
-
-.product-item {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #f9f9f9;
-}
-
-.product-details {
-  margin-left: 15px;
-}
-
-.product-name {
-  font-size: 1.1em;
-  color: #333333;
-}
-
-.no-refunds {
-  font-size: 1.2em;
-  color: #777777;
-  text-align: center;
-  margin-top: 50px;
-}
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh;
+    background-color: #f9f9f9;
+    padding: 20px;
+  }
+  
+  .refunds-container {
+    margin-top: 20px;
+  }
+  
+  .refund-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+  }
+  
+  .refund-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .refund-info-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .refund-info-item {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .info-label {
+    font-weight: 600;
+    color: #555555;
+  }
+  
+  .info-data {
+    font-size: 1em;
+    color: #333333;
+  }
+  
+  .status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    color: #ffffff;
+    text-transform: capitalize;
+    font-size: 0.9em;
+  }
+  
+  .status.pending {
+    background-color: #ffc107;
+  }
+  
+  .status.approved {
+    background-color: #28a745;
+  }
+  
+  .status.declined {
+    background-color: #dc3545;
+  }
+  
+  /* Added style for waiting status */
+  .status.waiting {
+    background-color: #ffc107; /* Yellow background for waiting status */
+    color: #000000; /* Black text for better visibility */
+  }
+  
+  .refund-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .approve-button,
+  .decline-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+  
+  .approve-button {
+    background-color: #28a745;
+  }
+  
+  .approve-button:hover {
+    background-color: #218838;
+  }
+  
+  .decline-button {
+    background-color: #dc3545;
+  }
+  
+  .decline-button:hover {
+    background-color: #c82333;
+  }
+  
+  .products-list {
+    margin-top: 15px;
+  }
+  
+  .product-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .product-details {
+    margin-left: 15px;
+  }
+  
+  .product-name {
+    font-size: 1.1em;
+    color: #333333;
+  }
+  
+  .no-refunds {
+    font-size: 1.2em;
+    color: #777777;
+    text-align: center;
+    margin-top: 50px;
+  }
+  

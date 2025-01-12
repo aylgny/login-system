@@ -24,10 +24,6 @@ const RefundCard = ({ refund, onApprove, onDecline }) => {
             <span className="info-data">{refund?.order?._id || 'N/A'}</span>
           </div>
           <div className="refund-info-item">
-            <span className="info-label">Customer ID</span>
-            <span className="info-data">{refund?.user || 'N/A'}</span>
-          </div>
-          <div className="refund-info-item">
             <span className="info-label">Status</span>
             <span className={`status ${refund?.refund_status?.toLowerCase() || 'unknown'}`}>
               {refund?.refund_status || 'Unknown'}
@@ -43,14 +39,14 @@ const RefundCard = ({ refund, onApprove, onDecline }) => {
           <button
             className="approve-button"
             onClick={() => onApprove(refund._id)}
-            disabled={refund?.refund_status !== 'Pending'}
+            disabled={refund?.refund_status !== 'waiting'}
           >
             Approve
           </button>
           <button
             className="decline-button"
             onClick={() => onDecline(refund._id)}
-            disabled={refund?.refund_status !== 'Pending'}
+            disabled={refund?.refund_status !== 'waiting'}
           >
             Decline
           </button>
@@ -97,11 +93,7 @@ const RefundRequests = () => {
       await axios.put(`http://localhost:5000/api/refunds/approve/${refundId}`);
       alert('Refund approved successfully');
       setRefunds((prev) =>
-        prev.map((refund) =>
-          refund._id === refundId
-            ? { ...refund, refund_status: 'Approved' }
-            : refund
-        )
+        prev.filter((refund) => refund._id !== refundId) // Remove approved refund from list
       );
     } catch (error) {
       console.error('Error approving refund:', error);
@@ -114,11 +106,7 @@ const RefundRequests = () => {
       await axios.put(`http://localhost:5000/api/refunds/decline/${refundId}`);
       alert('Refund declined successfully');
       setRefunds((prev) =>
-        prev.map((refund) =>
-          refund._id === refundId
-            ? { ...refund, refund_status: 'Declined' }
-            : refund
-        )
+        prev.filter((refund) => refund._id !== refundId) // Remove declined refund from list
       );
     } catch (error) {
       console.error('Error declining refund:', error);
@@ -128,15 +116,17 @@ const RefundRequests = () => {
 
   if (loading) return <p>Loading refund requests...</p>;
 
+  const waitingRefunds = refunds.filter((refund) => refund.refund_status?.toLowerCase() === 'waiting');
+
   return (
     <Layout>
       <div className="refunds-page">
         <h2>Refund Requests</h2>
         <div className="refunds-container">
-          {refunds.length === 0 ? (
-            <p className="no-refunds">No refund requests found.</p>
+          {waitingRefunds.length === 0 ? (
+            <p className="no-refunds">No waiting refund requests found.</p>
           ) : (
-            refunds.map((refund) => (
+            waitingRefunds.map((refund) => (
               <RefundCard
                 key={refund?._id || Math.random()}
                 refund={refund}
