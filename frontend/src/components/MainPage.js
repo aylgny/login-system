@@ -16,6 +16,8 @@ import tvsIcon from "../assets/icons/tv.png";
 import tabletsIcon from "../assets/icons/tablet.png";
 import teknosuLogo from "../assets/icons/teknosu.png";
 import wishlistIcon from "../assets/icons/wishlist.png";
+import adminIcon from "../assets/icons/admin_panel.png";
+
 
 /* BRAND LOGOS (replace with your actual images) */
 import brandPreo from "../assets/logos/preo.png";
@@ -325,7 +327,16 @@ useEffect(() => {
           />
         </div>
         {/* Icon Group */}
+        
+
         <div className="icon-group">
+          {localStorage.getItem("token") && (
+              <div className="admin-icon">
+                <Link to="/SalesAdmin">
+                  <img src={adminIcon} alt="Admin" />
+                </Link>
+              </div>
+            )}
           <div className="cart-icon">
             <Link to="/cart">
               <img src={require("../assets/icons/shopping.png")} alt="Cart" />
