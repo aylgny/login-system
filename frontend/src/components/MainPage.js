@@ -41,11 +41,7 @@ import iconWhatsApp from "../assets/socials/whatsapp.png";
 // PROMOTION IMAGES (local)
 import promo1 from "../assets/promotions/bose-promo.png";
 import promo2 from "../assets/promotions/lg-promo.png";
-import promo3 from "../assets/promotions/airpods.jpg";
-import promo4 from "../assets/promotions/airtag.jpg";
-import promo5 from "../assets/promotions/apple_watch.jpg";
-import promo6 from "../assets/promotions/samsung_unpacked.png";
-import promo7 from "../assets/promotions/samsung_watch_.jpg";
+
 
 // import promo3 from "../assets/promotions/promo3.png"; // If you add a third image, uncomment
 
@@ -83,12 +79,6 @@ const MainPage = () => {
   const promotions = [
     { id: 1, image: promo1 },
     { id: 2, image: promo2 },
-    { id: 3, image: promo3 },
-    { id: 4, image: promo4 },
-    { id: 5, image: promo5 },
-    { id: 6, image: promo6 },
-    { id: 7, image: promo7 },
-    // { id: 3, image: promo3 },
   ];
 
   // Router & location
@@ -414,75 +404,29 @@ useEffect(() => {
 
           {/* Price Range Filter */}
           <div className="filter-category">
-            <div className="filter-header" onClick={() => toggleFilter("priceRange")}>
+            <div className="filter-header">
               <span>Price Range</span>
-              <span className="toggle-icon">{openFilters.priceRange ? "-" : "+"}</span>
             </div>
-            {openFilters.priceRange && (
-              <div className="filter-options">
-                <input
-                  type="number"
-                  placeholder="Min"
-                  value={minPrice}
-                  onChange={(e) => setMinPrice(e.target.value)}
-                  className="price-input"
-                />
-                <input
-                  type="number"
-                  placeholder="Max"
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(e.target.value)}
-                  className="price-input"
-                />
-                <button onClick={applyPriceFilter} className="apply-button">Apply</button>
-              </div>
-            )}
-          </div>
-
-          {/* Customer Ratings Filter */}
-          <div className="filter-category">
-            <div className="filter-header" onClick={() => toggleFilter("ratings")}>
-              <span>Customer Review</span>
-              <span className="toggle-icon">{openFilters.ratings ? "-" : "+"}</span>
+            <div className="filter-options">
+              <input
+                type="number"
+                placeholder="Min"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+                className="price-input"
+              />
+              <input
+                type="number"
+                placeholder="Max"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+                className="price-input"
+              />
+              <button onClick={applyPriceFilter} className="apply-button">Apply</button>
             </div>
-            {openFilters.ratings && (
-              <div className="filter-options">
-                {[5, 4, 3, 2, 1].map((rating) => (
-                  <label key={rating} className="rating-filter">
-                    <input
-                      type="checkbox"
-                      checked={selectedRatings.includes(rating)}
-                      onChange={() => toggleRatingFilter(rating)}
-                    />
-                    {rating} stars and above
-                  </label>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Categories Filter */}
-          <div className="filter-category">
-            <div className="filter-header" onClick={() => toggleFilter("categories")}>
-              <span>Categories</span>
-              <span className="toggle-icon">{openFilters.categories ? "-" : "+"}</span>
-            </div>
-            {openFilters.categories && (
-              <div className="filter-options">
-                {categories.map((category) => (
-                  <label key={category._id} className="category-filter">
-                    <input
-                      type="checkbox"
-                      checked={selectedCategories.includes(category.name)}
-                      onChange={() => toggleCategoryFilter(category.name)}
-                    />
-                    {category.name}
-                  </label>
-                ))}
-              </div>
-            )}
           </div>
         </div>
+
 
         {/* Promotions Section */}
         {/* PROMOTIONS SLIDER (bigger container + manual Next/Prev) */}

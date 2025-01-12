@@ -625,14 +625,52 @@
 
 /* Filters Section */
 .filters-section {
-  flex: 1; /* Fixed width for filters */
-  max-width: 300px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  width: 250px; /* Fixed width for the filter section */
+  background-color: #f4f4f4; /* Light background color for contrast */
   padding: 20px;
-  height: fit-content; /* Adjust height as needed */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  height: 100%; /* Ensure it stretches the full height */
+  border-right: 1px solid #ddd; /* Add a border to separate it from products */
+  position: sticky; /* Keep it fixed when scrolling */
+  top: 0; /* Align it with the top of the page */
+}
+
+.filter-category {
+  margin-bottom: 20px;
+}
+
+.filters-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.price-input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.apply-button {
+  background-color: #f48220; /* Button color */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.apply-button:hover {
+  background-color: #d3711d; /* Darker shade on hover */
 }
 
 /* Promotions Section */
@@ -641,20 +679,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 300px; /* Set a fixed height to match the filter section */
+  overflow: hidden; /* Prevent content overflow */
 }
+
 .promotion-slide {
   width: 100%;
-  height: auto;
+  height: 100%; /* Ensures the slide fills the fixed height */
   background-color: #f9f9f9;
   border-radius: 8px;
   overflow: hidden;
   position: relative;
 }
+
 .promotion-image {
   width: 100%;
-  height: auto;
-  object-fit: cover;
+  height: 100%; /* Ensures it fills the slide height */
+  object-fit: cover; /* Maintains the aspect ratio of the image */
 }
+
 .promotion-nav-button {
   position: absolute;
   top: 50%;
@@ -663,16 +706,19 @@
   color: white;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   cursor: pointer;
 }
+
 .promotion-nav-button.prev-button {
   left: 10px;
 }
+
 .promotion-nav-button.next-button {
   right: 10px;
 }
+
 
 
 
