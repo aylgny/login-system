@@ -41,7 +41,7 @@ const DeliveryItem = ({ product, order }) => {
         <p><strong>Product ID:</strong> {product.product._id}</p>
         <p><strong>Product Name:</strong> {product.product.name}</p>
         <p><strong>Quantity:</strong> {product.quantity}</p>
-        <p><strong>Total Price:</strong> ${product.price.toFixed(2)*product.quantity}</p>
+        <p><strong>Total Price:</strong> ${product.price.toFixed(2) * product.quantity}</p>
         <p><strong>Delivery Address:</strong> {order.address}</p>
         <p>
           <strong>Delivery Status:</strong>
@@ -78,7 +78,12 @@ const DeliveryCard = ({ order }) => {
   return (
     <div className="delivery-card">
       <div className="delivery-header">
-        <h3>Order ID: {order._id}</h3>
+        <h3>
+          Order ID: {order._id}
+          <span className={`order-status ${order.status}`}>
+            {order.status}
+          </span>
+        </h3>
         <button
           className="view-invoice-button"
           onClick={() => handleViewInvoice(order.user._id, order._id)}
