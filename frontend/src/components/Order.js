@@ -202,7 +202,7 @@ const OrderCard = ({ order, onProductClick }) => {
               }}
               refundStatus={item.refund_status} // Pass the refund status
               orderId={order._id} // Pass the order ID
-              onClick={() => onProductClick(item.product)}
+              onClick={() => onProductClick(item.product, order.status)}
             />
           ))}
         </div>
@@ -246,6 +246,7 @@ const OrderHistoryPage = () => {
 
   // Handler to open modal with product details
   const handleProductClick = (product, orderStatus) => {
+    console.log("Selected Order Status:", orderStatus);
     setSelectedProduct(product);
     setSelectedOrderStatus(orderStatus);
     setRating(0);
@@ -358,7 +359,7 @@ const OrderHistoryPage = () => {
               />
               <div className="order-modal-product-info">
                 <h2>{selectedProduct.name}</h2>
-                {selectedOrderStatus === 'delivered' ? (
+                {selectedOrderStatus.toLowerCase() === 'delivered' ? (
                   <p>
                     <strong>Description:</strong>{' '}
                     {selectedProduct.description || 'No description available.'}
@@ -410,7 +411,8 @@ const OrderHistoryPage = () => {
                   <button
                     type="submit"
                     className="order-submit-button"
-                    disabled={selectedOrderStatus !== 'delivered' || isSubmitting}
+                    disabled={selectedOrderStatus.toLowerCase() !== 'delivered' || isSubmitting}
+
                   >
                     {isSubmitting ? 'Submitting...' : 'Submit Review'}
                   </button>
