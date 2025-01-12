@@ -46,6 +46,9 @@ router.post("/create_refund", async (req, res) => {
         throw new Error(`Product with ID ${item.productId} not found in order`);
       }
 
+      // Update refund_status for the product in the order
+      orderProduct.refund_status = "waiting";
+
 
       return {
         product: item.productId,

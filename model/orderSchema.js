@@ -13,8 +13,8 @@ const orderSchema = new mongoose.Schema({
       price: { type: Number, required: true, min: 0 }, // Added price attribute
       refund_status: {
         type: String,
-        enum: ["waiting", "declined", "approved"], // Possible values for refund status
-        default: "waiting", // Default refund status is "waiting"
+        enum: ["waiting", "declined", "approved", "neutral"], // Possible values for refund status
+        default: "neutral", // Default refund status is "waiting"
       },
       delivery_status: {
         type: String,
