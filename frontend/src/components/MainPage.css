@@ -420,4 +420,24 @@
   .mainpage-product-image {
     height: 140px;
   }
+
+
+  .admin-panel-icon {
+    display: inline-block;
+    margin-left: 20px;
+  }
+  
+  .admin-panel-button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .admin-panel-button:hover {
+    background-color: #0056b3;
+  }
 }

@@ -291,6 +291,18 @@ const MainPage = () => {
               <img src={logoutIcon} alt="Logout Icon" className="logout-icon" />
             </div>
           )}
+
+          {/* Admin Panel Button */}
+          {localStorage.getItem("token") && (
+            (localStorage.getItem("userStatus") === "sales_manager" ||
+              localStorage.getItem("userStatus") === "product_manager") && (
+              <div className="admin-panel-icon">
+                <Link to="/admin">
+                  <button className="admin-panel-button">Admin Panel</button>
+                </Link>
+              </div>
+            )
+          )}
         </div>
       </header>
 
