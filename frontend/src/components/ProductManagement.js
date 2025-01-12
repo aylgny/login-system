@@ -50,6 +50,7 @@ const ProductItem = ({ product, onDelete, onUpdateQuantity }) => {
       <div className="product-details">
         <p><strong>Product ID:</strong> {product._id}</p>
         <p><strong>Product Name:</strong> {product.name}</p>
+        <p><strong>Category:</strong> {product.category}</p>
         <p><strong>Quantity:</strong> {product.quantity}</p>
         <p><strong>Price:</strong> ${product.price.toFixed(2)}</p>
       </div>
@@ -64,8 +65,11 @@ const ProductItem = ({ product, onDelete, onUpdateQuantity }) => {
 
 const ProductManagement = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddProductForm, setShowAddProductForm] = useState(false);
+  const [showAddCategoryForm, setShowAddCategoryForm] = useState(false);
+  const [showRemoveCategoryForm, setShowRemoveCategoryForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
     category: '',
     name: '',
@@ -78,9 +82,12 @@ const ProductManagement = () => {
     distributor: '',
     photo: '',
   });
+  const [newCategory, setNewCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
     fetchProducts();
+    fetchCategories();
   }, []);
 
   const fetchProducts = async () => {
@@ -91,6 +98,15 @@ const ProductManagement = () => {
       console.error('Error fetching products:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('/api/categories');
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
     }
   };
 
@@ -134,6 +150,28 @@ const ProductManagement = () => {
     }
   };
 
+  const handleAddCategory = async () => {
+    try {
+      await axios.post('/api/addCategory', { name: newCategory });
+      fetchCategories(); // Refresh category list after adding new category
+      setShowAddCategoryForm(false);
+      setNewCategory('');
+    } catch (error) {
+      console.error('Error adding category:', error);
+    }
+  };
+
+  const handleRemoveCategory = async () => {
+    try {
+      await axios.delete(`/api/deleteCategory/${selectedCategory}`);
+      fetchCategories(); // Refresh category list after deleting category
+      setShowRemoveCategoryForm(false);
+      setSelectedCategory('');
+    } catch (error) {
+      console.error('Error deleting category:', error);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewProduct({ ...newProduct, [name]: value });
@@ -146,7 +184,11 @@ const ProductManagement = () => {
       <div className="product-management">
         <div className="header">
           <h2>Product Management</h2>
-          <button onClick={() => setShowAddProductForm(true)}>Add Product</button>
+          <div className="header-buttons">
+            <button onClick={() => setShowAddProductForm(true)}>Add Product</button>
+            <button onClick={() => setShowAddCategoryForm(true)}>Add Category</button>
+            <button onClick={() => setShowRemoveCategoryForm(true)}>Remove Category</button>
+          </div>
         </div>
 
         {showAddProductForm && (
@@ -186,6 +228,31 @@ const ProductManagement = () => {
               </label>
             </div>
             <button className="submit-button" onClick={handleAddProduct}>Submit</button>
+          </Modal>
+        )}
+
+        {showAddCategoryForm && (
+          <Modal show={showAddCategoryForm} onClose={() => setShowAddCategoryForm(false)}>
+            <h2>Add New Category</h2>
+            <div className="input-group">
+              <input type="text" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} placeholder="Category Name" />
+            </div>
+            <button className="submit-button" onClick={handleAddCategory}>Submit</button>
+          </Modal>
+        )}
+
+        {showRemoveCategoryForm && (
+          <Modal show={showRemoveCategoryForm} onClose={() => setShowRemoveCategoryForm(false)}>
+            <h2>Remove Category</h2>
+            <div className="input-group">
+              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+                <option value="">Select a category</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>{category.name}</option>
+                ))}
+              </select>
+            </div>
+            <button className="submit-button" onClick={handleRemoveCategory}>Submit</button>
           </Modal>
         )}
 
