@@ -145,3 +145,41 @@
   font-size: 14px;
   color: #888;
 }
+
+/* Discount Badge */
+.product-discount-badge {
+  background-color: #f57c00; /* Orange color */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+/* Price Section */
+.price-with-discount {
+  display: flex;
+  align-items: center; /* Vertically align discount and prices */
+}
+
+.price-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-old-price {
+  font-size: 18px;
+  color: #666;
+  text-decoration: line-through;
+}
+
+.product-current-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+
+
+
