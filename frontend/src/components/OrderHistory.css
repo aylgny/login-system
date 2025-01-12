@@ -434,12 +434,13 @@
 
 .refund-button {
   background-color: #ff4757;
+  width: 140px;
   color: #ffffff;
   border: none;
-  padding: 10px 20px;
+  padding: 5px 15px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1em;
+  font-size: 0.9em;
   transition: background-color 0.3s;
 }
 
