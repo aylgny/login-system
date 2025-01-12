@@ -99,6 +99,69 @@ const MainPage = () => {
   const productsApiUrl = "http://localhost:5000/api/products";
   const categoriesApiUrl = "http://localhost:5000/api/categories";
 
+  const [openFilters, setOpenFilters] = useState({
+    priceRange: false,
+    ratings: false,
+    categories: false,
+  });
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [selectedRatings, setSelectedRatings] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  
+  const toggleFilter = (filterName) => {
+    setOpenFilters((prevState) => ({
+      ...prevState,
+      [filterName]: !prevState[filterName],
+    }));
+  };
+  
+  const applyPriceFilter = () => {
+    // Apply price range filter logic here
+  };
+  
+  const toggleRatingFilter = (rating) => {
+    setSelectedRatings((prev) =>
+      prev.includes(rating) ? prev.filter((r) => r !== rating) : [...prev, rating]
+    );
+  };
+  
+  const toggleCategoryFilter = (category) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((cat) => cat !== category)
+        : [...prev, category]
+    );
+  };
+  
+
+useEffect(() => {
+  let filtered = products;
+
+  // Apply price filter
+  if (minPrice) {
+    filtered = filtered.filter((product) => product.current_price >= parseFloat(minPrice));
+  }
+  if (maxPrice) {
+    filtered = filtered.filter((product) => product.current_price <= parseFloat(maxPrice));
+  }
+
+  // Apply ratings filter
+  if (selectedRatings.length > 0) {
+    filtered = filtered.filter((product) =>
+      selectedRatings.some((rating) => product.rating >= rating)
+    );
+  }
+
+  // Apply categories filter
+  if (selectedCategories.length > 0) {
+    filtered = filtered.filter((product) => selectedCategories.includes(product.category));
+  }
+
+  setFilteredProducts(filtered);
+}, [minPrice, maxPrice, selectedRatings, selectedCategories, products]);
+
+
   // Fetching products
 // Fetching products
   useEffect(() => {
@@ -343,22 +406,102 @@ const MainPage = () => {
         </ul>
       </div>
 
-      {/* PROMOTIONS SLIDER (bigger container + manual Next/Prev) */}
-      <div className="promotions-section">
-        <div className="promotion-slide">
-          {/* Promotion Image */}
-          <img
-            src={promotions[currentPromotionIndex].image}
-            alt={`Promotion ${promotions[currentPromotionIndex].id}`}
-            className="promotion-image"
-          />
-          {/* Manual Buttons */}
-          <button className="promotion-nav-button prev-button" onClick={handlePrevPromo}>
-            ‹
-          </button>
-          <button className="promotion-nav-button next-button" onClick={handleNextPromo}>
-            ›
-          </button>
+      {/* Parent Div for Filters and Promotions */}
+      <div className="mainpage-content">  {/* This is the parent div */}
+        {/* Filters Section */}
+        <div className="filters-section">
+          <h3 className="filters-title">Filters</h3>
+
+          {/* Price Range Filter */}
+          <div className="filter-category">
+            <div className="filter-header" onClick={() => toggleFilter("priceRange")}>
+              <span>Price Range</span>
+              <span className="toggle-icon">{openFilters.priceRange ? "-" : "+"}</span>
+            </div>
+            {openFilters.priceRange && (
+              <div className="filter-options">
+                <input
+                  type="number"
+                  placeholder="Min"
+                  value={minPrice}
+                  onChange={(e) => setMinPrice(e.target.value)}
+                  className="price-input"
+                />
+                <input
+                  type="number"
+                  placeholder="Max"
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(e.target.value)}
+                  className="price-input"
+                />
+                <button onClick={applyPriceFilter} className="apply-button">Apply</button>
+              </div>
+            )}
+          </div>
+
+          {/* Customer Ratings Filter */}
+          <div className="filter-category">
+            <div className="filter-header" onClick={() => toggleFilter("ratings")}>
+              <span>Customer Review</span>
+              <span className="toggle-icon">{openFilters.ratings ? "-" : "+"}</span>
+            </div>
+            {openFilters.ratings && (
+              <div className="filter-options">
+                {[5, 4, 3, 2, 1].map((rating) => (
+                  <label key={rating} className="rating-filter">
+                    <input
+                      type="checkbox"
+                      checked={selectedRatings.includes(rating)}
+                      onChange={() => toggleRatingFilter(rating)}
+                    />
+                    {rating} stars and above
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Categories Filter */}
+          <div className="filter-category">
+            <div className="filter-header" onClick={() => toggleFilter("categories")}>
+              <span>Categories</span>
+              <span className="toggle-icon">{openFilters.categories ? "-" : "+"}</span>
+            </div>
+            {openFilters.categories && (
+              <div className="filter-options">
+                {categories.map((category) => (
+                  <label key={category._id} className="category-filter">
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(category.name)}
+                      onChange={() => toggleCategoryFilter(category.name)}
+                    />
+                    {category.name}
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Promotions Section */}
+        {/* PROMOTIONS SLIDER (bigger container + manual Next/Prev) */}
+        <div className="promotions-section">
+          <div className="promotion-slide">
+            {/* Promotion Image */}
+            <img
+              src={promotions[currentPromotionIndex].image}
+              alt={`Promotion ${promotions[currentPromotionIndex].id}`}
+              className="promotion-image"
+            />
+            {/* Manual Buttons */}
+            <button className="promotion-nav-button prev-button" onClick={handlePrevPromo}>
+              ‹
+            </button>
+            <button className="promotion-nav-button next-button" onClick={handleNextPromo}>
+              ›
+            </button>
+          </div>
         </div>
       </div>
       
@@ -499,7 +642,9 @@ const MainPage = () => {
               </Link>
             ))}
         </div>
-
+        <Link to="/discounted-products" className="view-more-button">
+          See all the discounted products
+        </Link>
       </div>
 
       {/* BRAND LOGOS SECTION (below product grid) */}

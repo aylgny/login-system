@@ -544,6 +544,136 @@
   color: #666;
 }
 
+.filters-section {
+  width: 250px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  margin-right: 20px;
+}
+
+.filters-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.filter-category {
+  margin-bottom: 20px;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.toggle-icon {
+  font-size: 14px;
+  color: #555;
+}
+
+.filter-options {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.price-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.apply-button {
+  background-color: #f48220;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.apply-button:hover {
+  background-color: #d86e1a;
+}
+
+.rating-filter,
+.category-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+/* Main content container */
+.mainpage-content {
+  display: flex;
+  flex-direction: row;
+  gap: 20px; /* Space between filters and promotions */
+  margin-top: 20px; /* Adjust as needed */
+}
+
+/* Filters Section */
+.filters-section {
+  flex: 1; /* Fixed width for filters */
+  max-width: 300px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  height: fit-content; /* Adjust height as needed */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Promotions Section */
+.promotions-section {
+  flex: 3; /* Takes the remaining space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.promotion-slide {
+  width: 100%;
+  height: auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+.promotion-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.promotion-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+.promotion-nav-button.prev-button {
+  left: 10px;
+}
+.promotion-nav-button.next-button {
+  right: 10px;
+}
+
 
 
 
