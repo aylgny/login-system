@@ -47,6 +47,9 @@ import DeliveryListPage from './components/DeliveryListPage';
 import ProductUpdate from './components/ProductUpdate';
 import ProductManagement from './components/ProductManagement';
 import RefundRequests from './components/RefundRequests';
+import SalesAdmin from './components/SalesAdmin'; 
+import ProductAdmin from './components/ProductAdmin'; // Import the ProductAdmin component
+
 
 
 
@@ -84,6 +87,8 @@ function App() {
           <Route path="/deliveryList" element={<DeliveryListPage />} />
           <Route path="/refundRequests" element={<RefundRequests />} />
           
+          <Route path="/salesAdmin" element={<SalesAdmin />} /> {/* SalesAdmin route */}
+          <Route path="/productAdmin" element={<ProductAdmin />} />
 
 
 
