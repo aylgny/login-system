@@ -46,6 +46,7 @@ import OrdersPageAdmin from "./components/OrderAdmin";
 import DeliveryListPage from './components/DeliveryListPage';
 import ProductUpdate from './components/ProductUpdate';
 import ProductManagement from './components/ProductManagement';
+import RefundRequests from './components/RefundRequests';
 
 
 
@@ -81,6 +82,7 @@ function App() {
           <Route path="/congrats/:pdfPath" element={<CongratsPage/>} />
           <Route path="/orderAdmin" element={<OrdersPageAdmin />} />
           <Route path="/deliveryList" element={<DeliveryListPage />} />
+          <Route path="/refundRequests" element={<RefundRequests />} />
           
 
 
