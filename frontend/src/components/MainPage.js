@@ -43,6 +43,11 @@ import iconWhatsApp from "../assets/socials/whatsapp.png";
 // PROMOTION IMAGES (local)
 import promo1 from "../assets/promotions/bose-promo.png";
 import promo2 from "../assets/promotions/lg-promo.png";
+import promo3 from "../assets/promotions/airpods.png";
+import promo4 from "../assets/promotions/airtag.jpg";
+import promo5 from "../assets/promotions/apple_watch.jpg";
+import promo6 from "../assets/promotions/samsung_unpacked.png";
+import promo7 from "../assets/promotions/samsung_watch_.jpg";
 
 
 // import promo3 from "../assets/promotions/promo3.png"; // If you add a third image, uncomment
@@ -81,6 +86,11 @@ const MainPage = () => {
   const promotions = [
     { id: 1, image: promo1 },
     { id: 2, image: promo2 },
+    { id: 3, image: promo3 },
+    { id: 4, image: promo4 },
+    { id: 5, image: promo5 },
+    { id: 6, image: promo6 },
+    { id: 7, image: promo7 },
   ];
 
   // Router & location
