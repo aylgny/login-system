@@ -50,7 +50,7 @@ import RefundRequests from './components/RefundRequests';
 import SalesAdmin from './components/SalesAdmin'; 
 import ProductAdmin from './components/ProductAdmin'; 
 import Comments from './components/Comments'; 
-
+import DiscountedProducts from "./components/DiscountedProducts";
 
 
 
@@ -93,6 +93,7 @@ function App() {
           {/* Comments Management */}
           <Route path="/comments" element={<Comments />} />
 
+          <Route path="/discounted-products" element={<DiscountedProducts />} />
 
 
 

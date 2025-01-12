@@ -350,6 +350,43 @@ const MainPage = () => {
         </div>
       </div>
 
+      <div className="discounted-products-section">
+        <h2>Discounted Products</h2>
+        <div className="discounted-products-list">
+          {products
+            .filter((product) => product.discount > 0) // Sadece indirimde olan ürünler
+            .slice(0, 5) // İlk 5 ürünü göstermek için (isteğe bağlı)
+            .map((product) => (
+              <Link
+                to={`/product/${product._id}`}
+                key={product._id}
+                className="mainpage-product-item-link"
+              >
+                <div className="mainpage-product-item">
+                  <span className="mainpage-discount-badge">%{product.discount}</span>
+                  <img
+                    src={product.photo}
+                    alt={product.name}
+                    className="mainpage-product-image"
+                  />
+                  <div className="mainpage-product-details">
+                    <h4>{product.name}</h4>
+                    <span className="mainpage-old-price">
+                      ${product.price.toLocaleString()}
+                    </span>
+                    <span className="mainpage-current-price">
+                      ${product.current_price.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+        </div>
+        <Link to="/discounted-products" className="view-more-button">
+          See all the discounted products
+        </Link>
+      </div>
+
       {/* Sort & Products */}
       <div className="sort-container">
         <label htmlFor="sort"></label>

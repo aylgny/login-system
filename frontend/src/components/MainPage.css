@@ -441,3 +441,42 @@
     background-color: #0056b3;
   }
 }
+
+.discounted-products-section {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.discounted-products-section h2 {
+  font-size: 24px;
+  color: #f48220;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.discounted-products-list {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.view-more-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #f48220;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.view-more-button:hover {
+  background-color: #e67310;
+}
