@@ -25,7 +25,7 @@ const Admin = () => {
 
         {/* Main Content */}
         <div className="main-content">
-          <h2>Admin Panel</h2>
+          <h2>Sales Manager Admin Panel</h2>
           <p>Welcome to the admin panel. Use the menu on the left to manage the platform.</p>
         </div>
       </div>
