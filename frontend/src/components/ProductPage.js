@@ -4,6 +4,29 @@ import axios from "axios";
 import "./ProductPage.css";
 import Layout from './Layout';
 
+import brandPreo from "../assets/logos/preo.png";
+import brandApple from "../assets/logos/apple.png";
+import brandSamsung from "../assets/logos/samsung.png";
+import brandLG from "../assets/logos/lg.png";
+import brandAsus from "../assets/logos/asus.png";
+import brandMsi from "../assets/logos/msi.png";
+import brandFakir from "../assets/logos/fakir.png";
+import brandBraun from "../assets/logos/braun.png";
+import brandNikon from "../assets/logos/nikon.png";
+import brandSony from "../assets/logos/sony.png";
+
+import iconGuarantee from "../assets/deliverables/guarantee.svg";
+import iconDelivery from "../assets/deliverables/delivery.svg";
+import iconRefund from "../assets/deliverables/refund.svg";
+import iconShipment from "../assets/deliverables/shipment.svg";
+
+import iconFacebook from "../assets/socials/facebook.png";
+import iconX from "../assets/socials/x.avif";
+import iconLinkedIn from "../assets/socials/linkedin.png";
+import iconYouTube from "../assets/socials/youtube.png";
+import iconInstagram from "../assets/socials/instagram.png";
+import iconWhatsApp from "../assets/socials/whatsapp.png";
+
 const ProductPage = () => {
   const { productId } = useParams(); // Extract productId from the URL
   const [product, setProduct] = useState(null);
@@ -226,7 +249,30 @@ const ProductPage = () => {
             )}
             <p className="product-category">{product.category}</p>
             <p className="product-description">{product.description}</p>
-            <h2>${product.price.toFixed(2)}</h2>
+           
+            
+            {/* Updated price rendering */}
+            <h2 className="product-price">
+                {product.discount > 0 ? (
+                  <div className="price-with-discount">
+                    <span className="product-discount-badge">-%{product.discount}</span>
+                    <div className="price-details">
+                      <span className="product-old-price">
+                        ${product.price.toFixed(2)}
+                      </span>
+                      <span className="product-current-price">
+                        ${product.current_price.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <span className="product-current-price">
+                    ${product.price.toFixed(2)}
+                  </span>
+                )}
+              </h2>
+
+
 
             {/* Stock Information */}
             <p className="product-stock">
@@ -288,6 +334,43 @@ const ProductPage = () => {
           ) : (
             <p>No reviews yet.</p>
           )}
+        </div>
+      </div>
+
+       {/* Info About Website Section */}
+       <div className="info-cards-section">
+        <div className="info-card">
+          <img src={iconGuarantee} alt="Guarantee Icon" className="info-icon" />
+          <h4>Extra Guarantee</h4>
+          <p>Extend your product’s legal guarantee for peace of mind.</p>
+        </div>
+        <div className="info-card">
+          <img src={iconDelivery} alt="Delivery Icon" className="info-icon" />
+          <h4>Fast Delivery</h4>
+          <p>Same-day shipping for select cities, next-day for others.</p>
+        </div>
+        <div className="info-card">
+          <img src={iconShipment} alt="Free Shipping Icon" className="info-icon" />
+          <h4>Free Shipping Over $150</h4>
+          <p>Enjoy free shipping for orders above $150.</p>
+        </div>
+        <div className="info-card">
+          <img src={iconRefund} alt="Refund Icon" className="info-icon" />
+          <h4>Easy Refund</h4>
+          <p>Return within 30 days if you are not fully satisfied.</p>
+        </div>
+      </div>
+
+      {/* Follow Us Section */}
+      <div className="follow-us-section">
+        <span className="follow-text">Follow Us</span>
+        <div className="social-icons">
+          <img src={iconFacebook} alt="Facebook" />
+          <img src={iconX} alt="X" />
+          <img src={iconLinkedIn} alt="LinkedIn" />
+          <img src={iconYouTube} alt="YouTube" />
+          <img src={iconInstagram} alt="Instagram" />
+          <img src={iconWhatsApp} alt="WhatsApp" />
         </div>
       </div>
     </Layout>

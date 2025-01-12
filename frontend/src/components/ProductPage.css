@@ -9,8 +9,10 @@
 
 .product-page .product-details {
   display: flex;
+  flex-direction: row; /* Ensure the image and details are side by side */
   gap: 20px;
-  max-width: 800px;
+  max-width: 1000px; /* Increased width to accommodate both image and details */
+  width: 100%;
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -19,30 +21,36 @@
 }
 
 .product-page .product-image {
-  width: 300px;
+  width: 350px; /* Adjusted width for better alignment */
   height: auto;
   border-radius: 8px;
+  object-fit: contain; /* Ensures the image retains its aspect ratio */
 }
 
 .product-page .product-info {
-  flex: 1;
+  flex: 1; /* Take up the remaining space next to the image */
+  display: flex;
+  flex-direction: column; /* Align content vertically */
+  justify-content: flex-start; /* Align content to the top */
 }
 
 .product-page .product-info h1 {
-  font-size: 24px;
+  font-size: 28px; /* Slightly larger font size for the title */
   margin-bottom: 10px;
   color: #000000;
+  font-weight: bold;
 }
 
 .product-page .product-category {
   font-size: 16px;
   color: #666;
-  margin-bottom: 20px;
+  margin-bottom: 10px; /* Adjusted spacing for better layout */
 }
 
 .product-page .product-description {
   font-size: 18px;
   margin-bottom: 20px;
+  line-height: 1.6; /* Improved readability */
 }
 
 .product-page .product-stock {
@@ -73,7 +81,7 @@
   background-color: #f48220;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px; /* Slightly rounded corners */
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -89,29 +97,26 @@
 
 /* Wishlist Button */
 .product-page .wishlist-button {
-  padding: 10px 20px;
-  font-size: 24px;
-  background-color: #ffffff;
-  color: #333;
-  border: 1px solid #ffffff;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 0; /* Remove padding */
+  font-size: 24px; /* Ensure the heart icon is appropriately sized */
+  background: none; /* Remove background */
+  border: none; /* Remove border */
+  color: #333; /* Set default color for the heart icon */
+  cursor: pointer; /* Keep cursor pointer for interactivity */
+  margin-top: 10px; /* Maintain alignment */
+  transition: color 0.3s ease; /* Smooth color transition */
 }
 
 .product-page .wishlist-button.wishlisted {
-  
-  color: white;
+  color: #f48220; /* Change heart color when wishlisted */
 }
 
 .product-page .wishlist-button:hover {
-  
-  color: white;
+  color: #d35400; /* Change heart color on hover */
 }
 
 .product-page .reviews-section {
-  max-width: 800px;
+  max-width: 1000px; /* Match the width of the product details */
   width: 100%;
   background: white;
   border-radius: 8px;
@@ -144,4 +149,60 @@
 .product-page .review-user {
   font-size: 14px;
   color: #888;
+}
+
+/* Discount Badge */
+.product-discount-badge {
+  background-color: #f57c00; /* Orange color */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+/* Price Section */
+.price-with-discount {
+  display: flex;
+  align-items: center; /* Vertically align discount and prices */
+}
+
+.price-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-old-price {
+  font-size: 18px;
+  color: #666;
+  text-decoration: line-through;
+}
+
+.product-current-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .product-page .product-details {
+    flex-direction: column; /* Stack the image and details vertically */
+    align-items: center;
+  }
+
+  .product-page .product-image {
+    width: 100%; /* Make the image responsive */
+    max-width: 350px;
+  }
+
+  .product-page .product-info {
+    width: 100%; /* Adjust details width to match container */
+    text-align: center; /* Center-align text for smaller screens */
+  }
+
+  .product-page .wishlist-button {
+    align-self: center; /* Center-align wishlist button */
+  }
 }
