@@ -173,6 +173,7 @@ router.post('/create-invoice', async (req, res) => {
     // Verileri hazırlama
     const name = `${user.firstName} ${user.lastName}`;
     const email = user.email;
+    const address = order.address;
     //const invoiceDate = new Date().toISOString().split('T')[0]; // Tarihi 'YYYY-MM-DD' formatında alır
     const formatDate = (date) => {
       const options = { year: 'numeric', day: '2-digit', month: '2-digit' };
@@ -184,7 +185,7 @@ router.post('/create-invoice', async (req, res) => {
     const userDetails = {
       name: name,
       email: email,
-      address: "empty hard coded adress for now",
+      address: address,
     };
 
 
