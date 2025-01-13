@@ -63,11 +63,11 @@ const StarRating = ({ rating, setRating }) => {
   );
 };
 
-const ProductItem = ({ product, onClick, refundStatus, orderId }) => {
+const ProductItem = ({ product, onClick, refundStatus, orderId, purchaseDate, deliveryStatus }) => {
   const [isRefunding, setIsRefunding] = useState(false);
+  const [isRefunded, setIsRefunded] = useState(false);
 
   const imageUrl = `${product.photo}`;
-  // Fallback image URL
   const fallbackImage = 'https://via.placeholder.com/150';
 
   const handleRefundClick = async () => {
@@ -79,11 +79,20 @@ const ProductItem = ({ product, onClick, refundStatus, orderId }) => {
       });
       console.log('Refund request created successfully:', response.data);
       alert(response.data.message);
+      setIsRefunded(true);
     } catch (error) {
       console.error('Error creating refund request:', error);
     } finally {
       setIsRefunding(false);
     }
+  };
+
+  const isRefundAllowed = () => {
+    const purchaseDateObj = new Date(purchaseDate);
+    const currentDate = new Date();
+    const timeDiff = Math.abs(currentDate - purchaseDateObj);
+    const diffDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    return diffDays <= 30;
   };
 
   return (
@@ -106,7 +115,7 @@ const ProductItem = ({ product, onClick, refundStatus, orderId }) => {
             e.stopPropagation();
             handleRefundClick();
           }}
-          disabled={refundStatus !== 'neutral' || isRefunding}
+          disabled={refundStatus !== 'neutral' || isRefunding || !isRefundAllowed() || isRefunded || deliveryStatus.toLowerCase() !== 'delivered'}
         >
           Request Refund
         </button>
@@ -115,23 +124,20 @@ const ProductItem = ({ product, onClick, refundStatus, orderId }) => {
   );
 };
 
+// OrderCard bileşeninde ProductItem bileşenine purchaseDate prop olarak ekleyelim
 const OrderCard = ({ order, onProductClick, onCancelOrder }) => {
   const [showProducts, setShowProducts] = useState(false);
-  const [isCancelling, setIsCancelling] = useState(false); // Yeni state
+  const [isCancelling, setIsCancelling] = useState(false);
 
   const toggleProducts = () => {
     setShowProducts((prev) => !prev);
   };
 
-  // Format date
   const formattedDate = new Date(order.purchaseDate).toLocaleDateString();
-
-  // Determine status color
   const statusClass = order.status.toLowerCase().replace(' ', '-');
 
-  // Handler for cancel button
   const handleCancel = async (e) => {
-    e.stopPropagation(); // Butonun kartı tıklamayı tetiklemesini engelle
+    e.stopPropagation();
     if (window.confirm('Are you sure you want to cancel this order?')) {
       setIsCancelling(true);
       try {
@@ -216,15 +222,16 @@ const OrderCard = ({ order, onProductClick, onCancelOrder }) => {
               key={item.product._id}
               product={{
                 ...item.product,
-                price: item.price, // Pass the purchase price from the order schema
+                price: item.price, 
                 quantity: item.quantity,
               }}
-              refundStatus={item.refund_status} // Pass the refund status
-              orderId={order._id} // Pass the order ID
+              refundStatus={item.refund_status}
+              deliveryStatus={item.delivery_status}
+              orderId={order._id}
+              purchaseDate={order.purchaseDate} // Ekleme
               onClick={() => onProductClick(item.product, order.status)}
             />
           ))}
-          {/* "Cancel" Button Eklemek */}
           {order.status === 'Processing' && (
             <div className="refund-button-container">
               <button
