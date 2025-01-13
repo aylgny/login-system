@@ -116,7 +116,7 @@ router.post("/cart", async (req, res) => {
 router.get('/user/:id', async (req, res) => {
   try {
       const userId = req.params.id;
-      const user = await User.findById(userId).select('firstName lastName email phone');
+      const user = await User.findById(userId).select('firstName lastName email phone status');
       if (!user) {
           return res.status(404).json({ message: 'User not found' });
       }

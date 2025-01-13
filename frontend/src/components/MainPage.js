@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./MainPage.css";
 import axios from "axios";
 
+
 // Import local icons
 import userIcon from "../assets/icons/account.png";
 import logoutIcon from "../assets/icons/logout.png";
@@ -80,6 +81,8 @@ const MainPage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [popularProducts, setPopularProducts] = useState([]); // For popular products
+  const [userStatus, setUserStatus] = useState(null); // User status state
+  const userId = localStorage.getItem("userId"); // Assuming userId is stored in localStorage
 
   // Promotions state
   const [currentPromotionIndex, setCurrentPromotionIndex] = useState(0);
@@ -110,6 +113,31 @@ const MainPage = () => {
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedRatings, setSelectedRatings] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  
+  useEffect(() => {
+    const fetchUserStatus = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Get the token from localStorage
+        if (!token) {
+          setUserStatus(null); // No token found
+          return;
+        }
+        if (!userId) {
+          setUserStatus(null); // No userId in the token
+          return;
+        }
+        // Fetch user details from the backend
+        const response = await axios.get(`http://localhost:5000/api/user/${userId}`);
+        setUserStatus(response.data.status); // Set the user's status
+      } catch (error) {
+        console.error("Error fetching user status:", error);
+        setUserStatus(null); // Reset status on error
+      }
+    };
+    fetchUserStatus();
+  }, []);
+  
+  
   
   const toggleFilter = (filterName) => {
     setOpenFilters((prevState) => ({
@@ -340,13 +368,21 @@ useEffect(() => {
         
 
         <div className="icon-group">
-          {localStorage.getItem("token") && (
-              <div className="admin-icon">
-                <Link to="/SalesAdmin">
-                  <img src={adminIcon} alt="Admin" />
-                </Link>
-              </div>
-            )}
+          {/* Admin Icon */}
+          {userStatus === "sales_manager" && (
+            <div className="admin-icon">
+              <Link to="/SalesAdmin">
+                <img src={adminIcon} alt="Admin Panel" />
+              </Link>
+            </div>
+          )}
+          {userStatus === "product_manager" && (
+            <div className="admin-icon">
+              <Link to="/ProductAdmin">
+                <img src={adminIcon} alt="Product Panel" />
+              </Link>
+            </div>
+          )}
           <div className="cart-icon">
             <Link to="/cart">
               <img src={require("../assets/icons/shopping.png")} alt="Cart" />
@@ -377,18 +413,6 @@ useEffect(() => {
               <img src={logoutIcon} alt="Logout Icon" className="logout-icon" />
             </div>
           )}
-
-          {/* Admin Panel Button */}
-          {localStorage.getItem("token") && (
-            (localStorage.getItem("userStatus") === "sales_manager" ||
-              localStorage.getItem("userStatus") === "product_manager") && (
-              <div className="admin-panel-icon">
-                <Link to="/admin">
-                  <button className="admin-panel-button">Admin Panel</button>
-                </Link>
-              </div>
-            )
-          )}
         </div>
       </header>
 
