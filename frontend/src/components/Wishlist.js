@@ -4,6 +4,8 @@ import "./Wishlist.css";
 import { Link } from "react-router-dom";
 import Layout from "./Layout";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify"; // Import react-toastify
+import "react-toastify/dist/ReactToastify.css"; // Import toastify styles
 
 const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState([]); // Wishlist items
@@ -45,37 +47,37 @@ const Wishlist = () => {
   }, []);
 
   const handleRemoveRequest = async (productId) => {
-  let userId = localStorage.getItem("userId"); // Check if userId exists in localStorage
+    let userId = localStorage.getItem("userId"); // Check if userId exists in localStorage
 
-  if (!userId) {
-    console.log("No userId found in localStorage. Please log in.");
-    return;
-  }
-
-  try {
-    const response = await axios.post(`http://localhost:5000/api/wishlist`, {
-      userId,
-      productId,
-    });
-
-    // Check the response message
-    if (response.data.message.includes("removed")) {
-      // Permanently remove the item from the wishlist state
-      const updatedWishlistItems = wishlistItems.filter(
-        (item) => item.product._id !== productId
-      );
-      setWishlistItems(updatedWishlistItems);
-      alert("Product removed from wishlist.");
+    if (!userId) {
+      console.log("No userId found in localStorage. Please log in.");
+      return;
     }
-  } catch (error) {
-    console.error("Error removing item from wishlist:", error);
-    alert(
-      error.response?.data?.message ||
-        "An error occurred while removing the item from the wishlist."
-    );
-  }
-};
 
+    try {
+      const response = await axios.post(`http://localhost:5000/api/wishlist`, {
+        userId,
+        productId,
+      });
+
+      // Check the response message
+      if (response.data.message.includes("removed")) {
+        // Permanently remove the item from the wishlist state
+        const updatedWishlistItems = wishlistItems.filter(
+          (item) => item.product._id !== productId
+        );
+        setWishlistItems(updatedWishlistItems);
+        toast.success("Product removed from wishlist.", { position: "top-right", autoClose: 3000 });
+      }
+    } catch (error) {
+      console.error("Error removing item from wishlist:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "An error occurred while removing the item from the wishlist.",
+        { position: "top-right", autoClose: 3000 }
+      );
+    }
+  };
 
   const handleRemoveItem = (index) => {
     const updatedWishlistItems = wishlistItems.filter((_, i) => i !== index);
@@ -84,7 +86,7 @@ const Wishlist = () => {
 
   const handleMoveToCart = async (productId) => {
     let userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
-    
+
     if (!userId) {
       console.log("No userId found in localStorage. Using default userId.");
       userId = "674cdb83a58ccb372bf49485"; // Default userId
@@ -97,12 +99,14 @@ const Wishlist = () => {
         quantity: 1, // Default quantity
       });
 
-      // Optionally remove the item from wishlist after adding to cart
-      //handleRemoveRequest(productId);
+      toast.success("Product added to cart.", { position: "top-right", autoClose: 3000 });
     } catch (error) {
       console.error("Error moving item to cart:", error);
+      toast.error("An error occurred while adding the product to the cart.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
-    alert("Product added to cart.")
   };
 
   return (
@@ -148,6 +152,7 @@ const Wishlist = () => {
           </Link>
         </div>
       </div>
+      <ToastContainer /> {/* Added ToastContainer */}
     </Layout>
   );
 };

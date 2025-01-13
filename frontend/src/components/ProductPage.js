@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify"; // Import react-toastify
+import "react-toastify/dist/ReactToastify.css"; // Import toastify styles
 import "./ProductPage.css";
 import Layout from './Layout';
 
@@ -82,7 +84,7 @@ const ProductPage = () => {
   const toggleWishlist = async () => {
     let userId = localStorage.getItem("userId");
     if (!userId) {
-      alert("Please log in to proceed.");
+      toast.info("Please log in to proceed.", { position: "top-right", autoClose: 3000 });
       return;
     }
 
@@ -94,49 +96,47 @@ const ProductPage = () => {
 
       if (response.data.message.includes("added")) {
         setIsWishlisted(true);
-        alert("Product added to wishlist.");
+        toast.success("Product added to wishlist!", { position: "top-right", autoClose: 3000 });
       } else if (response.data.message.includes("removed")) {
         setIsWishlisted(false);
-        alert("Product removed from wishlist.");
+        toast.info("Product removed from wishlist.", { position: "top-right", autoClose: 3000 });
       }
     } catch (error) {
       console.error("Error toggling wishlist:", error);
-      alert(
-        error.response?.data?.message ||
-          "An error occurred while updating the wishlist."
+      toast.error(
+        error.response?.data?.message || "An error occurred while updating the wishlist.",
+        { position: "top-right", autoClose: 3000 }
       );
     }
   };
 
   const handleAddToCart = async () => {
-    let userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
-
-    if (!userId) {
-      userId = "674cdb83a58ccb372bf49485";
-    }
+    let userId = localStorage.getItem("userId") || "674cdb83a58ccb372bf49485";
 
     try {
-      // Send the POST request to add the product to the user's cart
       const response = await axios.post("http://localhost:5000/api/cart", {
-        userId: userId,
+        userId,
         productId: product._id,
         quantity: 1, // Default quantity to add
       });
 
-      // Optionally notify the user
-      alert(response.data.message || "Product added to cart!");
+      toast.success(response.data.message || "Product added to cart!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     } catch (error) {
       console.error("Error adding to cart:", error);
-
-      // Use alert to show server-side messages or default message
-      alert(
-        error.response?.data?.message ||
-        `Error occurred while adding to cart. Please check the console.`
-      );
+      toast.error(error.response?.data?.message || "An error occurred while adding to cart.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   };
 
-  // New handler for submitting a review
   const handleSubmitReview = async (e) => {
     e.preventDefault();
 
@@ -144,17 +144,17 @@ const ProductPage = () => {
     const userId = localStorage.getItem("userId");
 
     if (!token) {
-      alert("Please log in to submit a review.");
+      toast.info("Please log in to submit a review.", { position: "top-right", autoClose: 3000 });
       return;
     }
 
     if (rating === 0) {
-      alert("Please select a star rating.");
+      toast.warning("Please select a star rating.", { position: "top-right", autoClose: 3000 });
       return;
     }
 
     if (comment.trim() === "") {
-      alert("Please enter a comment.");
+      toast.warning("Please enter a comment.", { position: "top-right", autoClose: 3000 });
       return;
     }
 
@@ -186,12 +186,12 @@ const ProductPage = () => {
       setHoverRating(null);
       setComment("");
 
-      alert("Thank you for your review!");
+      toast.success("Thank you for your review!", { position: "top-right", autoClose: 3000 });
     } catch (error) {
       console.error("Error submitting review:", error);
-      alert(
-        error.response?.data?.message ||
-          "An error occurred while submitting your review."
+      toast.error(
+        error.response?.data?.message || "An error occurred while submitting your review.",
+        { position: "top-right", autoClose: 3000 }
       );
     } finally {
       setSubmitting(false);
@@ -250,8 +250,6 @@ const ProductPage = () => {
             <p className="product-category">{product.category}</p>
             <p className="product-description">{product.description}</p>
            
-            
-            {/* Updated price rendering */}
             <h2 className="product-price">
                 {product.discount > 0 ? (
                   <div className="price-with-discount">
@@ -272,9 +270,6 @@ const ProductPage = () => {
                 )}
               </h2>
 
-
-
-            {/* Stock Information */}
             <p className="product-stock">
               {product.quantity > 0 ? (
                 <span className="in-stock">In Stock ({product.quantity} available)</span>
@@ -283,11 +278,9 @@ const ProductPage = () => {
               )}
             </p>
 
-            {/* Warranty and Distributor */}
             {product.warrantyStatus && <p className="product-warranty">Warranty Available</p>}
             <p className="product-distributor">Distributor: {product.distributor}</p>
 
-            {/* Add to Cart Button */}
             <button
               className={`add-to-cart-button ${product.quantity === 0 ? "disabled" : ""}`}
               disabled={product.quantity === 0}
@@ -296,28 +289,21 @@ const ProductPage = () => {
               {product.quantity > 0 ? "Add to Cart" : "Out of Stock"}
             </button>
 
-            {/* Wishlist Button */}
             <button
-              className={`wishlist-button ${
-                isWishlisted ? "wishlisted" : ""
-              }`}
+              className={`wishlist-button ${isWishlisted ? "wishlisted" : ""}`}
               onClick={toggleWishlist}
             >
-              {isWishlisted
-                ? "❤️"
-                : "🤍"}
+              {isWishlisted ? "❤️" : "🤍"}
             </button>
           </div>
         </div>
 
-        {/* Ratings and Reviews Section */}
         <div className="reviews-section">
           <h2>
             Customer Reviews
             {averageRating && (
               <span className="average-rating">
-                {" "}
-                - {averageRating} {renderStars(averageRating)}
+                {" "}- {averageRating} {renderStars(averageRating)}
               </span>
             )}
           </h2>
@@ -337,7 +323,6 @@ const ProductPage = () => {
         </div>
       </div>
 
-       {/* Info About Website Section */}
        <div className="info-cards-section">
         <div className="info-card">
           <img src={iconGuarantee} alt="Guarantee Icon" className="info-icon" />
@@ -361,7 +346,6 @@ const ProductPage = () => {
         </div>
       </div>
 
-      {/* Follow Us Section */}
       <div className="follow-us-section">
         <span className="follow-text">Follow Us</span>
         <div className="social-icons">
@@ -373,6 +357,8 @@ const ProductPage = () => {
           <img src={iconWhatsApp} alt="WhatsApp" />
         </div>
       </div>
+
+      <ToastContainer /> {/* Added ToastContainer */}
     </Layout>
   );
 };

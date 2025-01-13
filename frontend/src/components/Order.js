@@ -5,6 +5,8 @@ import './OrderHistory.css'; // <-- Updated import
 import Layout from './Layout';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify'; // Import react-toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import toastify styles
 
 // Modal Component
 const Modal = ({ show, onClose, children }) => {
@@ -78,7 +80,7 @@ const ProductItem = ({ product, onClick, refundStatus, orderId, purchaseDate, de
         products: [{ productId: product._id }]
       });
       console.log('Refund request created successfully:', response.data);
-      alert(response.data.message);
+      toast.success(response.data.message, { position: 'top-right', autoClose: 3000 });
       setIsRefunded(true);
     } catch (error) {
       console.error('Error creating refund request:', error);
@@ -338,8 +340,11 @@ const OrderHistoryPage = () => {
     e.preventDefault();
 
     if (rating === 0) {
-      alert('Please select a rating before submitting your comment.');
-      return;
+      toast.warning('Please select a rating before submitting your comment.', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+            return;
     }
 
     setIsSubmitting(true);
@@ -356,13 +361,21 @@ const OrderHistoryPage = () => {
       if (response.status === 200) {
         // Optionally show success message
         handleCloseModal();
+        toast.success("Comment have been submitted.", { position: "top-right", autoClose: 3000 });
+        
       }
     } catch (error) {
       console.error('Error submitting review:', error);
       if (error.response) {
-        alert(error.response.data.message || 'There was an error submitting your review.');
-      } else {
-        alert('There was an error submitting your review. Please try again later.');
+        toast.error(
+          error.response?.data?.message ||
+            'There was an error submitting your review. Please try again later.',
+          { position: 'top-right', autoClose: 3000 }
+        );      } else {
+        toast.error(
+            'There was an error submitting your review. Please try again later.',
+          { position: 'top-right', autoClose: 3000 }
+        );
       }
     } finally {
       setIsSubmitting(false);
@@ -494,6 +507,8 @@ const OrderHistoryPage = () => {
           </Modal>
         )}
       </div>
+      <ToastContainer />
+
     </Layout>
   );
 };
