@@ -94,6 +94,7 @@ function App() {
           <Route path="/comments" element={<Comments />} />
 
           <Route path="/discounted-products" element={<DiscountedProducts />} />
+          <Route path="/approveComments" element={<Comments />}/>
 
 
 
