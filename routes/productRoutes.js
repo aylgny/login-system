@@ -151,6 +151,7 @@ router.get('/reviews/waiting', async (req, res) => {
             user: rating.user,        // This will include user details if populated
             rating: rating.rating,
             comment: rating.comment,
+            commentId: rating._id,
             approved: rating.approved
           });
         }

@@ -14,7 +14,7 @@ const ProductAdmin = () => {
               <Link to="/deliveryList" className="sidebar-link">Delivery List</Link>
             </li>
             <li>
-              <Link to="/approveComments" className="sidebar-link">Approve/Disapprove Comments</Link>
+              <Link to="/comments" className="sidebar-link">Approve/Disapprove Comments</Link>
             </li>
             <li>
               <Link to="/productManagement" className="sidebar-link">Add/Remove Products or Categories</Link>
