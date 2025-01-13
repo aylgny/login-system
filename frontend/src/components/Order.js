@@ -109,16 +109,31 @@ const ProductItem = ({ product, onClick, refundStatus, orderId, purchaseDate, de
         <h4 className="order-product-name">{product.name}</h4>
         <p>Quantity: {product.quantity}</p>
         <p>Price: ${product.price.toFixed(2)}</p>
-        <button
-          className="refund-button"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleRefundClick();
-          }}
-          disabled={refundStatus !== 'neutral' || isRefunding || !isRefundAllowed() || isRefunded || deliveryStatus.toLowerCase() !== 'delivered'}
-        >
-          Request Refund
-        </button>
+        {refundStatus === 'approved' ? (
+          <button className="refund-button" disabled>
+            Refunded
+          </button>
+        ) : refundStatus === 'declined' ? (
+          <button className="refund-button" disabled>
+            Refund Declined
+          </button>
+        ) : refundStatus === 'waiting' ? (
+          <button className="refund-button" disabled>
+            Refund Waiting
+          </button>
+        ) : (
+
+          <button
+            className="refund-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleRefundClick();
+            }}
+            disabled={refundStatus !== 'neutral' || isRefunding || !isRefundAllowed() || isRefunded || deliveryStatus.toLowerCase() !== 'delivered'}
+          >
+            Request Refund
+          </button>
+        )}
       </div>
     </div>
   );
