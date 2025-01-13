@@ -17,11 +17,7 @@ const CommentCard = ({ comment, onApprove, onDecline }) => {
           </div>
           <div className="comment-info-item">
             <span className="info-label">User</span>
-            <span className="info-data">
-              {comment.user
-                ? `${comment.user.firstName} ${comment.user.lastName} (${comment.user.email})`
-                : 'Anonymous'}
-            </span>
+            <span className="info-data">{comment.user?.firstName || 'Anonymous'}</span>
           </div>
           <div className="comment-info-item">
             <span className="info-label">Rating</span>
@@ -36,13 +32,13 @@ const CommentCard = ({ comment, onApprove, onDecline }) => {
         <div className="comment-actions">
           <button
             className="approve-button"
-            onClick={() => onApprove(comment.productId, comment._id)}
+            onClick={() => onApprove(comment.productId, comment.commentId)} // commentId kullanımı
           >
             Approve
           </button>
           <button
             className="decline-button"
-            onClick={() => onDecline(comment.productId, comment._id)}
+            onClick={() => onDecline(comment.productId, comment.commentId)} // commentId kullanımı
           >
             Decline
           </button>
@@ -51,6 +47,7 @@ const CommentCard = ({ comment, onApprove, onDecline }) => {
     </div>
   );
 };
+
 
 // Main Comments Page Component
 const Comments = () => {
@@ -73,6 +70,7 @@ const Comments = () => {
   }, []);
 
   const handleApprove = async (productId, commentId) => {
+    console.log(`Approving productId: ${productId}, commentId: ${commentId}`);
     try {
       await axios.post('http://localhost:5000/api/reviews/approve', {
         productId,
@@ -87,8 +85,9 @@ const Comments = () => {
       alert('Failed to approve comment');
     }
   };
-
+  
   const handleDecline = async (productId, commentId) => {
+    console.log(`Declining productId: ${productId}, commentId: ${commentId}`);
     try {
       await axios.post('http://localhost:5000/api/reviews/decline', {
         productId,
