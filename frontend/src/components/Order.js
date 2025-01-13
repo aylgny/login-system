@@ -81,6 +81,8 @@ const ProductItem = ({ product, onClick, refundStatus, orderId }) => {
       alert(response.data.message);
     } catch (error) {
       console.error('Error creating refund request:', error);
+    } finally {
+      setIsRefunding(false);
     }
   };
 
@@ -113,8 +115,9 @@ const ProductItem = ({ product, onClick, refundStatus, orderId }) => {
   );
 };
 
-const OrderCard = ({ order, onProductClick }) => {
+const OrderCard = ({ order, onProductClick, onCancelOrder }) => {
   const [showProducts, setShowProducts] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false); // Yeni state
 
   const toggleProducts = () => {
     setShowProducts((prev) => !prev);
@@ -125,6 +128,22 @@ const OrderCard = ({ order, onProductClick }) => {
 
   // Determine status color
   const statusClass = order.status.toLowerCase().replace(' ', '-');
+
+  // Handler for cancel button
+  const handleCancel = async (e) => {
+    e.stopPropagation(); // Butonun kartı tıklamayı tetiklemesini engelle
+    if (window.confirm('Are you sure you want to cancel this order?')) {
+      setIsCancelling(true);
+      try {
+        await onCancelOrder(order._id);
+      } catch (error) {
+        console.error('Error cancelling order:', error);
+        alert('Failed to cancel the order. Please try again later.');
+      } finally {
+        setIsCancelling(false);
+      }
+    }
+  };
 
   return (
     <div className="order-history-card">
@@ -205,6 +224,18 @@ const OrderCard = ({ order, onProductClick }) => {
               onClick={() => onProductClick(item.product, order.status)}
             />
           ))}
+          {/* "Cancel" Button Eklemek */}
+          {order.status === 'Processing' && (
+            <div className="refund-button-container">
+              <button
+                className="cancel-button"
+                onClick={handleCancel}
+                disabled={isCancelling}
+              >
+                {isCancelling ? 'Cancelling...' : 'Cancel Order'}
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -236,6 +267,25 @@ const OrderHistoryPage = () => {
     };
     fetchOrders();
   }, [userId]);
+
+  // Function to handle order cancellation
+  const cancelOrder = async (orderId) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/orders/cancel/${orderId}`);
+      if (response.status === 200) {
+        // Update the specific order's status in the state
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order._id === orderId ? { ...order, status: 'Cancelled' } : order
+          )
+        );
+        alert('Order cancelled successfully.');
+      }
+    } catch (error) {
+      console.error('Error cancelling order:', error);
+      throw error; // Rethrow to handle in the calling function
+    }
+  };
 
   // Filter orders based on search term
   const filteredOrders = orders.filter(
@@ -340,6 +390,7 @@ const OrderHistoryPage = () => {
                 key={order._id}
                 order={order}
                 onProductClick={handleProductClick}
+                onCancelOrder={cancelOrder} // Passing the cancel function
               />
             ))
           )}
@@ -412,7 +463,6 @@ const OrderHistoryPage = () => {
                     type="submit"
                     className="order-submit-button"
                     disabled={selectedOrderStatus.toLowerCase() !== 'delivered' || isSubmitting}
-
                   >
                     {isSubmitting ? 'Submitting...' : 'Submit Review'}
                   </button>

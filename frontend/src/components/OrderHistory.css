@@ -452,3 +452,23 @@
   background-color: #ff9999;
   cursor: not-allowed;
 }
+
+.cancel-button {
+  background-color: #ff4757; /* Kırmızı tonları */
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background-color 0.3s;
+}
+
+.cancel-button:hover {
+  background-color: #ff6b81;
+}
+
+.cancel-button:disabled {
+  background-color: #ff9999;
+  cursor: not-allowed;
+}
