@@ -11,9 +11,7 @@ const Admin = () => {
         <div className="sidebar">
           <h3>Menu</h3>
           <ul>
-            <li>
-              <Link to="/ProductUpdate" className="sidebar-link">Set Discount</Link>
-            </li>
+           
             <li>
               <Link to="/RefundRequests" className="sidebar-link">Refund Requests</Link>
             </li>

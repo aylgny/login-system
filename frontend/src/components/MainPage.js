@@ -51,6 +51,7 @@ import promo6 from "../assets/promotions/samsung_unpacked.png";
 import promo7 from "../assets/promotions/samsung_watch_.jpg";
 
 
+
 // import promo3 from "../assets/promotions/promo3.png"; // If you add a third image, uncomment
 
 // NEW: Icons for guarantee/delivery/refund/shipment placeholders
@@ -514,22 +515,26 @@ useEffect(() => {
         ) : (
           filteredProducts.map((product) => (
             <Link
-              to={`/product/${product._id}`}
+              to={
+                userStatus === "sales_manager"
+                  ? `/productUpdate/${product._id}`
+                  : `/product/${product._id}`
+              }
               key={product._id}
               className="mainpage-product-item-link"
             >
               <div className="mainpage-product-item">
-                {/* discount badge pinned top-left if discount > 0 */}
+                {/* Discount Badge */}
                 {product.discount > 0 && (
-                  <span className="mainpage-discount-badge">
-                    %{product.discount}
-                  </span>
+                  <span className="mainpage-discount-badge">%{product.discount}</span>
                 )}
+                {/* Product Image */}
                 <img
                   src={product.photo}
                   alt={product.name}
                   className="mainpage-product-image"
                 />
+                {/* Product Details */}
                 <div className="mainpage-product-details">
                   <h4>{product.name}</h4>
                   {product.discount > 0 ? (
