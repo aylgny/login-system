@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import "./MainPage.css";
 import axios from "axios";
 
@@ -138,7 +139,19 @@ const MainPage = () => {
     fetchUserStatus();
   }, []);
   
-  
+    // Redirect unauthorized users from admin pages
+    useEffect(() => {
+      const path = window.location.pathname;
+      if (
+        (path === "/ProductAdmin" && userStatus !== "product_manager") ||
+        (path === "/SalesAdmin" && userStatus !== "sales_manager")
+      ) {
+        alert("You are not authorized to access this page.");
+        navigate("/");
+      }
+    }, [userStatus, navigate]);
+
+
   
   const toggleFilter = (filterName) => {
     setOpenFilters((prevState) => ({
@@ -384,6 +397,7 @@ useEffect(() => {
               </Link>
             </div>
           )}
+          
           <div className="cart-icon">
             <Link to="/cart">
               <img src={require("../assets/icons/shopping.png")} alt="Cart" />

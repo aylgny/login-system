@@ -30,7 +30,7 @@ function App() {
 export default App;
 */
 // src/App.js
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login'; // Import your Login component
 import Signup from './components/Signup'; // Import your Signup component
@@ -51,14 +51,53 @@ import SalesAdmin from './components/SalesAdmin';
 import ProductAdmin from './components/ProductAdmin'; 
 import Comments from './components/Comments'; 
 import DiscountedProducts from "./components/DiscountedProducts";
+import ProtectedRoute from "./components/ProtectedRoute";
+import axios from "axios";
 
 
 
 function App() {
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+
+      if (token && userId) {
+        try {
+          const response = await axios.get(`http://localhost:5000/api/user/${userId}`);
+          setUserRole(response.data.status); // Fetch and set the user's status
+        } catch (error) {
+          console.error("Error fetching user role:", error);
+        }
+      }
+    };
+
+    fetchUserRole();
+  }, []);
+
   return (
     <Router>
       <div className="App">
         <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route
+          path="/SalesAdmin"
+          element={
+            <ProtectedRoute userRole={userRole}>
+              <SalesAdmin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ProductAdmin"
+          element={
+            <ProtectedRoute userRole={userRole}>
+              <ProductAdmin />
+            </ProtectedRoute>
+          }
+        />
           {/* Public routes */}
           <Route path="/" element={<MainPage />} /> {/* Main page as default route */}
           <Route path="/mainpage" element={<MainPage />} />
@@ -94,7 +133,6 @@ function App() {
           <Route path="/comments" element={<Comments />} />
 
           <Route path="/discounted-products" element={<DiscountedProducts />} />
-
 
 
         </Routes>
