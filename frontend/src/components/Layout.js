@@ -16,6 +16,7 @@ import tvsIcon from "../assets/icons/tv.png";
 import tabletsIcon from "../assets/icons/tablet.png";
 import teknosuLogo from '../assets/icons/teknosu.png';
 import wishlistIcon from '../assets/icons/wishlist.png';
+import adminIcon from "../assets/icons/admin_panel.png";
 
 // Map categories to icons
 const categoryIcons = {
@@ -38,9 +39,36 @@ const Layout = ({ children }) => {
   const [sortCriteria, setSortCriteria] = useState("price-asc");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const [userStatus, setUserStatus] = useState(null); // User status state
+  const userId = localStorage.getItem("userId"); // Assuming userId is stored in localStorage
 
   const productsApiUrl = "http://localhost:5000/api/products";
   const categoriesApiUrl = "http://localhost:5000/api/categories";
+
+
+  useEffect(() => {
+    const fetchUserStatus = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Get the token from localStorage
+        if (!token) {
+          setUserStatus(null); // No token found
+          return;
+        }
+        if (!userId) {
+          setUserStatus(null); // No userId in the token
+          return;
+        }
+        // Fetch user details from the backend
+        const response = await axios.get(`http://localhost:5000/api/user/${userId}`);
+        setUserStatus(response.data.status); // Set the user's status
+      } catch (error) {
+        console.error("Error fetching user status:", error);
+        setUserStatus(null); // Reset status on error
+      }
+    };
+    fetchUserStatus();
+  }, []);
+
 
   // Fetching products from the backend
   useEffect(() => {
@@ -160,6 +188,21 @@ const Layout = ({ children }) => {
        
         {/* Icon Group */}
         <div className="icon-group">
+          {/* Admin Icon */}
+          {userStatus === "sales_manager" && (
+            <div className="admin-icon">
+              <Link to="/SalesAdmin">
+                <img src={adminIcon} alt="Admin Panel" />
+              </Link>
+            </div>
+          )}
+          {userStatus === "product_manager" && (
+            <div className="admin-icon">
+              <Link to="/ProductAdmin">
+                <img src={adminIcon} alt="Product Panel" />
+              </Link>
+            </div>
+          )}
           <div className="cart-icon">
             <Link to="/cart">
               <img src={require("../assets/icons/shopping.png")} alt="Cart" />
